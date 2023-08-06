@@ -1,7 +1,9 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginScreen from '@screens/LoginScreen';
 import CommonSignUpScreen from '@screens/CommonSignUpScreen';
+import LoginScreen from '@screens/LoginScreen';
+/** JSX 문법을 사용한다면 React를 꼭 import 해줍시다. */
+import React from 'react';
 
 const Stack = createNativeStackNavigator();
 
