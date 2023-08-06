@@ -1,28 +1,41 @@
 import { OwnerSelect, CustomerSelect, PreviousBtn, ContinueBtn } from '@assets/signUp/CommonSignUpScreenIcon';
+import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
-import React from 'react';
+import { UserInfo } from 'context/UserInfoContext';
+import React, { useContext } from 'react';
 import { Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
 
 function CommonSignUpScreen() {
+  const navigation = useNavigation();
+
+  const { setUserType } = useContext(UserInfo);
+
+  //색 변화하는 부분 넣기
+  const onPressUserSelectBtn = () => {};
+
+  const onPressPreviousBtn = () => {
+    navigation.navigate('login');
+  };
+
+  const onPressContineBtn = () => {
+    navigation.navigate('login');
+  };
+
   return (
     <Container>
       <MainInfoTxt1>김영희님,</MainInfoTxt1>
       <MainInfoTxt2>
         <Text style={{ color: COLORS.main }}>유형</Text>을 선택해주세요!
       </MainInfoTxt2>
-      <Text
-        style={{ color: COLORS.gray01, marginLeft: wp(4.8), marginTop: hp(1.23), marginBottom: hp(5.41), fontSize: 16 }}
-      >
-        한 가지 유형을 선택해주세요. (필수)
-      </Text>
+      <SubTxt>한 가지 유형을 선택해주세요. (필수)</SubTxt>
       <SelectOption>
-        <OwnerSelect />
-        <CustomerSelect />
+        <OwnerSelect onPress={(onPressUserSelectBtn, setUserType(1))} />
+        <CustomerSelect onPress={(onPressUserSelectBtn, setUserType(2))} />
       </SelectOption>
-      <PreviousBtn marginBottom={hp(1.23)} marginLeft={wp(4.8)} />
-      <ContinueBtn width={wp(100)} marginBottom={hp(6.15)} justifyContent="center" />
+      <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
+      <ContinueBtn width={wp(100)} marginBottom={hp(6.15)} justifyContent="center" onPress={onPressContineBtn} />
     </Container>
   );
 }
@@ -44,6 +57,14 @@ const MainInfoTxt2 = styled.Text`
   font-weight: bold;
   margin-left: ${wp(4.8)}px;
   margin-top: 5px;
+`;
+
+const SubTxt = styled.Text`
+  color: ${COLORS.gray01};
+  margin-left: ${wp(4.8)}px;
+  margin-top: ${hp(1.23)}px;
+  margin-bottom: ${hp(5.41)}px;
+  font-size: 16px;
 `;
 
 const SelectOption = styled.View`
