@@ -1,5 +1,5 @@
-import React from 'react';
 import { useNavigation } from '@react-navigation/native';
+import React from 'react';
 import { Image } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
@@ -8,7 +8,7 @@ function LoginScreen() {
   const navigation = useNavigation();
 
   const onPressKakao = () => {
-    navigation.navigate('commonSignUp');
+    navigation.navigate('loginScreen2');
   };
 
   return (

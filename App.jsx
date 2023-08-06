@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CommonSignUpScreen from '@screens/CommonSignUpScreen';
 import LoginScreen from '@screens/LoginScreen';
-/** JSX 문법을 사용한다면 React를 꼭 import 해줍시다. */
+import LoginScreen2 from '@screens/LoginScreen2';
 import React from 'react';
 import HomeTabRoutes from 'routes/HomeTabRoutes';
 
@@ -12,7 +12,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="home-tab">
+      <Stack.Navigator initialRouteName="login">
         <Stack.Screen
           name={'login'}
           component={LoginScreen}
@@ -21,7 +21,14 @@ export default function App() {
           }}
         />
         <Stack.Screen
-          name={'commonSignUp'}
+          name={'loginScreen2'}
+          component={LoginScreen2}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name={'commonSignUpScreen'}
           component={CommonSignUpScreen}
           options={{
             headerShown: false,
