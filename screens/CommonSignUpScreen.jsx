@@ -1,13 +1,18 @@
+import { OwnerSelect, CustomerSelect } from '@assets/CommonSignUpScreen/Icon';
 import React from 'react';
-import { styled } from 'styled-components/native';
+import { View, Text } from 'react-native'; // Text 컴포넌트를 import
 
 function CommonSignUpScreen() {
-  return <Container>figma상 03-회원가입(기본) 페이지 생성 예정</Container>;
+  return (
+    <View>
+      <Text>
+        <OwnerSelect width={200} height={200} /> {/* 수정: 적절한 너비와 높이를 지정해주세요 */}
+      </Text>
+      <Text>
+        <CustomerSelect width={200} height={200} /> {/* 수정: 적절한 너비와 높이를 지정해주세요 */}
+      </Text>
+    </View>
+  );
 }
-
-const Container = styled.Text`
-  margin-top: 200px;
-  margin-left: 70px;
-`;
 
 export default CommonSignUpScreen;

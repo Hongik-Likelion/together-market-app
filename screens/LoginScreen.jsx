@@ -1,6 +1,6 @@
+import KakaoLoginBtn from '@assets/LoginScreen/KakaoLoginBtn';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Image } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
 
@@ -17,8 +17,8 @@ function LoginScreen() {
       <Container>
         <MainIcon source={require('@assets/LoginScreen/MainIcon.png')} />
         <LoginInfoText>카카오 로그인으로 시작해보세요!</LoginInfoText>
-        <KakaoButton onPress={onPressKakao}>
-          <Image source={require('@assets/LoginScreen/KakaoLoginBtn.png')} />
+        <KakaoButton>
+          <KakaoLoginBtn onPress={onPressKakao} />
         </KakaoButton>
       </Container>
     </>
