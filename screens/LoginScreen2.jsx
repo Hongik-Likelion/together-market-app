@@ -1,6 +1,6 @@
+import { MainBackground2, AccessPhoto, AccessCamera, StartBtn } from '@assets/LoginScreen2/LoginScreen2';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Image } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
 
@@ -13,30 +13,22 @@ function LoginScreen2() {
 
   return (
     <>
-      <MainBackground2 source={require('@assets/LoginScreen2/MainBackground2.png')} />
+      <MainBackground2 position="absoulte" z-index="-1" width={wp(100)} height={hp(100)} />
       <Container>
         <Description1>더 나은 함께사장 서비스 이용을 위하여</Description1>
         <Description2>동의가 필요한 내용을 확인해주세요.</Description2>
         <AccessMention>선택적 접근 권한</AccessMention>
         <AccessIcon>
-          <Image source={require('@assets/LoginScreen2/AccessPhoto.png')} />
-          <Image source={require('@assets/LoginScreen2/AccessCamera.png')} />
+          <AccessPhoto />
+          <AccessCamera />
         </AccessIcon>
         <Icon onPress={onPressStart}>
-          <Image source={require('@assets/LoginScreen2/StartBtn.png')} />
+          <StartBtn />
         </Icon>
       </Container>
     </>
   );
 }
-
-const MainBackground2 = styled.Image`
-  position: absolute;
-  z-index: -1;
-
-  width: ${wp(100)}px;
-  height: ${hp(100)}px;
-`;
 
 const Container = styled.View`
   background-color: white;
