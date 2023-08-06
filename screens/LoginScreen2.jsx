@@ -1,4 +1,4 @@
-import { MainBackground2, AccessPhoto, AccessCamera, StartBtn } from '@assets/LoginScreen2/LoginScreen2';
+import { MainBackground2, AccessPhoto, AccessCamera, StartBtn } from '@assets/login/LoginScreen2Icon';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';

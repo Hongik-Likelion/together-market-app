@@ -1,4 +1,4 @@
-import { MainBackground, MainIcon, KakaoLoginBtn } from '@assets/LoginScreen/LoginScreenIcon';
+import { MainBackground, MainIcon, KakaoLoginBtn } from '@assets/login/LoginScreenIcon';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
