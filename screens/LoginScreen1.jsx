@@ -4,7 +4,7 @@ import React from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
 
-function LoginScreen() {
+function LoginScreen1() {
   const navigation = useNavigation();
 
   const onPressKakao = () => {
@@ -45,4 +45,4 @@ const KakaoButton = styled.TouchableOpacity`
   margin-top: 15px;
 `;
 
-export default LoginScreen;
+export default LoginScreen1;

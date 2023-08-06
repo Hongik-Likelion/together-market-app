@@ -9,18 +9,19 @@ import { styled } from 'styled-components/native';
 
 function CommonSignUpScreen() {
   const navigation = useNavigation();
-
-  const { setUserType } = useContext(UserInfo);
-
-  //색 변화하는 부분 넣기
-  const onPressUserSelectBtn = () => {};
+  const { userType, setUserType } = useContext(UserInfo);
 
   const onPressPreviousBtn = () => {
-    navigation.navigate('login');
+    setUserType('');
+    navigation.navigate('loginScreen1');
   };
 
-  const onPressContineBtn = () => {
-    navigation.navigate('login');
+  const onPressContinueBtn = () => {
+    if (userType === 1) {
+      navigation.navigate('ownerSignUpScreen');
+    } else if (userType === 2) {
+      navigation.navigate('userSignUpScreen');
+    }
   };
 
   return (
@@ -31,11 +32,29 @@ function CommonSignUpScreen() {
       </MainInfoTxt2>
       <SubTxt>한 가지 유형을 선택해주세요. (필수)</SubTxt>
       <SelectOption>
-        <OwnerSelect onPress={(onPressUserSelectBtn, setUserType(1))} />
-        <CustomerSelect onPress={(onPressUserSelectBtn, setUserType(2))} />
+        <OwnerSelect
+          backColor={userType === 1 ? '#E4FFF5' : '#FFFFFF'}
+          strokeColor={userType === 1 ? COLORS.main : COLORS.gray01}
+          fontColor={userType === 1 ? COLORS.black : '#666666'}
+          onPress={() => setUserType(1)}
+        />
+        <CustomerSelect
+          backColor={userType === 2 ? '#E4FFF5' : '#FFFFFF'}
+          strokeColor={userType === 2 ? COLORS.main : COLORS.gray01}
+          fontColor={userType === 2 ? COLORS.black : '#666666'}
+          onPress={() => setUserType(2)}
+        />
       </SelectOption>
       <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
-      <ContinueBtn width={wp(100)} marginBottom={hp(6.15)} justifyContent="center" onPress={onPressContineBtn} />
+
+      <ContinueBtn
+        fontColor={userType ? 'white' : COLORS.main}
+        backColor={userType ? COLORS.main : 'white'}
+        width={wp(100)}
+        marginBottom={hp(6.15)}
+        justifyContent="center"
+        onPress={onPressContinueBtn}
+      />
     </Container>
   );
 }

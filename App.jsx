@@ -1,8 +1,10 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CommonSignUpScreen from '@screens/CommonSignUpScreen';
-import LoginScreen from '@screens/LoginScreen';
+import LoginScreen1 from '@screens/LoginScreen1';
 import LoginScreen2 from '@screens/LoginScreen2';
+import OwnerSignUpScreen from '@screens/OwnerSignUpScreen';
+import UserSignUpScreen from '@screens/UserSignUpScreen';
 import React, { useState } from 'react';
 import HomeTabRoutes from 'routes/HomeTabRoutes';
 
@@ -20,8 +22,8 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="login">
           <Stack.Screen
-            name={'login'}
-            component={LoginScreen}
+            name={'loginScreen1'}
+            component={LoginScreen1}
             options={{
               headerShown: false,
             }}
@@ -36,6 +38,20 @@ export default function App() {
           <Stack.Screen
             name={'commonSignUpScreen'}
             component={CommonSignUpScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name={'ownerSignUpScreen'}
+            component={OwnerSignUpScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name={'userSignUpScreen'}
+            component={UserSignUpScreen}
             options={{
               headerShown: false,
             }}
