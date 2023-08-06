@@ -1,27 +1,5 @@
 import * as React from 'react';
-import Svg, { Rect, Path, G, Defs, ClipPath, LinearGradient, Stop } from 'react-native-svg';
-
-function MainBackground(props) {
-  return (
-    <Svg width={375} height={812} viewBox="0 0 375 812" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <Path fill="#fff" d="M0 0H375V812H0z" />
-      <Path fill="url(#paint0_linear_3_4530)" fillOpacity={0.4} d="M0 411H375V812H0z" />
-      <Defs>
-        <LinearGradient
-          id="paint0_linear_3_4530"
-          x1={187.5}
-          y1={411}
-          x2={187.5}
-          y2={812}
-          gradientUnits="userSpaceOnUse"
-        >
-          <Stop stopColor="#C9FFEB" stopOpacity={0} />
-          <Stop offset={0.90625} stopColor="#81EBC5" />
-        </LinearGradient>
-      </Defs>
-    </Svg>
-  );
-}
+import Svg, { Rect, Path, G, Defs, ClipPath } from 'react-native-svg';
 
 function MainIcon(props) {
   return (
@@ -72,4 +50,4 @@ function KakaoLoginBtn(props) {
   );
 }
 
-export { MainBackground, MainIcon, KakaoLoginBtn };
+export { MainIcon, KakaoLoginBtn };
