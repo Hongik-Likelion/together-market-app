@@ -1,4 +1,4 @@
-import KakaoLoginBtn from '@assets/LoginScreen/KakaoLoginBtn';
+import { MainBackground, MainIcon, KakaoLoginBtn } from '@assets/LoginScreen/LoginScreenIcon';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -13,9 +13,11 @@ function LoginScreen() {
 
   return (
     <>
-      <MainBackground source={require('@assets/LoginScreen/MainBackground.png')} />
+      <MainBackground position="absolute" z-index="-1" width={wp(100)} height={hp(100)} />
       <Container>
-        <MainIcon source={require('@assets/LoginScreen/MainIcon.png')} />
+        <StyledMainIcon>
+          <MainIcon />
+        </StyledMainIcon>
         <LoginInfoText>카카오 로그인으로 시작해보세요!</LoginInfoText>
         <KakaoButton>
           <KakaoLoginBtn onPress={onPressKakao} />
@@ -25,20 +27,12 @@ function LoginScreen() {
   );
 }
 
-const MainBackground = styled.Image`
-  position: absolute;
-  z-index: -1;
-
-  width: ${wp(100)}px;
-  height: ${hp(100)}px;
-`;
-
 const Container = styled.View`
   flex: 1;
   align-items: center;
 `;
 
-const MainIcon = styled.Image`
+const StyledMainIcon = styled.View`
   margin-top: 195px;
 `;
 
