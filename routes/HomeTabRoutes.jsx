@@ -25,6 +25,7 @@ function HomeTabRoutes() {
           headerTintColor: COLORS.white,
           headerLeft: () => <MarketSelector />,
           headerRight: () => <TabHeaderRight />,
+          tabBarLabel: '홈',
           tabBarActiveTintColor: COLORS.main,
           tabBarInactiveTintColor: COLORS.black,
           tabBarIcon: ({ focused }) =>
