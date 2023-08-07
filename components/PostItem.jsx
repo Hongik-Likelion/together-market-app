@@ -127,6 +127,7 @@ const RatingLabel = styled.Text`
     color: ${COLORS.main};
 
 `;
+
 const Date = styled.Text`
     font-size: ${RFValue(10)}px;
     text-align: right;
