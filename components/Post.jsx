@@ -14,6 +14,8 @@ function Post() {
             date: '2023.08.18',
             content: '오늘도 맛있게 조리중입니다. 갓 튀긴 바삭바삭 돈까스와 바삭마차의 특별 소스로 대접하겠습니다. 단체 주문은 채팅 문의 부탁드립니다. ^^',
             image: require('@assets/PostItem/owner_image.png'),
+            like: '10',
+            comment: '0',
         },
         {
             id: 2,
@@ -24,6 +26,8 @@ function Post() {
             date: '2023.08.18',
             content: '[바삭마차 리뷰] 와 여기 진짜 넘 신선해요 튀김이... 오마카세<<<바삭마차 압승입니다.',
             image: require('@assets/PostItem/customer_image.png'),
+            like: '3',
+            comment: '0',
         },
     ];
 
@@ -32,7 +36,7 @@ function Post() {
             <FlatList
                 data={postItems}
                 renderItem={({item}) => {
-                    const {profile, user, name, rating, date, content, image} = item;
+                    const {profile, user, name, rating, date, content, image, like, comment} = item;
                     return (
                         <PostItem
                             profile={profile}
@@ -41,7 +45,9 @@ function Post() {
                             rating={rating}
                             date={date}
                             content={content}
-                            image={image}/>
+                            image={image}
+                            like={like}
+                            comment={comment}/>
                     )
                 }}
             />
@@ -50,7 +56,6 @@ function Post() {
 }
 
 const Container = styled.View`
-    height: 67%;
-    /* background-color: red; */
+    height: 70%;
 `;
 export default Post;

@@ -1,6 +1,8 @@
 import React from 'react';
 import { styled } from 'styled-components/native';
 import { COLORS } from 'colors';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 function Category() {
 
@@ -16,7 +18,7 @@ function Category() {
 }
 
 const Container = styled.View`
-    height: 6%;
+    height: 5%;
     background-color: ${COLORS.gray02};
 
     border-top-color: ${COLORS.gray01};
@@ -26,20 +28,26 @@ const Container = styled.View`
     
     flex-direction: row;
     align-items: center;
-    padding-left: 20px;
+    padding-left: ${wp(6)}px;
 `;
 
 const Tag = styled.View`
     border: 1.3px solid ${COLORS.main};
     background-color: ${COLORS.white};
     border-radius: 100px;
-    padding: 5px 10px;
-    margin-right: 10px;
+
+    padding-top: ${hp(0.5)}px;
+    padding-bottom: ${hp(0.5)}px;
+    padding-left: ${wp(2)}px;
+    padding-right: ${wp(2)}px;
+
+    margin-right: ${wp(1)}px;
 
 `;
 
 const TagLabel = styled.Text`
-    font-size: 15px;
+
+    font-size: ${RFValue(13)}px;
     font-weight: 700;
     color: ${COLORS.main};
 `;

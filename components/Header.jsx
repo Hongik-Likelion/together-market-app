@@ -4,17 +4,21 @@ import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import { COLORS } from 'colors';
 import Constants from 'expo-constants';
-
+import { RFValue } from 'react-native-responsive-fontsize';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 function Header() {
 
     return (
         <Container>
-            <MarketName>망원 시장</MarketName>
-            <Icon>
-                <SimpleLineIcons name={'bell'} size={20} color={COLORS.main}/>
-                <Feather name={'search'} size={20} color={COLORS.main} />
-            </Icon>
+            <LeftGroup>
+                <MarketName>망원 시장</MarketName>
+                <Feather name={'chevron-down'} size={RFValue(15)}/>
+            </LeftGroup>
+            <RightGroup>
+                <SimpleLineIcons name={'bell'} size={RFValue(16)} color={COLORS.main}/>
+                <Feather name={'search'} size={RFValue(16)} color={COLORS.main} />
+            </RightGroup>
         </Container>
     );
 }
@@ -24,19 +28,31 @@ const Container = styled.View`
     flex-direction: row;
     padding-top: ${Constants.statusBarHeight};
     justify-content: space-between;
+
 `;
 
 const MarketName = styled.Text`
-    font-size: 23px;
+    font-size: ${RFValue(18)}px;
     font-weight: 700;
-    margin-top: 26px;
-    margin-left: 20px;
 `;
 
-const Icon = styled.View`
+const LeftGroup = styled.View`
     flex-direction: row;
-    margin-top: 26px;
-    margin-right: 20px;
+    justify-content: space-between;
+
+    margin-left: ${wp(6)}px;
+    width: ${wp(25)}px;
+
+    align-items: center;
+`;
+
+const RightGroup = styled.View`
+    flex-direction: row;
+
+    margin-right: ${wp(6)}px;
+    justify-content: space-between;
+    align-items: center;
+    width: ${wp(13)}px;
 `;
 
 export default Header;
