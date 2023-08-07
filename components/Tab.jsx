@@ -65,4 +65,5 @@ const Text = styled.Text`
     margin-top: ${hp(1)}px;
     font-size: ${RFValue(13)}px;
 `;
+
 export default Tab;
