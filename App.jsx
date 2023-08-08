@@ -20,7 +20,7 @@ export default function App() {
     //useContext로 로그인유저 정보(사장님, 고객)
     <UserInfo.Provider value={{ userType, setUserType }}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="login">
+        <Stack.Navigator initialRouteName="loginScreen1">
           <Stack.Screen
             name={'loginScreen1'}
             component={LoginScreen1}

@@ -1,8 +1,28 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { ContinueBtn } from '@assets/signUp/CommonSignUpScreenIcon';
+import { UserInfo } from 'context/UserInfoContext';
+import { styled } from 'styled-components/native';
+import { useNavigation } from '@react-navigation/native';
 
-function UserSignUpScreen(props) {
-  return <Text style={{ marginTop: 200 }}>일반 회원가입 부분 진행해야함.</Text>;
+function UserSignUpScreen() {
+  const { userType } = useContext(UserInfo);
+  const navigation = useNavigation();
+  const onPressContinueBtn = () => {};
+
+  return (
+    <Container>
+      <ContinueBtn
+        fontColor={userType ? 'white' : COLORS.main}
+        backColor={userType ? COLORS.main : 'white'}
+        width={wp(100)}
+        marginBottom={hp(6.15)}
+        justifyContent="center"
+        onPress={onPressContinueBtn}
+      />
+    </Container>
+  );
 }
+
+const Container = styled.View``;
 
 export default UserSignUpScreen;
