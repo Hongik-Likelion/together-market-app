@@ -1,50 +1,47 @@
 import { PreviousBtn, ContinueBtn } from '@assets/signUp/CommonSignUpScreenIcon';
-import UserSignUpHeader from '@assets/signUp/UserSignUpScreen';
-import ChooseGuideTab from '@components/signUp/ChooseGuideTab';
+import GuideOption from '@components/signUp/guide/GuideOption';
+import GuideTopTab from '@components/signUp/guide/GuideTopTab';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
 import { UserInfo } from 'context/UserInfoContext';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
 
 function GuideSignUpScreen(props) {
   const navigation = useNavigation();
-  const { userType, setUserType } = useContext(UserInfo);
+  const { userType } = useContext(UserInfo);
+
+  const [guide, selectGuide] = useState('false');
 
   const onPressPreviousBtn = () => {
-    setUserType('');
-    navigation.navigate('loginScreen1');
-  };
-
-  const onPressContinueBtn = () => {
     if (userType === 1) {
-      navigation.navigate('ownerSignUpScreen');
+      navigation.navigate('ownerSignUpScreen'); // 이 부분 나중에 사장님 회원가입 부분 만들고 수정되어야함
     } else if (userType === 2) {
       navigation.navigate('userSignUpScreen');
     }
   };
+
+  const onPressContinueBtn = () => {};
   return (
     <Container>
+      <GuideTopTab />
       <MainInfoTxt1>김영희님,</MainInfoTxt1>
       <MainInfoTxt2>
         <Text style={{ color: COLORS.main }}>함께 시장 안내서</Text>를 확인하시겠어요?
       </MainInfoTxt2>
-      <SubTxt>한 가지 유형을 선택해주세요. (필수)</SubTxt>
-      <ChooseGuideTab />
+      <SubTxt>안내를 통해 서비스 이용에 큰 도움을 드릴 수 있어요.</SubTxt>
+      <GuideOption onChange={selectGuide} />
       <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
       <ContinueBtn
-        fontColor={userType ? 'white' : COLORS.main}
-        backColor={userType ? COLORS.main : 'white'}
+        fontColor={guide ? 'white' : COLORS.main}
+        backColor={guide ? COLORS.main : 'white'}
         width={wp(100)}
         marginBottom={hp(6.15)}
         justifyContent="center"
         onPress={onPressContinueBtn}
       />
-      <UserSignUpHeaderContainer>
-        <UserSignUpHeader position="absolute" marginTop={hp(10)} />
-      </UserSignUpHeaderContainer>
     </Container>
   );
 }
@@ -77,10 +74,4 @@ const SubTxt = styled.Text`
   font-size: 16px;
 `;
 
-const UserSignUpHeaderContainer = styled.View`
-  position: absolute;
-  left: 0;
-  right: 0;
-  align-items: center;
-`;
 export default GuideSignUpScreen;

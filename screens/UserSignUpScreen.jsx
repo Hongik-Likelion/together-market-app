@@ -1,6 +1,6 @@
 import { PreviousBtn, ContinueBtn } from '@assets/signUp/CommonSignUpScreenIcon';
 import UserSignUpHeader from '@assets/signUp/UserSignUpScreen';
-import SelectMarketTab from '@components/signUp/SelectMarketTab';
+import SelectMarketTab from '@components/signUp/user/SelectMarketTab';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
 import React, { useState } from 'react';
@@ -20,11 +20,16 @@ function UserSignUpScreen() {
 
   const onPressContinueBtn = () => {
     // 선택한 시장을 User 정보관련 배열에 넣어야할듯
-    navigation.navigate('guideSignUpScreen');
+    if (favMarket) {
+      navigation.navigate('guideSignUpScreen');
+    }
   };
 
   return (
     <Container>
+      <UserSignUpHeaderContainer>
+        <UserSignUpHeader isNextPage={COLORS.gray01} position="absolute" marginTop={hp(10)} />
+      </UserSignUpHeaderContainer>
       <MainInfoTxt1>김영희님,</MainInfoTxt1>
       <MainInfoTxt2>
         <Text style={{ color: COLORS.main }}>자주 방문하는 시장</Text>을 설정해주세요.
@@ -39,12 +44,16 @@ function UserSignUpScreen() {
         justifyContent="center"
         onPress={onPressContinueBtn}
       />
-      <UserSignUpHeaderContainer>
-        <UserSignUpHeader position="absolute" marginTop={hp(10)} />
-      </UserSignUpHeaderContainer>
     </Container>
   );
 }
+const UserSignUpHeaderContainer = styled.View`
+  position: absolute;
+  left: 0;
+  right: 0;
+  align-items: center;
+`;
+
 const Container = styled.View`
   background-color: white;
   flex: 1;
@@ -63,13 +72,6 @@ const MainInfoTxt2 = styled.Text`
   font-weight: bold;
   margin-left: ${wp(4.8)}px;
   margin-top: 5px;
-`;
-
-const UserSignUpHeaderContainer = styled.View`
-  position: absolute;
-  left: 0;
-  right: 0;
-  align-items: center;
 `;
 
 export default UserSignUpScreen;

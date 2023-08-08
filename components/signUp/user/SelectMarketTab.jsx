@@ -1,10 +1,10 @@
-import React from 'react';
-import { styled } from 'styled-components/native';
 import { COLORS } from 'colors';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Feather from 'react-native-vector-icons/Feather';
+import { styled } from 'styled-components/native';
 
-//아직 시장 추가해서 아래에 보이는 부분 구현 X
 function SelectMarketTab({ favMarket, onChange }) {
   return (
     <>
@@ -21,6 +21,11 @@ function SelectMarketTab({ favMarket, onChange }) {
     </>
   );
 }
+
+SelectMarketTab.propTypes = {
+  favMarket: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 
 const Tab = styled.View`
   flex: 1;
