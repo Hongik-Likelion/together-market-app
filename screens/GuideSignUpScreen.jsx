@@ -1,39 +1,42 @@
 import { PreviousBtn, ContinueBtn } from '@assets/signUp/CommonSignUpScreenIcon';
 import UserSignUpHeader from '@assets/signUp/UserSignUpScreen';
-import SelectMarketTab from '@components/signUp/SelectMarketTab';
+import ChooseGuideTab from '@components/signUp/ChooseGuideTab';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
-import React, { useState } from 'react';
+import { UserInfo } from 'context/UserInfoContext';
+import React, { useContext } from 'react';
 import { Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
 
-function UserSignUpScreen() {
+function GuideSignUpScreen(props) {
   const navigation = useNavigation();
-
-  const [favMarket, selectMarket] = useState(''); //회원이 작성한 시장이 favMarket에 저장됨
-  const onChange = (text) => selectMarket(text);
+  const { userType, setUserType } = useContext(UserInfo);
 
   const onPressPreviousBtn = () => {
-    navigation.navigate('commonSignUpScreen');
+    setUserType('');
+    navigation.navigate('loginScreen1');
   };
 
   const onPressContinueBtn = () => {
-    // 선택한 시장을 User 정보관련 배열에 넣어야할듯
-    navigation.navigate('guideSignUpScreen');
+    if (userType === 1) {
+      navigation.navigate('ownerSignUpScreen');
+    } else if (userType === 2) {
+      navigation.navigate('userSignUpScreen');
+    }
   };
-
   return (
     <Container>
       <MainInfoTxt1>김영희님,</MainInfoTxt1>
       <MainInfoTxt2>
-        <Text style={{ color: COLORS.main }}>자주 방문하는 시장</Text>을 설정해주세요.
+        <Text style={{ color: COLORS.main }}>함께 시장 안내서</Text>를 확인하시겠어요?
       </MainInfoTxt2>
-      <SelectMarketTab content={favMarket} onChange={onChange} />
+      <SubTxt>한 가지 유형을 선택해주세요. (필수)</SubTxt>
+      <ChooseGuideTab />
       <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
       <ContinueBtn
-        fontColor={favMarket ? 'white' : COLORS.main}
-        backColor={favMarket ? COLORS.main : 'white'}
+        fontColor={userType ? 'white' : COLORS.main}
+        backColor={userType ? COLORS.main : 'white'}
         width={wp(100)}
         marginBottom={hp(6.15)}
         justifyContent="center"
@@ -45,6 +48,7 @@ function UserSignUpScreen() {
     </Container>
   );
 }
+
 const Container = styled.View`
   background-color: white;
   flex: 1;
@@ -65,11 +69,18 @@ const MainInfoTxt2 = styled.Text`
   margin-top: 5px;
 `;
 
+const SubTxt = styled.Text`
+  color: ${COLORS.gray01};
+  margin-left: ${wp(4.8)}px;
+  margin-top: ${hp(1.23)}px;
+  margin-bottom: ${hp(5.41)}px;
+  font-size: 16px;
+`;
+
 const UserSignUpHeaderContainer = styled.View`
   position: absolute;
   left: 0;
   right: 0;
   align-items: center;
 `;
-
-export default UserSignUpScreen;
+export default GuideSignUpScreen;
