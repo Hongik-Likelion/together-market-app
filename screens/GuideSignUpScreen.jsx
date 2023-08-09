@@ -13,9 +13,10 @@ function GuideSignUpScreen(props) {
   const navigation = useNavigation();
   const { userType } = useContext(UserInfo);
 
-  const [guide, selectGuide] = useState('false');
+  const [guide, selectGuide] = useState(0); //guide가 1이면 보겠다, 2면 안보겠다
 
   const onPressPreviousBtn = () => {
+    selectGuide('');
     if (userType === 1) {
       navigation.navigate('ownerSignUpScreen'); // 이 부분 나중에 사장님 회원가입 부분 만들고 수정되어야함
     } else if (userType === 2) {
@@ -23,7 +24,9 @@ function GuideSignUpScreen(props) {
     }
   };
 
-  const onPressContinueBtn = () => {};
+  const onPressContinueBtn = () => {
+    //(userType)이 1이라면 안내 동영상으로, 2라면 홈페이지로
+  };
   return (
     <Container>
       <GuideTopTab />
@@ -32,7 +35,7 @@ function GuideSignUpScreen(props) {
         <Text style={{ color: COLORS.main }}>함께 시장 안내서</Text>를 확인하시겠어요?
       </MainInfoTxt2>
       <SubTxt>안내를 통해 서비스 이용에 큰 도움을 드릴 수 있어요.</SubTxt>
-      <GuideOption onChange={selectGuide} />
+      <GuideOption content={guide} onChange={selectGuide} />
       <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
       <ContinueBtn
         fontColor={guide ? 'white' : COLORS.main}
