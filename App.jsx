@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CommonSignUpScreen from '@screens/CommonSignUpScreen';
+import GuideSignUpScreen from '@screens/GuideSignUpScreen';
 import LoginScreen1 from '@screens/LoginScreen1';
 import LoginScreen2 from '@screens/LoginScreen2';
 import OwnerSignUpScreen from '@screens/OwnerSignUpScreen';
@@ -20,7 +21,7 @@ export default function App() {
     //useContext로 로그인유저 정보(사장님, 고객)
     <UserInfo.Provider value={{ userType, setUserType }}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="login">
+        <Stack.Navigator initialRouteName="loginScreen1">
           <Stack.Screen
             name={'loginScreen1'}
             component={LoginScreen1}
@@ -56,6 +57,14 @@ export default function App() {
               headerShown: false,
             }}
           />
+          <Stack.Screen
+            name={'guideSignUpScreen'}
+            component={GuideSignUpScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+
           <Stack.Screen
             name={'home-tab'}
             component={HomeTabRoutes}
