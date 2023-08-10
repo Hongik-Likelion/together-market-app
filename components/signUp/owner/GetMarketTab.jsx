@@ -6,7 +6,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { styled } from 'styled-components/native';
 
-function GetMarketTab({ setAddedMarket, content, onChangeLocation, onPressAdd }) {
+function GetMarketTab({ addedMarket, setAddedMarket, content, onChangeLocation, onPressAdd }) {
   const tempmarketList = ['망원시장', '광장시장'];
   const [existMarket, setExistMarket] = useState(false);
 
@@ -30,6 +30,7 @@ function GetMarketTab({ setAddedMarket, content, onChangeLocation, onPressAdd })
           }}
           placeholder="망원시장"
           placeholderTextColor={COLORS.gray01}
+          editable={!addedMarket}
         />
         {existMarket ? (
           <Ionicons
@@ -59,6 +60,7 @@ function GetMarketTab({ setAddedMarket, content, onChangeLocation, onPressAdd })
 }
 
 GetMarketTab.propTypes = {
+  addedMarket: PropTypes.bool.isRequired,
   setAddedMarket: PropTypes.func.isRequired,
   content: PropTypes.string.isRequired,
   onChangeLocation: PropTypes.func.isRequired,

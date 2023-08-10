@@ -64,6 +64,7 @@ function OwnerSignUpScreen() {
       </MainInfoTxt2>
       <SubTxt>시장 위치, 가게 이름 모두 입력해주세요. (필수)</SubTxt>
       <GetMarketTab
+        addedMarket={addedMarket}
         setAddedMarket={setAddedMarket}
         content={content}
         onChangeLocation={onChangeLocation}
