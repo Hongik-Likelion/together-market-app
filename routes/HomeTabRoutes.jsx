@@ -1,12 +1,13 @@
 import TabHeaderRight from '@components/commom/TabHeaderRight';
 import MarketSelector from '@components/home/MarketSelector';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import ChatListScreen from '@screens/ChatListScreen';
 import HomeScreen from '@screens/HomeScreen';
 import { COLORS } from 'colors';
 import React from 'react';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import ChatScreen from './chat/ChatScreen';
 const Tab = createBottomTabNavigator();
 
 /**
@@ -39,12 +40,13 @@ function HomeTabRoutes() {
 
       <Tab.Screen
         name="chat"
-        component={ChatListScreen}
+        component={ChatScreen}
         options={{
           title: '채팅',
           headerTitleAlign: 'left',
           headerRight: () => <TabHeaderRight />,
           tabBarActiveTintColor: COLORS.main,
+          tabBarHideOnKeyboard: true,
           tabBarInactiveTintColor: COLORS.black,
           tabBarIcon: ({ focused }) =>
             focused ? (
