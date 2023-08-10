@@ -33,8 +33,8 @@ function LoginScreen2() {
 const MainBackground2 = styled.Image`
   position: absolute;
   z-index: -1;
-  width: ${wp(100)}px;
-  height: ${hp(100)}px;
+  width: 100%;
+  height: 100%;
 `;
 
 const Container = styled.View`
