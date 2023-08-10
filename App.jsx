@@ -10,7 +10,8 @@ import React, { useState } from 'react';
 import HomeTabRoutes from 'routes/HomeTabRoutes';
 
 import { UserInfo } from './context/UserInfoContext';
-
+import AlarmScreen from '@screens/AlarmScreen';
+import HeaderWithBackButton from '@components/commom/HeaderWithBackButton';
 const Stack = createNativeStackNavigator();
 
 //라우팅관련된 것은 다 app.js에서 (최상위 라우팅은 여기서)
@@ -70,6 +71,15 @@ export default function App() {
             component={HomeTabRoutes}
             options={{
               headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name={'alarm'}
+            component={AlarmScreen}
+            options={{
+              title: '',
+              headerBackVisible: false,
+              headerLeft: () => <HeaderWithBackButton title={'알림'} />,
             }}
           />
         </Stack.Navigator>
