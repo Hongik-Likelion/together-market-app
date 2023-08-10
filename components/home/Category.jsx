@@ -27,7 +27,7 @@ function Category() {
 }
 
 const Container = styled.View`
-  height: 5%;
+  height: 6%;
   background-color: ${COLORS.gray02};
 
   border-top-color: ${COLORS.gray01};

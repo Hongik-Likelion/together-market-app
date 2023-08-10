@@ -19,12 +19,12 @@ function HomeTabRoutes() {
   return (
     <Tab.Navigator initialRouteName="chat">
       <Tab.Screen
-        name={'home'}
+        name="home"
         component={HomeScreen}
         options={{
           headerTitle: '',
           headerTintColor: COLORS.white,
-          headerLeft: () => <MarketSelector />,
+          headerLeft: () => <MarketSelector/>,
           headerRight: () => <TabHeaderRight />,
           tabBarLabel: '홈',
           tabBarActiveTintColor: COLORS.main,
