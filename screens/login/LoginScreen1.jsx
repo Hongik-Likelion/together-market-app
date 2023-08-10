@@ -1,7 +1,6 @@
-import { MainIcon, KakaoLoginBtn } from '@assets/login/LoginScreenIcon';
+import { KakaoLoginBtn, MainIcon } from '@assets/login/LoginScreenIcon';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
 
 function LoginScreen1() {
@@ -30,8 +29,8 @@ function LoginScreen1() {
 const MainBackground = styled.Image`
   position: absolute;
   z-index: -1;
-  width: ${wp(100)}px;
-  height: ${hp(100)}px;
+  width: 100%;
+  height: 100%;
 `;
 
 const Container = styled.View`
