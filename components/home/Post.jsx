@@ -17,6 +17,10 @@ function Post() {
       image: require('@assets/PostItem/owner_image.png'),
       like: '10',
       comment: '0',
+      open: '영업중',
+      address: '서울 마포구 월드컵로13길 64 바삭마차',
+      time: '매주 11:00~18:00',
+      goods: '돈까스, 치즈까스, 마시멜로 아이스크림 등',
     },
     {
       id: 2,
@@ -29,6 +33,10 @@ function Post() {
       image: require('@assets/PostItem/customer_image.png'),
       like: '3',
       comment: '0',
+      open: '영업중',
+      address: '서울 마포구 월드컵로13길 64 바삭마차',
+      time: '매주 11:00~18:00',
+      goods: '돈까스, 치즈까스, 마시멜로 아이스크림 등',
     },
   ];
 
@@ -37,7 +45,7 @@ function Post() {
       <FlatList
         data={postItems}
         renderItem={({ item }) => {
-          const { profile, user, name, rating, date, content, image, like, comment } = item;
+          const { profile, user, name, rating, date, content, image, like, comment, open, address, time, goods } = item;
           return (
             <PostItem
               profile={profile}
@@ -49,6 +57,10 @@ function Post() {
               image={image}
               like={like}
               comment={comment}
+              open={open}
+              address={address}
+              time={time}
+              goods={goods}
             />
           );
         }}

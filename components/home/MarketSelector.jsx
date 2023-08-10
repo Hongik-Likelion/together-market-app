@@ -1,7 +1,6 @@
 import React from 'react';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-
 import { RFValue } from 'react-native-responsive-fontsize';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Feather from 'react-native-vector-icons/Feather';
 import { styled } from 'styled-components/native';
 
@@ -27,7 +26,7 @@ const SelectorIcon = styled(Feather)`
 
 const MarketName = styled.Text`
   font-size: ${RFValue(18)}px;
-  font-weight: 600;
+  font-weight: 700;
 `;
 
 export default MarketSelector;
