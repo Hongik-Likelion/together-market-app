@@ -2,10 +2,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen1 from '@screens/login/LoginScreen1';
 import LoginScreen2 from '@screens/login/LoginScreen2';
-import CommonSignUpScreen from '@screens/singup/CommonSignUpScreen';
-import GuideSignUpScreen from '@screens/singup/GuideSignUpScreen';
-import OwnerSignUpScreen from '@screens/singup/OwnerSignUpScreen';
-import UserSignUpScreen from '@screens/singup/UserSignUpScreen';
+import CommonSignUpScreen from '@screens/signup/common/CommonSignUpScreen';
+import GuideSignUpScreen from '@screens/signup/common/GuideSignUpScreen';
+import OwnerSignUpScreen from '@screens/signup/owner/OwnerSignUpScreen';
+import UserSignUpScreen from '@screens/signup/user/UserSignUpScreen';
 import React, { useState } from 'react';
 import HomeTabRoutes from 'routes/HomeTabRoutes';
 
