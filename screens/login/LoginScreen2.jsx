@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 function LoginScreen2() {
   const navigation = useNavigation();
@@ -50,32 +51,33 @@ const Container = styled.View`
 `;
 
 const Description1 = styled.Text`
-  font-size: 18px;
-  margin-top: 28.12px;
+  font-size: ${RFValue(15)}px;
+  margin-top: ${RFValue(28.12)}px;
   margin-left: ${wp(5.12)}px;
 `;
 
 const Description2 = styled.Text`
-  font-size: 18px;
-  margin-top: 8px;
+  font-size: ${RFValue(15)}px;
+  margin-top: ${RFValue(7)}px;
   margin-left: ${wp(5.12)}px;
 `;
 
 const AccessMention = styled.Text`
-  margin-top: ${hp(1.15)}px;
+  margin-top: ${hp(2)}px;
   margin-left: ${wp(5.12)}px;
   font-weight: bold;
+  font-size: ${RFValue(12)}px;
 `;
 
 const AccessIcon = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin-top: ${hp(2.748)}px;
+  margin-top: ${hp(2)}px;
 `;
 
 const Icon = styled.TouchableOpacity`
-  margin-top: ${hp(4.68)}px;
+  margin-top: ${hp(5)}px;
   align-items: center;
 `;
 

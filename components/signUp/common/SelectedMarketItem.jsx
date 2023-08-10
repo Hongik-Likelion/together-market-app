@@ -5,6 +5,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import { styled } from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 function SelectedMarketItem({ marketLocation, onPressDelete }) {
   const { id, content } = marketLocation;
@@ -34,21 +35,22 @@ const ContentGroup = styled.View`
   margin-left: ${wp(5)}px;
   margin-top: ${hp(-14)}px;
   border-radius: 62.97px;
-  width: 130px;
+  width: 150px;
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
   align-items: center;
 `;
 
 const Content = styled.Text`
   font-weight: 700;
   color: ${COLORS.white};
-  font-size: 16.14px;
+  font-size: ${RFValue(14)}px;
 `;
 
 const DeleteIcon = styled(Feather)`
   margin-left: auto;
-  padding: 10px;
+  padding: ${RFValue(10)}px;
 `;
 
 export default SelectedMarketItem;

@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import { Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import styled from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 function OwnerSignUpScreen() {
   const navigation = useNavigation();
@@ -100,17 +101,17 @@ const Container = styled.View`
 `;
 
 const MainInfoTxt1 = styled.Text`
-  font-size: 22px;
+  font-size: ${RFValue(20)}px;
   font-weight: bold;
   margin-left: ${wp(4.8)}px;
   margin-top: ${hp(18.7)}px;
 `;
 
 const MainInfoTxt2 = styled.Text`
-  font-size: 22px;
+  font-size: ${RFValue(20)}px;
   font-weight: bold;
   margin-left: ${wp(4.8)}px;
-  margin-top: 5px;
+  margin-top: ${RFValue(5)}px;
 `;
 
 const SubTxt = styled.Text`
@@ -118,7 +119,7 @@ const SubTxt = styled.Text`
   color: ${COLORS.gray01};
   margin-left: ${wp(5)}px;
   top: ${hp(1.23)}px;
-  font-size: 16px;
+  font-size: ${RFValue(14)}px;
 `;
 
 export default OwnerSignUpScreen;

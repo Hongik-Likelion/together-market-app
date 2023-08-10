@@ -5,6 +5,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { styled } from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 function GetMarketTab({ addedMarket, setAddedMarket, content, onChangeLocation, onPressAdd }) {
   const tempmarketList = ['망원시장', '광장시장'];
@@ -75,7 +76,7 @@ const LocationTxt = styled.Text`
   position: relative;
   margin-left: ${wp(5)}px;
   margin-top: ${hp(3)}px;
-  font-size: 18px;
+  font-size: ${RFValue(16)}px;
   font-weight: bold;
 `;
 
@@ -90,18 +91,18 @@ const Input = styled.TextInput`
   height: ${hp(6.28)}px;
   border-radius: 8px;
 
-  padding-left: 4px;
-  font-size: 18px;
+  padding-left: ${RFValue(4)}px;
+  font-size: ${RFValue(16)}px;
   font-weight: bold;
-  padding: 10px;
+  padding: ${RFValue(10)}px;
 `;
 
 const SubTxt = styled.Text`
   position: absolute;
   color: ${COLORS.gray01};
   margin-left: ${wp(6.5)}px;
-  top: ${hp(42)}px;
-  font-size: 16px;
+  top: ${hp(43)}px;
+  font-size: ${RFValue(14)}px;
 `;
 
 export default GetMarketTab;

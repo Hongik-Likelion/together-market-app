@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 function SetMarketNameTab({ marketName, onChangeMarketName }) {
   return (
@@ -33,7 +34,7 @@ const LocationTxt = styled.Text`
   position: relative;
   margin-left: ${wp(5)}px;
   margin-top: ${hp(-6)}px;
-  font-size: 18px;
+  font-size: ${RFValue(16)}px;
   font-weight: bold;
 `;
 
@@ -48,10 +49,10 @@ const Input = styled.TextInput`
   height: ${hp(6.28)}px;
   border-radius: 8px;
 
-  padding-left: 4px;
-  font-size: 18px;
+  padding-left: ${RFValue(4)}px;
+  font-size: ${RFValue(16)}px;
   font-weight: bold;
-  padding: 10px;
+  padding: ${RFValue(10)}px;
 `;
 
 export default SetMarketNameTab;
