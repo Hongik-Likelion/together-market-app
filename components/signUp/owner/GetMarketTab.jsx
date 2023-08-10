@@ -5,12 +5,17 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import Feather from 'react-native-vector-icons/Feather';
 import { styled } from 'styled-components/native';
 
-function GetMarketTab({ content, onChange }) {
+function GetMarketTab({ marketLocation, onChangeLocation }) {
   return (
     <>
       <Tab>
         <LocationTxt>시장 위치</LocationTxt>
-        <Input value={content} onChangeText={onChange} placeholder="망원시장" placeholderTextColor={COLORS.gray01} />
+        <Input
+          value={marketLocation}
+          onChangeText={onChangeLocation}
+          placeholder="망원시장"
+          placeholderTextColor={COLORS.gray01}
+        />
         <Feather
           name={'search'}
           size={25}
@@ -24,8 +29,8 @@ function GetMarketTab({ content, onChange }) {
 }
 
 GetMarketTab.propTypes = {
-  content: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  marketLocation: PropTypes.string.isRequired,
+  onChangeLocation: PropTypes.func.isRequired,
 };
 
 const Tab = styled.View`

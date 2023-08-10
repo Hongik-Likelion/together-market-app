@@ -44,8 +44,8 @@ function OwnerSignUpScreen() {
         <Text style={{ color: COLORS.main }}>시장 위치와 가게 이름</Text>을 입력해주세요.
       </MainInfoTxt2>
       <SubTxt>시장 위치, 가게 이름 모두 입력해주세요. (필수)</SubTxt>
-      <GetMarketTab content={marketLocation} onChange={onChangeLocation} />
-      <SetMarketNameTab content={marketName} onChange={onChangeMarketName} />
+      <GetMarketTab marketLocation={marketLocation} onChangeLocation={onChangeLocation} />
+      <SetMarketNameTab marketName={marketName} onChangeMarketName={onChangeMarketName} />
       <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
       <ContinueBtn
         fontColor={marketLocation && marketName ? 'white' : COLORS.main}

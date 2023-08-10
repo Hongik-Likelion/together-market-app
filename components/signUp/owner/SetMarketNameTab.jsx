@@ -4,14 +4,14 @@ import React from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
 
-function SetMarketNameTab({ content, onChange }) {
+function SetMarketNameTab({ marketName, onChangeMarketName }) {
   return (
     <>
       <Tab>
         <LocationTxt>가게 이름</LocationTxt>
         <Input
-          value={content}
-          onChangeText={onChange}
+          value={marketName}
+          onChangeText={onChangeMarketName}
           placeholder="싱글벙글 과일가게"
           placeholderTextColor={COLORS.gray01}
         />
@@ -21,8 +21,8 @@ function SetMarketNameTab({ content, onChange }) {
 }
 
 SetMarketNameTab.propTypes = {
-  content: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  marketName: PropTypes.string.isRequired,
+  onChangeMarketName: PropTypes.func.isRequired,
 };
 
 const Tab = styled.View`

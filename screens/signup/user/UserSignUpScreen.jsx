@@ -32,7 +32,7 @@ function UserSignUpScreen() {
       <MainInfoTxt2>
         <Text style={{ color: COLORS.main }}>자주 방문하는 시장</Text>을 설정해주세요.
       </MainInfoTxt2>
-      <SelectMarketTab content={favMarket} onChange={onChange} />
+      <SelectMarketTab favMarket={favMarket} onChange={onChange} />
       <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
       <ContinueBtn
         fontColor={favMarket ? 'white' : COLORS.main}
