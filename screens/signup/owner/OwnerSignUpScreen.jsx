@@ -1,5 +1,6 @@
 import { PreviousBtn, ContinueBtn } from '@assets/signUp/CommonSignUpScreenIcon';
 import OwnerSignUpHeader from '@assets/signUp/OwnerSignUpScreen';
+import SelectedMarketList from '@components/signUp/common/SelectedMarketList';
 import GetMarketTab from '@components/signUp/owner/GetMarketTab';
 import SetMarketNameTab from '@components/signUp/owner/SetMarketNameTab';
 import { useNavigation } from '@react-navigation/native';
@@ -7,22 +8,40 @@ import { COLORS } from 'colors';
 import React, { useState } from 'react';
 import { Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { styled } from 'styled-components/native';
+import styled from 'styled-components/native';
 
 function OwnerSignUpScreen() {
   const navigation = useNavigation();
 
-  const [marketLocation, selectMarket] = useState(''); //사장님의 시장위치가 marketLocation 저장됨
-  const [marketName, setMarketName] = useState(''); //가게이름이 marketName에 담겨 있음
+  const [marketLocations, setMarketLocations] = useState([]); // 배열상에 선택한 시장들 저장
+  const [marketName, setMarketName] = useState('');
+  const [addedMarket, setAddedMarket] = useState(false);
 
-  const onChangeLocation = (text) => selectMarket(text);
+  const [content, setContent] = useState('');
+  const onChangeLocation = (text) => setContent(text);
+
+  const onPressAdd = () => {
+    const newmarketLocations = {
+      id: marketLocations.length + 1,
+      content,
+    };
+
+    setMarketLocations((prev) => [...prev, newmarketLocations]);
+    setContent('');
+  };
+
   const onChangeMarketName = (text) => setMarketName(text);
+
+  const onPressDelete = (marketLocationsId) => {
+    setMarketLocations((prev) => prev.filter((marketLocations) => marketLocations.id !== marketLocationsId));
+    setAddedMarket(false);
+  };
 
   const onPressPreviousBtn = () => navigation.navigate('commonSignUpScreen');
 
   const onPressContinueBtn = () => {
-    // 시장 위치&가게이름을 Owner 정보관련 배열에 넣어야할듯
-    if (marketLocation && marketName) {
+    // 시장 위치&가게이름을 Owner 정보 관련 배열에 넣어야할 듯
+    if (addedMarket && marketName) {
       navigation.navigate('guideSignUpScreen');
     }
   };
@@ -44,12 +63,19 @@ function OwnerSignUpScreen() {
         <Text style={{ color: COLORS.main }}>시장 위치와 가게 이름</Text>을 입력해주세요.
       </MainInfoTxt2>
       <SubTxt>시장 위치, 가게 이름 모두 입력해주세요. (필수)</SubTxt>
-      <GetMarketTab marketLocation={marketLocation} onChangeLocation={onChangeLocation} />
+      <GetMarketTab
+        setAddedMarket={setAddedMarket}
+        content={content}
+        onChangeLocation={onChangeLocation}
+        onPressAdd={onPressAdd}
+      />
+      <SelectedMarketList addedMarket={addedMarket} marketLocations={marketLocations} onPressDelete={onPressDelete} />
+
       <SetMarketNameTab marketName={marketName} onChangeMarketName={onChangeMarketName} />
       <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
       <ContinueBtn
-        fontColor={marketLocation && marketName ? 'white' : COLORS.main}
-        backColor={marketLocation && marketName ? COLORS.main : 'white'}
+        fontColor={addedMarket && marketName ? 'white' : COLORS.main}
+        backColor={addedMarket && marketName ? COLORS.main : 'white'}
         width={wp(100)}
         marginBottom={hp(6.15)}
         justifyContent="center"
@@ -58,6 +84,7 @@ function OwnerSignUpScreen() {
     </Container>
   );
 }
+
 const UserSignUpHeaderContainer = styled.View`
   position: absolute;
   left: 0;

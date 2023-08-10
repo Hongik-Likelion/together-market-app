@@ -1,27 +1,57 @@
 import { COLORS } from 'colors';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { styled } from 'styled-components/native';
 
-function GetMarketTab({ marketLocation, onChangeLocation }) {
+function GetMarketTab({ setAddedMarket, content, onChangeLocation, onPressAdd }) {
+  const tempmarketList = ['망원시장', '광장시장'];
+  const [existMarket, setExistMarket] = useState(false);
+
+  const findMarketList = (text) => {
+    if (tempmarketList.includes(text)) {
+      setExistMarket(true);
+    } else {
+      setExistMarket(false);
+    }
+  };
+
   return (
     <>
       <Tab>
         <LocationTxt>시장 위치</LocationTxt>
         <Input
-          value={marketLocation}
-          onChangeText={onChangeLocation}
+          value={content}
+          onChangeText={(text) => {
+            onChangeLocation(text);
+            findMarketList(text);
+          }}
           placeholder="망원시장"
           placeholderTextColor={COLORS.gray01}
         />
-        <Feather
-          name={'search'}
-          size={25}
-          color={COLORS.main}
-          style={{ position: 'absolute', top: hp(8.5), right: 30 }}
-        />
+        {existMarket ? (
+          <Ionicons
+            name={'add'}
+            size={25}
+            color={COLORS.main}
+            style={{ position: 'absolute', top: hp(8.5), right: 30 }}
+            onPress={() => {
+              setAddedMarket(true);
+              setExistMarket(false);
+              onChangeLocation('');
+              onPressAdd();
+            }}
+          />
+        ) : (
+          <Feather
+            name={'search'}
+            size={25}
+            color={COLORS.main}
+            style={{ position: 'absolute', top: hp(8.5), right: 30 }}
+          />
+        )}
       </Tab>
       <SubTxt>복수 입력 불가</SubTxt>
     </>
@@ -29,8 +59,10 @@ function GetMarketTab({ marketLocation, onChangeLocation }) {
 }
 
 GetMarketTab.propTypes = {
-  marketLocation: PropTypes.string.isRequired,
+  setAddedMarket: PropTypes.func.isRequired,
+  content: PropTypes.string.isRequired,
   onChangeLocation: PropTypes.func.isRequired,
+  onPressAdd: PropTypes.func.isRequired,
 };
 
 const Tab = styled.View`
@@ -65,7 +97,7 @@ const Input = styled.TextInput`
 const SubTxt = styled.Text`
   position: absolute;
   color: ${COLORS.gray01};
-  margin-left: ${wp(5)}px;
+  margin-left: ${wp(6.5)}px;
   top: ${hp(42)}px;
   font-size: 16px;
 `;
