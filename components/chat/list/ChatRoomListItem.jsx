@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -17,10 +18,12 @@ ChatRoomListItem.propTypes = {
 };
 
 function ChatRoomListItem({ room }) {
+  const { navigate } = useNavigation();
+  const chatRoomId = 1;
   const { profile, marketName, shopName, lastChat, lastUpdated } = room;
 
   return (
-    <Container>
+    <Container onPress={() => navigate('chat-room', { chatRoomId })}>
       <Profile source={profile} />
       <ContentGroup>
         <ShopName numberOfLines={1}>{shopName}</ShopName>
