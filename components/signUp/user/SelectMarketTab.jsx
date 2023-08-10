@@ -8,7 +8,7 @@ import { styled } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 function SelectMarketTab({ setAddedMarket, content, onChangeLocation, onPressAdd }) {
-  const tempmarketList = ['망원시장', '광장시장'];
+  const tempmarketList = ['망원시장', '광장시장', 'A시장', 'B시장'];
   const [existMarket, setExistMarket] = useState(false);
 
   const findMarketList = (text) => {
@@ -70,6 +70,7 @@ const Tab = styled.View`
 `;
 
 const Input = styled.TextInput`
+  position: relative;
   background-color: ${COLORS.gray02};
 
   margin-left: ${wp(4.8)}px;

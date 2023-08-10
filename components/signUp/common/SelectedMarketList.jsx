@@ -21,6 +21,8 @@ SelectedMarketList.propTypes = {
   onPressDelete: PropTypes.func.isRequired,
 };
 
-const Container = styled.View``;
+const Container = styled.View`
+  flex: 1;
+`;
 
 export default SelectedMarketList;

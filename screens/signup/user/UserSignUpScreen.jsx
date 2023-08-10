@@ -9,6 +9,7 @@ import { Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { v4 as uuidv4 } from 'uuid';
 
 function UserSignUpScreen() {
   const navigation = useNavigation();
@@ -21,7 +22,7 @@ function UserSignUpScreen() {
 
   const onPressAdd = () => {
     const newmarketLocations = {
-      id: marketLocations.length + 1,
+      id: uuidv4(), // Generate a unique ID
       content,
     };
 
@@ -47,12 +48,12 @@ function UserSignUpScreen() {
       <UserSignUpHeaderContainer>
         <UserSignUpHeader isNextPage={COLORS.gray01} position="absolute" marginTop={hp(10)} />
       </UserSignUpHeaderContainer>
-      <Txt>
-        <MainInfoTxt1>김영희님,</MainInfoTxt1>
-        <MainInfoTxt2>
-          <Text style={{ color: COLORS.main }}>자주 방문하는 시장</Text>을 설정해주세요.
-        </MainInfoTxt2>
-      </Txt>
+
+      <MainInfoTxt1>김영희님,</MainInfoTxt1>
+      <MainInfoTxt2>
+        <Text style={{ color: COLORS.main }}>자주 방문하는 시장</Text>을 설정해주세요.
+      </MainInfoTxt2>
+
       <SelectMarketTab
         addedMarket={addedMarket}
         setAddedMarket={setAddedMarket}
@@ -85,10 +86,6 @@ const Container = styled.View`
   background-color: white;
   flex: 1;
   position: relative;
-`;
-
-const Txt = styled.View`
-  height: 25%;
 `;
 
 const MainInfoTxt1 = styled.Text`
