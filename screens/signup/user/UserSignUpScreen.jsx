@@ -14,9 +14,7 @@ function UserSignUpScreen() {
   const [favMarket, selectMarket] = useState(''); //회원이 작성한 시장이 favMarket에 저장됨
   const onChange = (text) => selectMarket(text);
 
-  const onPressPreviousBtn = () => {
-    navigation.navigate('commonSignUpScreen');
-  };
+  const onPressPreviousBtn = () => navigation.navigate('commonSignUpScreen');
 
   const onPressContinueBtn = () => {
     // 선택한 시장을 User 정보관련 배열에 넣어야할듯
