@@ -20,14 +20,12 @@ function GetainProductTab({ mainProducts, onChangeMainProducts }) {
   );
 }
 
-const Tab = styled.View`
-  flex: 1;
-`;
+const Tab = styled.View``;
 
 const LocationTxt = styled.Text`
   position: relative;
   margin-left: ${wp(5)}px;
-  margin-top: ${hp(-6)}px;
+  margin-top: ${hp(-10)}px;
   font-size: ${RFValue(16)}px;
   font-weight: bold;
 `;
