@@ -1,29 +1,45 @@
 import React, { useState } from 'react';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import TimePicker from 'react-time-picker';
-import { styled } from 'styled-components/native';
-import { RFValue } from 'react-native-responsive-fontsize';
+import { View, Text } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 function GetOpenTime({}) {
-  const [value, setValue] = useState('10:00');
+  const [startTime, setStartTime] = useState(new Date()); // 시작 시간
+  const [endTime, setEndTime] = useState(new Date()); // 종료 시간
+  const [isSelected, setIsSelected] = useState(false); // 시작 시간 선택 여부
+
+  const onSelect = (event, selectedTime) => {
+    if (selectedTime !== undefined) {
+      if (!isSelected) {
+        setStartTime(selectedTime);
+        setIsSelected(true);
+      } else {
+        setEndTime(selectedTime);
+      }
+    }
+  };
+
   return (
-    <Tab>
-      <LocationTxt>영업시간</LocationTxt>
-      <TimePicker onChange={(newValue) => setValue(value)} value={value} />
-    </Tab>
+    <>
+      <View>
+        <Text>영업시간</Text>
+        <DateTimePicker value={startTime} mode="time" is24Hour={true} display="default" onChange={onSelect} />
+        {isSelected && (
+          <DateTimePicker
+            value={endTime}
+            mode="time"
+            is24Hour={true}
+            display="default"
+            onChange={onSelect}
+            minimumDate={startTime} // 시작 시간 선택 후에만 종료 시간 선택 가능
+          />
+        )}
+        <View>
+          <Text>시작 시간: {startTime.toLocaleTimeString()}</Text>
+          <Text>종료 시간: {endTime.toLocaleTimeString()}</Text>
+        </View>
+      </View>
+    </>
   );
 }
-
-const Tab = styled.View`
-  flex: 1;
-`;
-
-const LocationTxt = styled.Text`
-  position: relative;
-  margin-left: ${wp(5)}px;
-  margin-top: ${hp(3)}px;
-  font-size: ${RFValue(16)}px;
-  font-weight: bold;
-`;
 
 export default GetOpenTime;
