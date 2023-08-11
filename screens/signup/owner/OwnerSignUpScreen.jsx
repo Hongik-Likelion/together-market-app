@@ -10,6 +10,7 @@ import { Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { v4 as uuidv4 } from 'uuid';
 
 function OwnerSignUpScreen() {
   const navigation = useNavigation();
@@ -23,7 +24,7 @@ function OwnerSignUpScreen() {
 
   const onPressAdd = () => {
     const newmarketLocations = {
-      id: marketLocations.length + 1,
+      id: uuidv4(),
       content,
     };
 
@@ -33,8 +34,8 @@ function OwnerSignUpScreen() {
 
   const onChangeMarketName = (text) => setMarketName(text);
 
-  const onPressDelete = (marketLocationsId) => {
-    setMarketLocations((prev) => prev.filter((marketLocations) => marketLocations.id !== marketLocationsId));
+  const onPressDelete = (marketLocationId) => {
+    setMarketLocations((prev) => prev.filter((marketLocation) => marketLocation.id !== marketLocationId));
     setAddedMarket(false);
   };
 

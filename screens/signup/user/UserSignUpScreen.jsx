@@ -21,25 +21,27 @@ function UserSignUpScreen() {
   const onChangeLocation = (text) => setContent(text);
 
   const onPressAdd = () => {
-    const newmarketLocations = {
-      id: uuidv4(), // Generate a unique ID
+    const newmarketLocation = {
+      id: uuidv4(),
       content,
     };
 
-    setMarketLocations((prev) => [...prev, newmarketLocations]);
+    setMarketLocations((prev) => [...prev, newmarketLocation]);
     setContent('');
   };
 
-  const onPressDelete = (marketLocationsId) => {
-    setMarketLocations((prev) => prev.filter((marketLocations) => marketLocations.id !== marketLocationsId));
-    setAddedMarket(false);
+  const onPressDelete = (marketLocationId) => {
+    setMarketLocations((prev) => prev.filter((marketLocation) => marketLocation.id !== marketLocationId));
   };
 
   const onPressPreviousBtn = () => navigation.navigate('commonSignUpScreen');
 
   const onPressContinueBtn = () => {
     if (addedMarket) {
-      navigation.navigate('guideSignUpScreen');
+      if (marketLocations.length > 0) {
+        navigation.navigate('guideSignUpScreen');
+      }
+      // 추가: marketLocations 배열이 비어있을 때는 아무 동작도 하지 않음
     }
   };
 
@@ -65,8 +67,8 @@ function UserSignUpScreen() {
 
       <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
       <ContinueBtn
-        fontColor={addedMarket ? 'white' : COLORS.main}
-        backColor={addedMarket ? COLORS.main : 'white'}
+        fontColor={marketLocations.length > 0 ? 'white' : COLORS.main}
+        backColor={marketLocations.length > 0 ? COLORS.main : 'white'}
         width={wp(100)}
         marginBottom={hp(6.15)}
         justifyContent="center"
