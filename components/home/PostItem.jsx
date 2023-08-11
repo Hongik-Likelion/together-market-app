@@ -12,6 +12,7 @@ import { Modal, Pressable, TouchableOpacity, TouchableWithoutFeedback } from 're
 import { useNavigation } from '@react-navigation/native';
 
 
+
 function PostItem({profile, user, name, rating, date, content, image, like, comment, open, address, time, goods}) {
 
     // '가게 정보' 버튼 클릭시 가게 정보 모달창 띄우기
@@ -21,6 +22,7 @@ function PostItem({profile, user, name, rating, date, content, image, like, comm
     }
 
     // '채팅 문의' 버튼 클릭시 채팅탭으로
+    // 게시물 클릭시 자세하게 볼 수 있도록
     const navigation = useNavigation();
 
 
@@ -54,15 +56,17 @@ function PostItem({profile, user, name, rating, date, content, image, like, comm
     
     return (
         <Container>
+            <SubContainer onPress={() => navigation.navigate('home-detail')}>
             <Info>
                 <Profile source={profile}/>
                 <Wrapper>
-                    <User>
+                    <User user={user}>
                         <UserLabel numberOfLines={1}>{user}</UserLabel>
                     </User>
                     <Name numberOfLines={1}>{name}</Name>
                     <Rating>
-                        평균 별점 <RatingLabel><FontAwesome name={'star'}/> {rating}</RatingLabel>
+                        {user === '사장님' ? '평균 별점 ' : '평균 리뷰 별점 '}
+                        <RatingLabel><FontAwesome name={'star'}/> {rating}</RatingLabel>
                     </Rating>
                 </Wrapper>
                 <SubWrapper>
@@ -73,7 +77,7 @@ function PostItem({profile, user, name, rating, date, content, image, like, comm
             <Img>
                 <Image source={image}/>
             </Img>
-
+            </SubContainer>
 
             <Button>
                 <InfoButton onPress={() => toggleModal()}>
@@ -190,6 +194,9 @@ function PostItem({profile, user, name, rating, date, content, image, like, comm
     );
 }
 
+const SubContainer = styled.TouchableOpacity`
+
+`;
 
 const BanModal = styled.View`
 
@@ -337,7 +344,11 @@ const SubWrapper = styled.View`
 `;
 
 const User = styled.View`
-    background-color: ${COLORS.main};
+    ${({user}) => 
+        user === '사장님' 
+            ? `background-color: ${COLORS.main};` : `background-color: ${COLORS.gray01};`
+    };
+    
     height: ${hp(2)}px;
     width: ${wp(13)}px;
     justify-content: center;
@@ -361,7 +372,7 @@ const Name = styled.Text`
 
 const Rating = styled.Text`
     font-size: ${RFValue(10)}px;
-    width: ${wp(20)}px;
+    width: ${wp(25)}px;
 
 `;
 
