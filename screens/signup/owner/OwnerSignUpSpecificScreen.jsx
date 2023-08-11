@@ -1,6 +1,8 @@
 import { PreviousBtn, ContinueBtn } from '@assets/signUp/CommonSignUpScreenIcon';
 import OwnerSignUpHeader from '@assets/signUp/OwnerSignUpScreen';
-import ChooseSellingFoodBtn from '@components/signUp/owner/ChooseSellingFoodBtn';
+import GetMarketAddressTab from '@components/signUp/owner/GetMarketAddressTab';
+import GetMainProductTab from '@components/signUp/owner/GetMainProductTab';
+import GetOpenTime from '@components/signUp/owner/GetOpenTime';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
 import React, { useState } from 'react';
@@ -8,28 +10,22 @@ import { Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { v4 as uuidv4 } from 'uuid';
 
-function OwnerSignUpFoodScreen() {
+function OwnerSignUpSpecificScreen() {
   const navigation = useNavigation();
-  const [sellFoods, selectSellFood] = useState([]); // 판매하는 상품 분류 저장 배열
 
-  const onSelectFood = (photoInfo) => {
-    const newSellFood = {
-      id: uuidv4(),
-      content: photoInfo,
-    };
-    selectSellFood((prev) => [...prev, newSellFood]);
-  };
+  const [marketAddress, setMarketAddress] = useState(''); //가게 주소
+  const [mainProducts, setMainProducts] = useState(''); // 대표 상품명
 
-  const onDeleteFood = (selectedPhotoInfo) => {
-    selectSellFood((prev) => prev.filter((sellFood) => sellFood.content !== selectedPhotoInfo));
-  };
+  const onChangeAddress = (text) => setMarketAddress(text);
+  const onChangeMainProducts = (text) => setMainProducts(text);
 
-  const onPressPreviousBtn = () => navigation.navigate('ownerSignUpScreen');
+  const onPressPreviousBtn = () => navigation.navigate('ownerSignUpFoodScreen');
 
   const onPressContinueBtn = () => {
-    navigation.navigate('ownerSignUpSpecificScreen');
+    if (marketAddress && mainProducts) {
+      navigation.navigate('guideSignUpScreen');
+    }
   };
 
   return (
@@ -38,7 +34,7 @@ function OwnerSignUpFoodScreen() {
         <OwnerSignUpHeader
           secondPage={COLORS.main}
           thirdPage={COLORS.main}
-          fourthPage={COLORS.gray01}
+          fourthPage={COLORS.main}
           fifthPage={COLORS.gray01}
           position="absolute"
           marginTop={hp(10)}
@@ -46,14 +42,18 @@ function OwnerSignUpFoodScreen() {
       </UserSignUpHeaderContainer>
       <MainInfoTxt1>김영희님,</MainInfoTxt1>
       <MainInfoTxt2>
-        <Text style={{ color: COLORS.main }}>어떤 상품을 </Text>판매하시나요?
+        <Text style={{ color: COLORS.main }}>가게 상세 정보</Text>를 입력해주세요.
       </MainInfoTxt2>
-      <SubTxt>판매하는 상품 분류를 한가지 이상 선택해주세요. (필수)</SubTxt>
-      <ChooseSellingFoodBtn sellFoods={sellFoods} onSelectFood={onSelectFood} onDeleteFood={onDeleteFood} />
+      <SubTxt>모든 항목을 기입해주세요. (필수)</SubTxt>
+
+      <GetMarketAddressTab marketAddress={marketAddress} onChangeAddress={onChangeAddress} />
+      <GetMainProductTab mainProducts={mainProducts} onChangeMainProducts={onChangeMainProducts} />
+      <GetOpenTime />
+
       <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
       <ContinueBtn
-        fontColor={sellFoods.length > 0 ? 'white' : COLORS.main}
-        backColor={sellFoods.length > 0 ? COLORS.main : 'white'}
+        fontColor={marketAddress && mainProducts ? 'white' : COLORS.main}
+        backColor={marketAddress && mainProducts ? COLORS.main : 'white'}
         width={wp(100)}
         marginBottom={hp(6.15)}
         justifyContent="center"
@@ -98,4 +98,4 @@ const SubTxt = styled.Text`
   font-size: ${RFValue(14)}px;
 `;
 
-export default OwnerSignUpFoodScreen;
+export default OwnerSignUpSpecificScreen;
