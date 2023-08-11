@@ -6,6 +6,7 @@ import CommonSignUpScreen from '@screens/signup/common/CommonSignUpScreen';
 import GuideSignUpScreen from '@screens/signup/common/GuideSignUpScreen';
 import OwnerSignUpScreen from '@screens/signup/owner/OwnerSignUpScreen';
 import UserSignUpScreen from '@screens/signup/user/UserSignUpScreen';
+import OwnerSignUpFoodScreen from '@screens/signup/owner/OwnerSignUpFoodScreen';
 import React, { useState } from 'react';
 import HomeTabRoutes from 'routes/HomeTabRoutes';
 
@@ -46,6 +47,13 @@ export default function App() {
           <Stack.Screen
             name={'ownerSignUpScreen'}
             component={OwnerSignUpScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name={'ownerSignUpFoodScreen'}
+            component={OwnerSignUpFoodScreen}
             options={{
               headerShown: false,
             }}

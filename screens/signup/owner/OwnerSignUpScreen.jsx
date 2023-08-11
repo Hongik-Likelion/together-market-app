@@ -27,7 +27,6 @@ function OwnerSignUpScreen() {
       id: uuidv4(),
       content,
     };
-
     setMarketLocations((prev) => [...prev, newmarketLocations]);
     setContent('');
   };
@@ -44,7 +43,7 @@ function OwnerSignUpScreen() {
   const onPressContinueBtn = () => {
     // 시장 위치&가게이름을 Owner 정보 관련 배열에 넣어야할 듯
     if (addedMarket && marketName) {
-      navigation.navigate('guideSignUpScreen');
+      navigation.navigate('ownerSignUpFoodScreen');
     }
   };
 
