@@ -43,6 +43,8 @@ function OwnerSignUpScreen() {
   const onPressContinueBtn = () => {
     // 시장 위치&가게이름을 Owner 정보 관련 배열에 넣어야할 듯
     if (addedMarket && marketName) {
+      console.log('시장 위치:', marketLocations);
+      console.log('가게 이름:', marketName);
       navigation.navigate('ownerSignUpFoodScreen');
     }
   };

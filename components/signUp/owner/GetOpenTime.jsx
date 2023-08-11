@@ -3,7 +3,6 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import DateTimePicker from '@react-native-community/datetimepicker';
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { COLORS } from 'colors';
 
 function GetOpenTime({ onSaveTimeData }) {
   const initialTime = new Date();

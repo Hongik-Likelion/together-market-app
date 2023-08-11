@@ -29,6 +29,7 @@ function OwnerSignUpFoodScreen() {
   const onPressPreviousBtn = () => navigation.navigate('ownerSignUpScreen');
 
   const onPressContinueBtn = () => {
+    console.log('판매하는 상품들:', sellFoods);
     navigation.navigate('ownerSignUpSpecificScreen');
   };
 

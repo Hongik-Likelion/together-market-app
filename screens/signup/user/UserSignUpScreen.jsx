@@ -41,7 +41,7 @@ function UserSignUpScreen() {
       if (marketLocations.length > 0) {
         navigation.navigate('guideSignUpScreen');
       }
-      // 추가: marketLocations 배열이 비어있을 때는 아무 동작도 하지 않음
+      console.log('자주 방문하는 시장:', marketLocations);
     }
   };
 

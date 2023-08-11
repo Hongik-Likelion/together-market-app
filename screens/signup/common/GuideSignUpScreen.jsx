@@ -27,6 +27,7 @@ function GuideSignUpScreen(props) {
 
   const onPressContinueBtn = () => {
     //(userType)이 1이라면 안내 동영상으로, 2라면 홈페이지로
+    navigation.navigate('home-tab'); //우선은 홈으로
   };
   return (
     <Container>
