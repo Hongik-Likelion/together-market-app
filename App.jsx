@@ -10,6 +10,7 @@ import React, { useState } from 'react';
 import HomeTabRoutes from 'routes/HomeTabRoutes';
 
 import { UserInfo } from './context/UserInfoContext';
+import { SharedStateProvider } from 'context/FavAndLikeContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,7 @@ export default function App() {
   return (
     //useContext로 로그인유저 정보(사장님, 고객)
     <UserInfo.Provider value={{ userType, setUserType }}>
+      <SharedStateProvider>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="home-tab">
           <Stack.Screen
@@ -75,6 +77,7 @@ export default function App() {
           
         </Stack.Navigator>
       </NavigationContainer>
+      </SharedStateProvider>
     </UserInfo.Provider>
   );
 }

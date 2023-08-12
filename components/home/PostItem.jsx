@@ -10,10 +10,13 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Modal, Pressable, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import { useSharedState } from 'context/FavAndLikeContext';
 
 
 function PostItem({profile, user, name, rating, date, content, image, like, comment, open, address, time, goods}) {
+    const { favorite, setFavorite, userLike, setUserLike, likeCount, setLikeCount } = useSharedState();
+
+
 
     // '가게 정보' 버튼 클릭시 가게 정보 모달창 띄우기
     const [modal, setModal] = useState(false);
@@ -30,15 +33,15 @@ function PostItem({profile, user, name, rating, date, content, image, like, comm
     const [banModal, setBanModal] = useState(false);
 
     // 하트 아이콘(관심 기능)
-    const [favorite, setFavorite] = useState(false);
+    // const [favorite, setFavorite] = useState(false);
     const addFav = () => {
         setFavorite(!favorite);
         // DB에 저장된 정보(유저 정보, 하트 누른 게시물 등...) 수정하는 코드 작성?
     }
 
     // 좋아요 기능
-    const [userLike, setUserLike] = useState(false);
-    const [likeCount, setLikeCount] = useState(parseInt(like));
+    // const [userLike, setUserLike] = useState(false);
+    // const [likeCount, setLikeCount] = useState(parseInt(like));
     
     const addLike = () => {
         setUserLike(!userLike);
