@@ -101,7 +101,7 @@ const SubTxt = styled.Text`
   position: absolute;
   color: ${COLORS.gray01};
   margin-left: ${wp(6.5)}px;
-  top: ${hp(43)}px;
+  top: ${hp(45)}px;
   font-size: ${RFValue(14)}px;
 `;
 

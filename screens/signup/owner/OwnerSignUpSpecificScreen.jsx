@@ -1,4 +1,5 @@
-import { PreviousBtn, ContinueBtn } from '@assets/signUp/CommonSignUpScreenIcon';
+import { PreviousBtn } from '@assets/signUp/CommonSignUpScreenIcon';
+import CompleteBtn from '@assets/signUp/OwnerSignUpSpecificScreen';
 import OwnerSignUpHeader from '@assets/signUp/OwnerSignUpScreen';
 import GetMarketAddressTab from '@components/signUp/owner/GetMarketAddressTab';
 import GetMainProductTab from '@components/signUp/owner/GetMainProductTab';
@@ -6,10 +7,11 @@ import GetOpenTime from '@components/signUp/owner/GetOpenTime';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import GetOpenDay from '@components/signUp/owner/GetOpenDay';
 
 function OwnerSignUpSpecificScreen() {
   const navigation = useNavigation();
@@ -18,9 +20,11 @@ function OwnerSignUpSpecificScreen() {
   const [mainProducts, setMainProducts] = useState(''); // 대표 상품명
   const [startTimeString, setStartTimeString] = useState(''); // 시작 시간 문자열
   const [endTimeString, setEndTimeString] = useState(''); // 종료 시간 문자열
+  const [openDays, setOpenDays] = useState(''); // 영업일
 
   const onChangeAddress = (text) => setMarketAddress(text);
   const onChangeMainProducts = (text) => setMainProducts(text);
+  const onChangeOpenDays = (text) => setOpenDays(text);
 
   const onPressPreviousBtn = () => navigation.navigate('ownerSignUpFoodScreen');
 
@@ -36,6 +40,7 @@ function OwnerSignUpSpecificScreen() {
       console.log('대표 상품명:', mainProducts);
       console.log('시작 영업시간:', startTimeString);
       console.log('종료 영업시간:', endTimeString);
+      console.log('영업일:', openDays);
 
       navigation.navigate('guideSignUpScreen');
     }
@@ -62,9 +67,9 @@ function OwnerSignUpSpecificScreen() {
       <GetMarketAddressTab marketAddress={marketAddress} onChangeAddress={onChangeAddress} />
       <GetMainProductTab mainProducts={mainProducts} onChangeMainProducts={onChangeMainProducts} />
       <GetOpenTime onSaveTimeData={onSaveTimeData} />
-
+      <GetOpenDay openDays={openDays} onChangeOpenDays={onChangeOpenDays} />
       <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
-      <ContinueBtn
+      <CompleteBtn
         fontColor={marketAddress && mainProducts && startTimeString && endTimeString ? 'white' : COLORS.main}
         backColor={marketAddress && mainProducts && startTimeString && endTimeString ? COLORS.main : 'white'}
         width={wp(100)}

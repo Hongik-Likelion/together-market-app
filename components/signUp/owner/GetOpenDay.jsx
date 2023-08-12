@@ -4,15 +4,15 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { styled } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
-function GetainProductTab({ mainProducts, onChangeMainProducts }) {
+function GetOpenDay({ openDays, onChangeOpenDays }) {
   return (
     <>
       <Tab>
-        <LocationTxt>대표 상품명</LocationTxt>
+        <OpenDayTxt>영업일</OpenDayTxt>
         <Input
-          value={mainProducts}
-          onChangeText={onChangeMainProducts}
-          placeholder="떡볶이, 순대, 튀김"
+          value={openDays}
+          onChangeText={onChangeOpenDays}
+          placeholder="(예시: 매일, 월~금, 화~토...)"
           placeholderTextColor={COLORS.gray01}
         />
       </Tab>
@@ -22,7 +22,7 @@ function GetainProductTab({ mainProducts, onChangeMainProducts }) {
 
 const Tab = styled.View``;
 
-const LocationTxt = styled.Text`
+const OpenDayTxt = styled.Text`
   position: relative;
   margin-left: ${wp(5)}px;
   margin-top: ${hp(-13)}px;
@@ -47,4 +47,4 @@ const Input = styled.TextInput`
   padding: ${RFValue(10)}px;
 `;
 
-export default GetainProductTab;
+export default GetOpenDay;
