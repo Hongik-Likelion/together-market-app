@@ -41,11 +41,10 @@ function OwnerSignUpScreen() {
   const onPressPreviousBtn = () => navigation.navigate('commonSignUpScreen');
 
   const onPressContinueBtn = () => {
-    // 시장 위치&가게이름을 Owner 정보 관련 배열에 넣어야할 듯
     if (addedMarket && marketName) {
-      console.log('시장 위치:', marketLocations);
-      console.log('가게 이름:', marketName);
-      navigation.navigate('ownerSignUpFoodScreen');
+      navigation.navigate('ownerSignUpFoodScreen', {
+        marketName: marketName,
+      });
     }
   };
 
@@ -89,17 +88,16 @@ function OwnerSignUpScreen() {
   );
 }
 
+const Container = styled.View`
+  background-color: white;
+  flex: 1;
+`;
+
 const UserSignUpHeaderContainer = styled.View`
   position: absolute;
   left: 0;
   right: 0;
   align-items: center;
-`;
-
-const Container = styled.View`
-  background-color: white;
-  flex: 1;
-  position: relative;
 `;
 
 const MainInfoTxt1 = styled.Text`

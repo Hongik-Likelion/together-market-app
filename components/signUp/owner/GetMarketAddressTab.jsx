@@ -18,7 +18,6 @@ function GetMarketAddressTab({ marketAddress, onChangeAddress }) {
           placeholder="주소를 입력해주세요."
           placeholderTextColor={COLORS.gray01}
         />
-
         <Feather
           name={'search'}
           size={25}

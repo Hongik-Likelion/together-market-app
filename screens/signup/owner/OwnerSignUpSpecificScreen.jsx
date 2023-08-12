@@ -4,7 +4,7 @@ import OwnerSignUpHeader from '@assets/signUp/OwnerSignUpScreen';
 import GetMarketAddressTab from '@components/signUp/owner/GetMarketAddressTab';
 import GetMainProductTab from '@components/signUp/owner/GetMainProductTab';
 import GetOpenTime from '@components/signUp/owner/GetOpenTime';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { COLORS } from 'colors';
 import React, { useState } from 'react';
 import { Text } from 'react-native';
@@ -14,6 +14,8 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import GetOpenDay from '@components/signUp/owner/GetOpenDay';
 
 function OwnerSignUpSpecificScreen() {
+  const route = useRoute();
+  const { marketName, sellFoods } = route.params;
   const navigation = useNavigation();
 
   const [marketAddress, setMarketAddress] = useState(''); // 가게 주소
@@ -36,11 +38,13 @@ function OwnerSignUpSpecificScreen() {
   const onPressContinueBtn = () => {
     if (marketAddress && mainProducts && startTimeString && endTimeString) {
       // console로 저장된 값 확인
-      console.log('가게 주소:', marketAddress);
-      console.log('대표 상품명:', mainProducts);
-      console.log('시작 영업시간:', startTimeString);
-      console.log('종료 영업시간:', endTimeString);
-      console.log('영업일:', openDays);
+      console.log('shop_name 가게이름:', marketName);
+      console.log('shop_address 가게 주소:', marketAddress);
+      console.log('selling_products 대표 상품명:', mainProducts);
+      console.log('opening_time 시작 영업시간:', startTimeString);
+      console.log('closing_time 종료 영업시간:', endTimeString);
+      console.log('opening_frequency 영업일:', openDays);
+      console.log('product_categories 판매하는 상품들:', sellFoods);
 
       navigation.navigate('guideSignUpScreen');
     }

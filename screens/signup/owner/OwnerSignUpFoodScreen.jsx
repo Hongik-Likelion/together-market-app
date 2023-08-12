@@ -1,7 +1,7 @@
 import { PreviousBtn, ContinueBtn } from '@assets/signUp/CommonSignUpScreenIcon';
 import OwnerSignUpHeader from '@assets/signUp/OwnerSignUpScreen';
 import ChooseSellingFoodBtn from '@components/signUp/owner/ChooseSellingFoodBtn';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { COLORS } from 'colors';
 import React, { useState } from 'react';
 import { Text } from 'react-native';
@@ -11,6 +11,8 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { v4 as uuidv4 } from 'uuid';
 
 function OwnerSignUpFoodScreen() {
+  const route = useRoute();
+  const { marketName } = route.params;
   const navigation = useNavigation();
   const [sellFoods, selectSellFood] = useState([]); // 판매하는 상품 분류 저장 배열
 
@@ -29,8 +31,10 @@ function OwnerSignUpFoodScreen() {
   const onPressPreviousBtn = () => navigation.navigate('ownerSignUpScreen');
 
   const onPressContinueBtn = () => {
-    console.log('판매하는 상품들:', sellFoods);
-    navigation.navigate('ownerSignUpSpecificScreen');
+    navigation.navigate('ownerSignUpSpecificScreen', {
+      marketName: marketName,
+      sellFoods: sellFoods,
+    });
   };
 
   return (

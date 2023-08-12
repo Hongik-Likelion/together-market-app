@@ -6,6 +6,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { styled } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 function SelectMarketTab({ setAddedMarket, content, onChangeLocation, onPressAdd }) {
   const tempmarketList = ['망원시장', '광장시장', 'A시장', 'B시장'];
@@ -21,38 +22,41 @@ function SelectMarketTab({ setAddedMarket, content, onChangeLocation, onPressAdd
 
   return (
     <>
-      <Tab>
-        <Input
-          value={content}
-          onChangeText={(text) => {
-            onChangeLocation(text);
-            findMarketList(text);
-          }}
-          placeholder="망원시장"
-          placeholderTextColor={COLORS.gray01}
-        />
-        {existMarket ? (
-          <Ionicons
-            name={'add'}
-            size={25}
-            color={COLORS.main}
-            style={{ position: 'absolute', top: hp(5), right: 30 }}
-            onPress={() => {
-              setAddedMarket(true);
-              setExistMarket(false);
-              onChangeLocation('');
-              onPressAdd();
+      <KeyboardAwareScrollView>
+        <Tab>
+          <Input
+            value={content}
+            onChangeText={(text) => {
+              onChangeLocation(text);
+              findMarketList(text);
             }}
+            placeholder="망원시장"
+            placeholderTextColor={COLORS.gray01}
           />
-        ) : (
-          <Feather
-            name={'search'}
-            size={25}
-            color={COLORS.main}
-            style={{ position: 'absolute', top: hp(5), right: 30 }}
-          />
-        )}
-      </Tab>
+          {existMarket ? (
+            <Ionicons
+              name={'add'}
+              size={25}
+              color={COLORS.main}
+              style={{ position: 'absolute', top: hp(5), right: 30 }}
+              onPress={() => {
+                setAddedMarket(true);
+                setExistMarket(false);
+                onChangeLocation('');
+                onPressAdd();
+              }}
+            />
+          ) : (
+            <Feather
+              name={'search'}
+              size={25}
+              color={COLORS.main}
+              style={{ position: 'absolute', top: hp(5), right: 30 }}
+            />
+          )}
+        </Tab>
+      </KeyboardAwareScrollView>
+
       <SubTxt>한 곳 이상 설정해주세요. (필수)</SubTxt>
     </>
   );
