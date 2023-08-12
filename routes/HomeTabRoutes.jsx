@@ -1,13 +1,14 @@
 import TabHeaderRight from '@components/commom/TabHeaderRight';
 import MarketSelector from '@components/home/MarketSelector';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from '@screens/HomeScreen';
+
 import { COLORS } from 'colors';
 import React from 'react';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import ChatScreen from './chat/ChatScreen';
+import HomeScreenNavigator from './home/HomeScreenNavigator';
 const Tab = createBottomTabNavigator();
 
 /**
@@ -20,7 +21,7 @@ function HomeTabRoutes() {
     <Tab.Navigator initialRouteName="chat">
       <Tab.Screen
         name="home"
-        component={HomeScreen}
+        component={HomeScreenNavigator}
         options={{
           headerTitle: '',
           headerTintColor: COLORS.white,

@@ -56,7 +56,12 @@ function PostItem({profile, user, name, rating, date, content, image, like, comm
     
     return (
         <Container>
-            <SubContainer onPress={() => navigation.navigate('home-detail')}>
+            <SubContainer onPress={() => navigation.navigate('home-detail', {
+                profile, user, name, rating, date,
+                content, image, like, comment, open,
+                address, time, goods,
+                // favorit: favorite, userLike: userLike,
+            })}>
             <Info>
                 <Profile source={profile}/>
                 <Wrapper>
@@ -73,7 +78,7 @@ function PostItem({profile, user, name, rating, date, content, image, like, comm
                     <Date>{date}</Date>
                 </SubWrapper>
             </Info>
-            <Content>{content}</Content>
+            <Content numberOfLines={2}>{content}</Content>
             <Img>
                 <Image source={image}/>
             </Img>
