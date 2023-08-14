@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
 import React from 'react';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -7,9 +8,10 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import { styled } from 'styled-components/native';
 
 function TabHeaderRight() {
+  const { navigate } = useNavigation();
   return (
     <Container>
-      <SimpleLineIcons name={'bell'} size={RFValue(18)} color={COLORS.main} />
+      <SimpleLineIcons name={'bell'} size={RFValue(18)} color={COLORS.main} onPress={() => navigate('alarm')} />
       <Feather name={'search'} size={RFValue(18)} color={COLORS.main} />
     </Container>
   );

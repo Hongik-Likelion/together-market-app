@@ -5,29 +5,29 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import { styled } from 'styled-components/native';
 
 function HeaderWithBackButton({ title }) {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
 
-    return (
-        <Container>
-            <BackButton name="arrow-left" size={20} onPress={() => navigation.goBack()} />
-            <Title>{title}</Title>
-        </Container>
-    );
+  return (
+    <Container>
+      <BackButton name="arrow-left" size={20} onPress={() => navigation.goBack()} />
+      <Title>{title}</Title>
+    </Container>
+  );
 }
 
 const Container = styled.View`
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
 `;
 
 const BackButton = styled(SimpleLineIcons)`
-    margin-right: ${RFValue(4)}px;
+  margin-right: ${RFValue(4)}px;
 `;
 
 const Title = styled.Text`
-    font-size: ${RFValue(14)}px;
-    font-weight: 600;
+  font-size: ${RFValue(14)}px;
+  font-weight: 600;
 `;
 
 export default HeaderWithBackButton;
