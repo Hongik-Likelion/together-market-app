@@ -8,6 +8,7 @@ import React, { useContext, useState } from 'react';
 import { Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 function GuideSignUpScreen(props) {
   const navigation = useNavigation();
@@ -26,6 +27,7 @@ function GuideSignUpScreen(props) {
 
   const onPressContinueBtn = () => {
     //(userType)이 1이라면 안내 동영상으로, 2라면 홈페이지로
+    navigation.navigate('home-tab'); //우선은 홈으로
   };
   return (
     <Container>
@@ -56,17 +58,17 @@ const Container = styled.View`
 `;
 
 const MainInfoTxt1 = styled.Text`
-  font-size: 22px;
+  font-size: ${RFValue(20)}px;
   font-weight: bold;
   margin-left: ${wp(4.8)}px;
   margin-top: ${hp(18.7)}px;
 `;
 
 const MainInfoTxt2 = styled.Text`
-  font-size: 22px;
+  font-size: ${RFValue(20)}px;
   font-weight: bold;
   margin-left: ${wp(4.8)}px;
-  margin-top: 5px;
+  margin-top: ${RFValue(5)}px;
 `;
 
 const SubTxt = styled.Text`
@@ -74,7 +76,7 @@ const SubTxt = styled.Text`
   margin-left: ${wp(4.8)}px;
   margin-top: ${hp(1.23)}px;
   margin-bottom: ${hp(5.41)}px;
-  font-size: 16px;
+  font-size: ${RFValue(14)}px;
 `;
 
 export default GuideSignUpScreen;

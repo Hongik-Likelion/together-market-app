@@ -15,6 +15,7 @@ function GuideTopTab(props) {
           secondPage={COLORS.main}
           thirdPage={COLORS.main}
           fourthPage={COLORS.main}
+          fifthPage={COLORS.main}
           position="absolute"
           marginTop={hp(10)}
         />
