@@ -70,6 +70,6 @@ function Post() {
 }
 
 const Container = styled.View`
-  height: 95%;
+  height: 94%;
 `;
 export default Post;

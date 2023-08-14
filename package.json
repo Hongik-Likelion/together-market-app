@@ -4,8 +4,8 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web"
   },
   "dependencies": {
@@ -19,10 +19,12 @@
     "expo": "~49.0.5",
     "expo-av": "~13.4.1",
     "expo-constants": "^14.4.2",
+    "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "react": "18.2.0",
     "react-native": "0.72.3",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
+    "react-native-ratings": "^8.1.0",
     "react-native-modal-datetime-picker": "^17.0.0",
     "react-native-responsive-fontsize": "^0.5.1",
     "react-native-responsive-screen": "^1.4.2",
@@ -35,6 +37,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@types/react-native-vector-icons": "^6.4.13",
     "babel-plugin-module-resolver": "^5.0.0",
     "eslint": "^8.46.0",
     "eslint-config-prettier": "^8.10.0",

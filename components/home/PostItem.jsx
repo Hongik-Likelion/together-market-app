@@ -10,9 +10,13 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Modal, Pressable, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSharedState } from 'context/FavAndLikeContext';
+import RatingStar from '@components/home/RatingStar';
 
 
 function PostItem({profile, user, name, rating, date, content, image, like, comment, open, address, time, goods}) {
+    const { favorite, setFavorite, userLike, setUserLike, likeCount, setLikeCount } = useSharedState();
+
 
     // '가게 정보' 버튼 클릭시 가게 정보 모달창 띄우기
     const [modal, setModal] = useState(false);
@@ -20,7 +24,8 @@ function PostItem({profile, user, name, rating, date, content, image, like, comm
         setModal(!modal);
     }
 
-    // '채팅 문의' 버튼 클릭시 채팅탭으로
+    // '채팅 문의' 버튼 클릭시 채팅탭으로(chat)
+    // 게시물 클릭시 자세하게 볼 수 있도록(home-detail)
     const navigation = useNavigation();
 
 
@@ -28,16 +33,15 @@ function PostItem({profile, user, name, rating, date, content, image, like, comm
     const [banModal, setBanModal] = useState(false);
 
     // 하트 아이콘(관심 기능)
-    const [favorite, setFavorite] = useState(false);
+    // const [favorite, setFavorite] = useState(false);
     const addFav = () => {
         setFavorite(!favorite);
         // DB에 저장된 정보(유저 정보, 하트 누른 게시물 등...) 수정하는 코드 작성?
     }
 
     // 좋아요 기능
-    const [userLike, setUserLike] = useState(false);
-    const [likeCount, setLikeCount] = useState(parseInt(like));
-    
+    // const [userLike, setUserLike] = useState(false);
+    // const [likeCount, setLikeCount] = useState(parseInt(like));
     const addLike = () => {
         setUserLike(!userLike);
         // DB에 저장된 정보(유저 정보, 좋아요 누른 게시물 등...) 수정하는 코드 작성?
@@ -54,26 +58,33 @@ function PostItem({profile, user, name, rating, date, content, image, like, comm
     
     return (
         <Container>
+            <SubContainer onPress={() => navigation.navigate('home-detail', {
+                profile, user, name, rating, date,
+                content, image, like, comment, open,
+                address, time, goods,
+                // favorit: favorite, userLike: userLike,
+            })}>
             <Info>
                 <Profile source={profile}/>
                 <Wrapper>
-                    <User>
+                    <User user={user}>
                         <UserLabel numberOfLines={1}>{user}</UserLabel>
                     </User>
                     <Name numberOfLines={1}>{name}</Name>
                     <Rating>
-                        평균 별점 <RatingLabel><FontAwesome name={'star'}/> {rating}</RatingLabel>
+                        {user === '사장님' ? '평균 별점 ' : '평균 리뷰 별점 '}
+                        <RatingLabel><FontAwesome name={'star'}/> {rating}</RatingLabel>
                     </Rating>
                 </Wrapper>
                 <SubWrapper>
                     <Date>{date}</Date>
                 </SubWrapper>
             </Info>
-            <Content>{content}</Content>
+            <Content numberOfLines={2}>{content}</Content>
             <Img>
                 <Image source={image}/>
             </Img>
-
+            </SubContainer>
 
             <Button>
                 <InfoButton onPress={() => toggleModal()}>
@@ -110,8 +121,9 @@ function PostItem({profile, user, name, rating, date, content, image, like, comm
                         </Group>
 
                         <RatingModal>
-                            <FontAwesome name={'star'} size={RFValue(14)}/>
-                            {rating}/5
+                            {/* <FontAwesome name={'star'} size={RFValue(14)}/> */}
+                            <RatingStar rating={rating}/>
+                            <RatingModalLabel>{rating}<Label>/5</Label></RatingModalLabel>
                         </RatingModal>
                         <SubGroup>
                             <LeftGroup>
@@ -190,6 +202,9 @@ function PostItem({profile, user, name, rating, date, content, image, like, comm
     );
 }
 
+const SubContainer = styled.TouchableOpacity`
+
+`;
 
 const BanModal = styled.View`
 
@@ -212,8 +227,8 @@ const Box1 = styled.TouchableOpacity`
 `;
 
 const Box2 = styled.TouchableOpacity`
-background-color: ${COLORS.white};
-border-bottom-right-radius: 10px;
+    background-color: ${COLORS.white};
+    border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
     align-items: center;
     height: ${hp(6)}px;
@@ -222,11 +237,11 @@ border-bottom-right-radius: 10px;
 `;
 
 const Box3 = styled.TouchableOpacity`
-background-color: ${COLORS.white};
-border-radius: 10px;
-align-items: center;
-height: ${hp(7)}px;
-justify-content: center;
+    background-color: ${COLORS.white};
+    border-radius: 10px;
+    align-items: center;
+    height: ${hp(7)}px;
+    justify-content: center;
 `;
 
 const BoxLabel = styled.Text`
@@ -273,10 +288,22 @@ const OpenModal = styled.Text`
     color: ${COLORS.main};
 `;
 
-const RatingModal = styled.Text`
+const RatingModal = styled.View`
     flex-direction: row;
-    font-size: ${RFValue(14)}px;
+
     margin-bottom: 10px;
+    align-items: center;
+
+`;
+
+const RatingModalLabel = styled.Text`
+    font-size: ${RFValue(14)}px;
+    font-weight: 500;
+    margin-left: ${wp(1)}px;
+`;
+
+const Label = styled.Text`
+    color: ${COLORS.gray01};
 `;
 
 const SubGroup = styled.View`
@@ -337,7 +364,11 @@ const SubWrapper = styled.View`
 `;
 
 const User = styled.View`
-    background-color: ${COLORS.main};
+    ${({user}) => 
+        user === '사장님' 
+            ? `background-color: ${COLORS.main};` : `background-color: ${COLORS.gray01};`
+    };
+    
     height: ${hp(2)}px;
     width: ${wp(13)}px;
     justify-content: center;
@@ -361,7 +392,7 @@ const Name = styled.Text`
 
 const Rating = styled.Text`
     font-size: ${RFValue(10)}px;
-    width: ${wp(20)}px;
+    width: ${wp(25)}px;
 
 `;
 
