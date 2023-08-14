@@ -6,6 +6,7 @@ import React, { useContext } from 'react';
 import { Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 function CommonSignUpScreen() {
   const navigation = useNavigation();
@@ -65,17 +66,17 @@ const Container = styled.View`
 `;
 
 const MainInfoTxt1 = styled.Text`
-  font-size: 22px;
+  font-size: ${RFValue(22)}px;
   font-weight: bold;
   margin-left: ${wp(4.8)}px;
   margin-top: ${hp(18.7)}px;
 `;
 
 const MainInfoTxt2 = styled.Text`
-  font-size: 22px;
+  font-size: ${RFValue(22)}px;
   font-weight: bold;
   margin-left: ${wp(4.8)}px;
-  margin-top: 5px;
+  margin-top: ${RFValue(5)}px;
 `;
 
 const SubTxt = styled.Text`
@@ -83,7 +84,7 @@ const SubTxt = styled.Text`
   margin-left: ${wp(4.8)}px;
   margin-top: ${hp(1.23)}px;
   margin-bottom: ${hp(5.41)}px;
-  font-size: 16px;
+  font-size: ${RFValue(16)}px;
 `;
 
 const SelectOption = styled.View`
