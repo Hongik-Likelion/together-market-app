@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 function InfoTopTab(props) {
-  const { nickname, profile, introduction, is_owner, myPostingCount, myFavMarketCount } = props;
+  const { nickname, profile, introduction, is_owner, myPostingsCount, myFavMarketsCount } = props;
   const navigation = useNavigation();
 
   const onPressSettingBtn = () => {
@@ -25,7 +25,7 @@ function InfoTopTab(props) {
       <AllContent>
         <Content>
           <ProfileImg>
-            <Image source={profile} />
+            <UserImage source={profile} />
           </ProfileImg>
           <Info>
             <Firstline>
@@ -40,7 +40,7 @@ function InfoTopTab(props) {
             <Nickname>{nickname} 님</Nickname>
             <Introduction>{introduction}</Introduction>
             <StoredInfo>
-              게시물 {myPostingCount} | 관심가게 {myFavMarketCount}
+              게시물 {myPostingsCount} | 관심가게 {myFavMarketsCount}
             </StoredInfo>
           </Info>
         </Content>
@@ -71,6 +71,11 @@ const Content = styled.View`
   margin-top: ${hp(10)}px;
   align-items: center;
   margin-left: ${wp(-2)}px;
+`;
+
+const UserImage = styled.Image`
+  width: ${RFValue(70)}px;
+  height: ${RFValue(70)}px;
 `;
 
 const ProfileImg = styled.View`
