@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import InfoTopTab from '@components/profile/mainProfile/InfoTopTab';
-import MyPostingList from '@components/profile/mainProfile/MyPostingList';
-import FavMarkList from '@components/profile/mainProfile/FavMarkList';
+import MyPostingList from '@components/profile/mainProfile/user/MyPostingList';
+import FavMarkList from '@components/profile/mainProfile/user/FavMarkList';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
@@ -39,7 +39,7 @@ function UserProfileScreen() {
         rating: 4,
         photo: require('@assets/profile/myProfileMarket.png'),
         content: '[바삭마차 리뷰] 와 튀김이 진짜 대박 완전 갓 튀겨가지고 맛있네용 사장님도 친절하시고',
-        created_at: '2023-08-18',
+        created_at: '2023.08.18',
       },
     },
     {
@@ -51,7 +51,7 @@ function UserProfileScreen() {
         rating: 5,
         photo: require('@assets/profile/myProfileMarket.png'),
         content: '[바삭바삭.. 리뷰] 와 튀김이 진짜 대박 완전 갓 튀겨가지고 맛있네용 ',
-        created_at: '2023-11-12',
+        created_at: '2023.11.12',
       },
     },
   ];
@@ -137,7 +137,7 @@ const MyPost = styled.TouchableOpacity`
   height: 100%;
   justify-content: center;
   align-items: center;
-  border-bottom-width: 1px;
+  border-bottom-width: 2px;
   border-bottom-color: ${({ isMyPost }) => (isMyPost ? 'black' : COLORS.gray01)};
 `;
 
@@ -158,7 +158,7 @@ const FavMark = styled.TouchableOpacity`
   height: 100%;
   justify-content: center;
   align-items: center;
-  border-bottom-width: 1px;
+  border-bottom-width: 2px;
   border-bottom-color: ${({ isFavMark }) => (isFavMark ? 'black' : COLORS.gray01)};
 `;
 

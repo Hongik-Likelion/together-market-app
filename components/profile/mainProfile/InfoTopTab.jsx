@@ -29,9 +29,16 @@ function InfoTopTab(props) {
           </ProfileImg>
           <Info>
             <Firstline>
-              <UserType>
-                {is_owner ? <UserTypeOwner>사장님</UserTypeOwner> : <UserTypeUser>시장탐방러</UserTypeUser>}
-              </UserType>
+              {is_owner ? (
+                <UserTypeOwn>
+                  <UserTypeOwner>사장님</UserTypeOwner>
+                </UserTypeOwn>
+              ) : (
+                <UserTypeUse>
+                  <UserTypeUser>시장탐방러</UserTypeUser>
+                </UserTypeUse>
+              )}
+
               <SettingIcon onPress={onPressSettingBtn}>
                 <Ionicons name={'settings-outline'} size={RFValue(20)} color={COLORS.white} />
               </SettingIcon>
@@ -39,9 +46,15 @@ function InfoTopTab(props) {
 
             <Nickname>{nickname} 님</Nickname>
             <Introduction>{introduction}</Introduction>
-            <StoredInfo>
-              게시물 {myPostingsCount} | 관심가게 {myFavMarketsCount}
-            </StoredInfo>
+            {is_owner ? (
+              <StoredInfo>
+                게시물 {myPostingsCount} | 가게후기 {myFavMarketsCount}
+              </StoredInfo>
+            ) : (
+              <StoredInfo>
+                게시물 {myPostingsCount} | 관심가게 {myFavMarketsCount}
+              </StoredInfo>
+            )}
           </Info>
         </Content>
         <WritePost onPress={onPressWriteBtn}>
@@ -88,10 +101,22 @@ const Firstline = styled.View`
   flex-direction: row;
 `;
 
-const UserType = styled.View`
+const UserTypeUse = styled.View`
   background-color: ${COLORS.gray01};
   border-radius: 5px;
   width: 80px;
+  justify-content: center;
+  align-items: center;
+  font-size: ${RFValue(12)}px;
+  font-weight: bold;
+  padding: ${RFValue(3)}px;
+  margin-bottom: ${hp(0.5)}px;
+`;
+
+const UserTypeOwn = styled.View`
+  background-color: ${COLORS.white};
+  border-radius: 5px;
+  width: 50px;
   justify-content: center;
   align-items: center;
   font-size: ${RFValue(12)}px;
@@ -106,7 +131,11 @@ const SettingIcon = styled.TouchableOpacity`
   margin-right: ${wp(-2)}px;
 `;
 
-const UserTypeOwner = styled.Text``;
+const UserTypeOwner = styled.Text`
+  color: ${COLORS.main};
+  font-size: ${RFValue(11)}px;
+  font-weight: bold;
+`;
 
 const UserTypeUser = styled.Text`
   color: ${COLORS.white};

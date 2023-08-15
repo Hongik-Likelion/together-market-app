@@ -16,16 +16,16 @@ function ProfileScreenNavigator() {
     <SharedStateProvider>
       <Stack.Navigator initialRouteName={'profile'} screenOptions={{ headerShown: false }}>
         {userType === 1 ? (
-          // 사장님인 경우
-          <>
-            <Stack.Screen name={'profile-screen'} component={OwnerProfileScreen} />
-            <Stack.Screen name={'profile-setting'} component={OwnerProfileSettingScreen} />
-          </>
-        ) : (
           // 일반 사용자인 경우
           <>
             <Stack.Screen name={'profile-screen'} component={UserProfileScreen} />
             <Stack.Screen name={'profile-setting'} component={UserProfileSettingScreen} />
+          </>
+        ) : (
+          // 사장님인 경우
+          <>
+            <Stack.Screen name={'profile-screen'} component={OwnerProfileScreen} />
+            <Stack.Screen name={'profile-setting'} component={OwnerProfileSettingScreen} />
           </>
         )}
       </Stack.Navigator>
