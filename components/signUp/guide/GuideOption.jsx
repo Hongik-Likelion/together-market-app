@@ -1,5 +1,5 @@
 import { GetGuideBtn, NotGetGuideBtn } from '@assets/signUp/GuideSignUpScreen';
-import { COLORS } from 'colors'; // colors 모듈 경로가 올바르게 수정되어야 합니다.
+import { COLORS } from 'colors';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
