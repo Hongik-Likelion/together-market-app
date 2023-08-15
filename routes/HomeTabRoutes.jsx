@@ -9,6 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import ChatScreen from './chat/ChatScreen';
 import HomeScreenNavigator from './home/HomeScreenNavigator';
+import ProfileScreenNavigator from './profie/ProfileScreenNavigator';
 const Tab = createBottomTabNavigator();
 
 /**
@@ -25,7 +26,7 @@ function HomeTabRoutes() {
         options={{
           headerTitle: '',
           headerTintColor: COLORS.white,
-          headerLeft: () => <MarketSelector/>,
+          headerLeft: () => <MarketSelector />,
           headerRight: () => <TabHeaderRight />,
           tabBarLabel: '홈',
           tabBarActiveTintColor: COLORS.main,
@@ -54,6 +55,23 @@ function HomeTabRoutes() {
               <Ionicons name="chatbubble-ellipses" size={RFValue(22)} color={COLORS.main} />
             ) : (
               <Ionicons name={'chatbubble-ellipses-outline'} size={RFValue(20)} />
+            ),
+        }}
+      />
+
+      <Tab.Screen
+        name="profile"
+        component={ProfileScreenNavigator}
+        options={{
+          headerShown: false,
+          tabBarLabel: '프로필',
+          tabBarActiveTintColor: COLORS.main,
+          tabBarInactiveTintColor: COLORS.black,
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <Ionicons name={'person'} size={RFValue(20)} color={COLORS.main} />
+            ) : (
+              <Ionicons name={'person-outline'} size={RFValue(20)} />
             ),
         }}
       />
