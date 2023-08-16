@@ -32,6 +32,7 @@ function UserSignUpScreen() {
 
   const onPressDelete = (marketLocationId) => {
     setMarketLocations((prev) => prev.filter((marketLocation) => marketLocation.id !== marketLocationId));
+    setAddedMarket(false);
   };
 
   const onPressPreviousBtn = () => navigation.navigate('commonSignUpScreen');
