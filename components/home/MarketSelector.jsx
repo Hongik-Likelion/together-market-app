@@ -21,7 +21,7 @@ const Container = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-left: ${wp(5)}px;
+  margin-left: ${wp(3)}px;
 `;
 
 const SelectorIcon = styled(Feather)`

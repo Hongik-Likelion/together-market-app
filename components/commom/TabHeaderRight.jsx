@@ -19,7 +19,7 @@ function TabHeaderRight() {
 
 const Container = styled.View`
   width: ${wp(14)}px;
-  margin-right: ${wp(5)}px;
+  margin-right: ${wp(3)}px;
   flex-direction: row;
   justify-content: space-between;
 `;

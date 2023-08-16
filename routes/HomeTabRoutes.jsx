@@ -24,18 +24,7 @@ function HomeTabRoutes() {
         name="home"
         component={HomeScreenNavigator}
         options={{
-          headerTitle: '',
-          headerTintColor: COLORS.white,
-          headerLeft: () => <MarketSelector/>,
-          // headerLeft: () => {
-          //   console.log(route.name);
-          //   if (route.name === 'home-list') {
-          //     return <MarketSelector/>
-          //   } else if (route.name === 'home-detail' || route.name ==='market-select') {
-          //     return <HeaderWithBackButton title={'망원시장'}/>;
-          //   }
-          // },
-          headerRight: () => <TabHeaderRight />,
+          headerShown: false,
           tabBarLabel: '홈',
           tabBarActiveTintColor: COLORS.main,
           tabBarInactiveTintColor: COLORS.black,
