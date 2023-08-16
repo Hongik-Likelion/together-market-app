@@ -2,12 +2,35 @@ import { KakaoLoginBtn, MainIcon } from '@assets/login/LoginScreenIcon';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { styled } from 'styled-components/native';
+import * as KakaoLogins from '@react-native-seoul/kakao-login';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function LoginScreen1() {
   const navigation = useNavigation();
 
   const onPressKakao = () => {
-    navigation.navigate('loginScreen2');
+    async function kakaoLogin() {
+      try {
+        const token = await KakaoLogins.login();
+        console.log('login success!');
+        console.log(format(token));
+      } catch (err) {}
+
+      try {
+        const profile = await KakaoLogins.getProfile();
+        const { nickname, email, gender } = profile;
+
+        await AsyncStorage.setItem('email', email);
+        await AsyncStorage.setItem('nickname', nickname);
+        await AsyncStorage.setItem('gender', gender);
+
+        // 만약 회원 data가 없으면, loginScreen2로 가고
+        // 있으면 곧바로 home으로
+        navigation.navigate('loginScreen2');
+      } catch (err) {}
+    }
+
+    kakaoLogin();
   };
 
   return (
