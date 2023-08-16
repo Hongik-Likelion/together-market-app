@@ -2,12 +2,15 @@ import { KakaoLoginBtn, MainIcon } from '@assets/login/LoginScreenIcon';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { styled } from 'styled-components/native';
-import * as KakaoLogins from '@react-native-seoul/kakao-login';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function LoginScreen1() {
   const navigation = useNavigation();
 
+  const onPressKakao = () => {
+    navigation.navigate('loginScreen2');
+  };
+
+  /* 카카오 로그인 부분
   const onPressKakao = () => {
     async function kakaoLogin() {
       try {
@@ -32,7 +35,7 @@ function LoginScreen1() {
 
     kakaoLogin();
   };
-
+  */
   return (
     <>
       <MainBackground source={require('@assets/login/Login1Background.png')} />

@@ -1,6 +1,0 @@
-<resources>
-  <string name="app_name">together-market-app</string>
-  <string name="expo_splash_screen_resize_mode" translatable="false">cover</string>
-  <string name="expo_splash_screen_status_bar_translucent" translatable="false">false</string>
-  <string name="kakao_app_key">1d0c743ef047e46fc44f2305d17a1084</string>
-</resources>

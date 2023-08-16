@@ -7,7 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { styled } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
-function SelectMarketTab({ setAddedMarket, content, onChangeLocation, onPressAdd }) {
+function SelectMarketTab({ addedMarket, setAddedMarket, content, onChangeLocation, onPressAdd }) {
   const tempmarketList = ['망원시장', '광장시장', 'A시장', 'B시장'];
   const [existMarket, setExistMarket] = useState(false);
 
@@ -30,6 +30,7 @@ function SelectMarketTab({ setAddedMarket, content, onChangeLocation, onPressAdd
           }}
           placeholder="망원시장"
           placeholderTextColor={COLORS.gray01}
+          editable={!addedMarket}
         />
         {existMarket ? (
           <Ionicons
@@ -54,7 +55,7 @@ function SelectMarketTab({ setAddedMarket, content, onChangeLocation, onPressAdd
         )}
       </Tab>
 
-      <SubTxt>한 곳 이상 설정해주세요. (필수)</SubTxt>
+      <SubTxt>복수 입력 불가</SubTxt>
     </>
   );
 }
