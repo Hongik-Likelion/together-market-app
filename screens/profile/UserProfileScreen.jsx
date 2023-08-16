@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import InfoTopTab from '@components/profile/mainProfile/InfoTopTab';
+import UserInfoTopTab from '@components/profile/mainProfile/user/UserInfoTopTab';
 import MyPostingList from '@components/profile/mainProfile/user/MyPostingList';
 import FavMarkList from '@components/profile/mainProfile/user/FavMarkList';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
 import { COLORS } from 'colors';
 
@@ -16,6 +16,7 @@ function UserProfileScreen() {
     profile: require('@assets/profile/Ellipse.png'),
     introduction: '망원시장 정복중인 돼지런한 직장인입니다.',
     is_owner: false,
+    favMarket: '망원시장',
     favourite_markets: [
       {
         market_id: 10,
@@ -96,13 +97,14 @@ function UserProfileScreen() {
 
   return (
     <Container>
-      <InfoTopTab
+      <UserInfoTopTab
         nickname={userInfo.nickname}
         profile={userInfo.profile}
         introduction={userInfo.introduction}
         is_owner={userInfo.is_owner}
         myPostingsCount={myPostings.length}
         myFavMarketsCount={myFavMarkets.length}
+        favMarket={userInfo.favMarket}
       />
       <SelectMenu>
         <MyPost isMyPost={isMyPost} onPress={onPressMyPostBtn}>

@@ -3,16 +3,20 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import React from 'react';
 import { styled } from 'styled-components/native';
-import { Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-function InfoTopTab(props) {
-  const { nickname, profile, introduction, is_owner, myPostingsCount, myFavMarketsCount } = props;
+function UserInfoTopTab(props) {
+  const { nickname, profile, introduction, is_owner, myPostingsCount, myFavMarketsCount, favMarket } = props;
   const navigation = useNavigation();
 
   const onPressSettingBtn = () => {
-    navigation.navigate('profile-setting');
+    navigation.navigate('user-profile-setting', {
+      nickname: nickname,
+      profile: profile,
+      introduction: introduction,
+      favMarket: favMarket, //자주 찾는 시장 이 부분 추가되어야할 것 같음
+    });
   };
 
   const onPressWriteBtn = () => {
@@ -68,7 +72,7 @@ function InfoTopTab(props) {
 const Container = styled.View`
   background-color: ${COLORS.main};
   display: flex;
-  height: ${hp(30)}px;
+  height: ${hp(35)}px;
   width: 100%;
   align-items: center;
 `;
@@ -167,7 +171,7 @@ const WritePost = styled.TouchableOpacity`
 
   height: ${RFValue(30)}px;
   width: ${wp(84)}px;
-  margin-top: ${hp(1.2)}px;
+  margin-top: ${hp(1.5)}px;
 
   justify-content: center;
   align-items: center;
@@ -181,4 +185,4 @@ const WritePostText = styled.Text`
   font-size: ${RFValue(14)}px;
 `;
 
-export default InfoTopTab;
+export default UserInfoTopTab;

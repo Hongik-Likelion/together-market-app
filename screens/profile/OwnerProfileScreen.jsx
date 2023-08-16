@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import InfoTopTab from '@components/profile/mainProfile/InfoTopTab';
+import OwnerInfoTopTab from '@components/profile/mainProfile/owner/OwnerInfoTopTab';
 import MyMarkCommentList from '@components/profile/mainProfile/owner/MyMarkCommentsList';
 import OwnerPostingList from '@components/profile/mainProfile/owner/OwnerPostingList';
 
@@ -122,7 +122,7 @@ function OwnerProfileScreen() {
 
   return (
     <Container>
-      <InfoTopTab
+      <OwnerInfoTopTab
         nickname={userInfo.nickname}
         profile={userInfo.profile}
         introduction={userInfo.introduction}
