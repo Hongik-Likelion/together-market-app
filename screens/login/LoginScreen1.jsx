@@ -25,7 +25,7 @@ function LoginScreen1() {
         await AsyncStorage.setItem('gender', gender);
 
         // 만약 회원 data가 없으면, loginScreen2로 가고
-        // 있으면 곧바로 home으로
+        // 있으면 곧바로 home으로 부분 추가해야함.
         navigation.navigate('loginScreen2');
       } catch (err) {}
     }

@@ -11,9 +11,7 @@
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -26,6 +24,15 @@
     },
     "web": {
       "favicon": "./assets/LoadingPage.png"
-    }
+    },
+    "plugins": [
+      [
+        "@react-native-seoul/kakao-login",
+        {
+          "kakaoAppKey": "1d0c743ef047e46fc44f2305d17a1084",
+          "kotlinVersion": "1.5.10"
+        }
+      ]
+    ]
   }
 }
