@@ -1,48 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; // 이전에 주어진 색상 관련 모듈은 사용되지 않았으므로 제거
 import { COLORS } from 'colors';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-function GetOpenTime({ onSaveTimeData }) {
-  const initialTime = new Date();
-  initialTime.setHours(0, 0, 0, 0);
+function MarketTimeChangeInfo({ opening_time, closing_time, onSaveChangedTimeData }) {
+  const formatTimeToDateHours = (timeStr) => {
+    const [hours, minutes] = timeStr.split(':');
+    const date = new Date();
+    date.setHours(parseInt(hours, 10));
+    date.setMinutes(parseInt(minutes, 10));
+    return date;
+  };
 
-  const [startTime, setStartTime] = useState(initialTime);
-  const [endTime, setEndTime] = useState(initialTime);
+  const [startTime, setStartTime] = useState(formatTimeToDateHours(opening_time));
+  const [isSelectedStart, setStart] = useState(false);
+
+  const [endTime, setEndTime] = useState(formatTimeToDateHours(closing_time));
+  const [isSelectedEnd, setEnd] = useState(false);
+
   const [showStartTimePicker, setShowStartTimePicker] = useState(false);
   const [showEndTimePicker, setShowEndTimePicker] = useState(false);
 
-  const formatTime = (time) => {
-    const hours = time.getHours().toString().padStart(2, '0');
-    const minutes = time.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
+  useEffect(() => {
+    onSaveChangedTimeData(formatTimeTo24Hours(startTime), formatTimeTo24Hours(endTime));
+  }, [startTime, endTime, onSaveChangedTimeData]);
+
+  const formatTimeTo24Hours = (time) => {
+    if (time instanceof Date) {
+      const hours = time.getHours().toString().padStart(2, '0');
+      const minutes = time.getMinutes().toString().padStart(2, '0');
+      return `${hours}:${minutes}`;
+    }
+    return '';
   };
 
   const onStartTimeChange = (event, selectedTime) => {
     if (selectedTime !== undefined) {
       setStartTime(selectedTime);
+      setStart(true);
       setShowStartTimePicker(false);
+      onSaveChangedTimeData(formatTimeTo24Hours(selectedTime), formatTimeTo24Hours(endTime));
     }
   };
 
   const onEndTimeChange = (event, selectedTime) => {
     if (selectedTime !== undefined) {
       setEndTime(selectedTime);
+      setEnd(true);
       setShowEndTimePicker(false);
+      onSaveChangedTimeData(formatTimeTo24Hours(startTime), formatTimeTo24Hours(selectedTime));
     }
-  };
-
-  useEffect(() => {
-    onSaveTimeData(formatTimeTo24Hours(startTime), formatTimeTo24Hours(endTime));
-  }, [startTime, endTime, onSaveTimeData]);
-
-  const formatTimeTo24Hours = (time) => {
-    const hours = time.getHours().toString().padStart(2, '0');
-    const minutes = time.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
   };
 
   return (
@@ -55,7 +65,7 @@ function GetOpenTime({ onSaveTimeData }) {
 
             <StartTime onPress={() => setShowStartTimePicker(true)}>
               <TimeValue>
-                {formatTime(startTime)}
+                {isSelectedStart ? formatTimeTo24Hours(startTime) : opening_time}
                 <MaterialIcons name={'keyboard-arrow-down'} size={RFValue(18)} />
               </TimeValue>
             </StartTime>
@@ -72,7 +82,7 @@ function GetOpenTime({ onSaveTimeData }) {
 
             <EndTime onPress={() => setShowEndTimePicker(true)}>
               <TimeValue>
-                {formatTime(endTime)}
+                {isSelectedEnd ? formatTimeTo24Hours(endTime) : closing_time}
                 <MaterialIcons name={'keyboard-arrow-down'} size={RFValue(18)} />
               </TimeValue>
             </EndTime>
@@ -83,7 +93,7 @@ function GetOpenTime({ onSaveTimeData }) {
                   mode="time"
                   display="spinner"
                   onChange={onEndTimeChange}
-                  minimumDate={false} // 시작 시간 이후 시간대에서만 종료 시간 선택 가능
+                  minimumDate={false}
                 />
               )}
             </EndTimeContainer>
@@ -154,14 +164,7 @@ const StartTime = styled.TouchableOpacity`
 const TimeValue = styled.Text`
   font-size: ${RFValue(16)}px;
 
-  ${({ showStartTimePicker }) =>
-    showStartTimePicker
-      ? `
-      color: ${COLORS.black};
-      `
-      : `
-      color: ${COLORS.gray01};
-      `}
+  color: ${COLORS.black};
 `;
 
 const End = styled.View`
@@ -192,4 +195,4 @@ const EndTime = styled.TouchableOpacity`
   padding: ${RFValue(10)}px;
 `;
 
-export default GetOpenTime;
+export default MarketTimeChangeInfo;

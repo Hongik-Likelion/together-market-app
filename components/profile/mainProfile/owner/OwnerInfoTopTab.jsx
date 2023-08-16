@@ -7,11 +7,18 @@ import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 function OwnerInfoTopTab(props) {
-  const { nickname, profile, introduction, is_owner, myPostingsCount, myFavMarketsCount } = props;
+  const { nickname, profile, introduction, is_owner, myPostingsCount, myFavMarketsCount, opening_time, closing_time } =
+    props;
   const navigation = useNavigation();
 
   const onPressSettingBtn = () => {
-    navigation.navigate('owner-profile-setting');
+    navigation.navigate('owner-profile-setting', {
+      nickname: nickname,
+      profile: profile,
+      introduction: introduction,
+      opening_time: opening_time,
+      closing_time: closing_time,
+    });
   };
 
   const onPressWriteBtn = () => {
@@ -67,7 +74,7 @@ function OwnerInfoTopTab(props) {
 const Container = styled.View`
   background-color: ${COLORS.main};
   display: flex;
-  height: ${hp(30)}px;
+  height: ${hp(35)}px;
   width: 100%;
   align-items: center;
 `;
@@ -166,7 +173,7 @@ const WritePost = styled.TouchableOpacity`
 
   height: ${RFValue(30)}px;
   width: ${wp(84)}px;
-  margin-top: ${hp(1.2)}px;
+  margin-top: ${hp(1.5)}px;
 
   justify-content: center;
   align-items: center;

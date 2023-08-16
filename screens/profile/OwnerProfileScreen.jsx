@@ -17,6 +17,8 @@ function OwnerProfileScreen() {
     profile: require('@assets/profile/profileOwner.png'),
     introduction: '바삭함으로 승부보는 튀김전문점 바삭마차',
     is_owner: true,
+    opening_time: '11:00',
+    closing_time: '18:00',
   };
 
   // 나의 게시물 API 응답 데이터 예시
@@ -129,6 +131,8 @@ function OwnerProfileScreen() {
         is_owner={userInfo.is_owner}
         myPostingsCount={myPostings.length}
         myFavMarketsCount={myMarkComments.length}
+        opening_time={userInfo.opening_time}
+        closing_time={userInfo.closing_time}
       />
       <SelectMenu>
         <MyPost isMyPost={isMyPost} onPress={onPressMyPostBtn}>

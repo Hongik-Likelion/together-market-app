@@ -4,28 +4,52 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import React from 'react';
 import { styled } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import Feather from 'react-native-vector-icons/Feather';
+import { TouchableOpacity } from 'react-native';
 
 function OwnerTopTab(props) {
   const { nickname, profile } = props;
   const navigation = useNavigation();
 
   const onPressFinishBtn = () => {
-    navigation.navigate('profile-setting');
+    //!!!!!!!!! [추가] 여기서 이제 수정완료된 정보들을 백에 넘겨주는 API를 작성해야함
+    navigation.navigate('profile-screen');
   };
 
   const onPressPreviousBtn = () => {
-    //이거 게시물 작성하기 페이지로 넘어가야함 (수정필요)
     navigation.navigate('profile-screen');
+  };
+
+  const onPressEditBtn = () => {
+    //!!!!!!!!!!! [추가] 사진 수정되는 부분 추가해야함
   };
 
   return (
     <Container>
+      <TouchableOpacity onPress={onPressPreviousBtn}>
+        <SimpleLineIcons
+          name={'arrow-left'}
+          size={25}
+          color={COLORS.white}
+          style={{ position: 'absolute', top: hp(8), left: wp(5) }}
+        />
+      </TouchableOpacity>
+
       <Content>
         <ProfileImg>
           <UserImage source={profile} />
+          <EditBtn onPress={onPressEditBtn}>
+            <Feather name={'edit-2'} size={25} color={COLORS.main} />
+          </EditBtn>
         </ProfileImg>
-        <Info></Info>
+        <Info>
+          <Nickname>{nickname} 님</Nickname>
+        </Info>
       </Content>
+      <Finish onPress={onPressFinishBtn}>
+        <FinishTxt>완료</FinishTxt>
+      </Finish>
     </Container>
   );
 }
@@ -33,27 +57,59 @@ function OwnerTopTab(props) {
 const Container = styled.View`
   background-color: ${COLORS.main};
   display: flex;
-  height: ${hp(30)}px;
+  height: ${hp(35)}px;
   width: 100%;
-  align-items: center;
 `;
 
 const Content = styled.View`
-  flex-direction: row;
   margin-top: ${hp(10)}px;
   align-items: center;
-  margin-left: ${wp(-2)}px;
 `;
 
 const UserImage = styled.Image`
-  width: ${RFValue(70)}px;
-  height: ${RFValue(70)}px;
+  width: ${RFValue(110)}px;
+  height: ${RFValue(110)}px;
 `;
 
-const ProfileImg = styled.View`
-  margin-right: ${wp(5)}px;
+const EditBtn = styled.TouchableOpacity`
+  background-color: ${COLORS.white};
+  border-radius: 50%;
+  padding: 5px;
+  position: absolute;
+  top: ${hp(11)}px;
+  left: ${wp(23)}px;
 `;
 
-const Info = styled.View``;
+const ProfileImg = styled.View``;
+
+const Info = styled.View`
+  margin-top: ${hp(2)}px;
+`;
+
+const Nickname = styled.Text`
+  color: ${COLORS.white};
+  font-size: ${RFValue(22)}px;
+  font-weight: bold;
+  margin-bottom: ${hp(1)}px;
+`;
+
+const Finish = styled.TouchableOpacity`
+  position: absolute;
+  right: ${wp(5)}px;
+  top: ${hp(8)}px;
+
+  background-color: ${COLORS.white};
+  width: ${RFValue(60)}px;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  border-radius: 4.36px;
+`;
+
+const FinishTxt = styled.Text`
+  color: ${COLORS.main};
+  font-size: ${RFValue(16)}px;
+  font-weight: 600;
+`;
 
 export default OwnerTopTab;
