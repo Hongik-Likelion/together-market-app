@@ -13,7 +13,7 @@ function MarketSelectScreen() {
 
   const [searchText, setSearchText] = useState("");
   const [marketExists, setMarketExists] = useState(false);
-  const [selectedMarket, setSelectedMarket] = useState("");
+  // const [selectedMarket, setSelectedMarket] = useState("");
   
   // 시장 더미데이터
   const dummyMarkets = [
