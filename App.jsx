@@ -8,6 +8,8 @@ import OwnerSignUpScreen from '@screens/signup/owner/OwnerSignUpScreen';
 import UserSignUpScreen from '@screens/signup/user/UserSignUpScreen';
 import OwnerSignUpFoodScreen from '@screens/signup/owner/OwnerSignUpFoodScreen';
 import OwnerSignUpSpecificScreen from '@screens/signup/owner/OwnerSignUpSpecificScreen';
+import OwnerGuideYoutube from '@screens/signup/owner/OwnerGuideYoutube';
+import UserGuideYoutube from '@screens/signup/user/UserGuideYoutube';
 import React, { useState } from 'react';
 import HomeTabRoutes from 'routes/HomeTabRoutes';
 
@@ -78,6 +80,20 @@ export default function App() {
           <Stack.Screen
             name={'guideSignUpScreen'}
             component={GuideSignUpScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name={'ownerGuideYoutube'}
+            component={OwnerGuideYoutube}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name={'userGuideYoutube'}
+            component={UserGuideYoutube}
             options={{
               headerShown: false,
             }}
