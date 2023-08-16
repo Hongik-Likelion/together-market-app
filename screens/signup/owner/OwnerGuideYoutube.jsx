@@ -14,6 +14,7 @@ function OwnerGuideYoutube(props) {
   }, []);
 
   return (
+    //나중에 영상 만들어지면, 해당 영상 ID로 바꿔야함
     <Container>
       <YoutubePlayer height={300} play={playing} videoId={'fMiN67xd2zQ'} onChangeState={onStateChange} />
     </Container>
