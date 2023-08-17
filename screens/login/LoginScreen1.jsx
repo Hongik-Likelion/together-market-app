@@ -51,6 +51,32 @@ function LoginScreen1() {
     kakaoLogin();
   };
 
+  /* 카카오 로그인 부분
+  const onPressKakao = () => {
+    async function kakaoLogin() {
+      try {
+        const token = await KakaoLogins.login();
+        console.log('login success!');
+        console.log(format(token));
+      } catch (err) {}
+
+      try {
+        const profile = await KakaoLogins.getProfile();
+        const { nickname, email, gender } = profile;
+
+        await AsyncStorage.setItem('email', email);
+        await AsyncStorage.setItem('nickname', nickname);
+        await AsyncStorage.setItem('gender', gender);
+
+        // 만약 회원 data가 없으면, loginScreen2로 가고
+        // 있으면 곧바로 home으로 부분 추가해야함.
+        navigation.navigate('loginScreen2');
+      } catch (err) {}
+    }
+
+    kakaoLogin();
+  };
+  */
   return (
     <>
       <MainBackground source={require('@assets/login/Login1Background.png')} />

@@ -10,24 +10,26 @@ const Stack = createNativeStackNavigator();
 
 function MarketInfoScreenNavigator() {
   return (
-      <Stack.Navigator initialRouteName={'marketInfo'}>
+    <Stack.Navigator initialRouteName={'marketInfo-list'}>
+      {/*기본적으로 시장정보 탭 눌렀을 때*/}
+      <Stack.Screen
+        name={'marketInfo-list'}
+        component={MarketInfoScreen}
+        options={{
+          headerTitle: '',
+        }}
+      />
 
-        {/*기본적으로 시장정보 탭 눌렀을 때*/}
-        <Stack.Screen name={'marketInfo-list'} component={MarketInfoScreen}
-          options={{
-            headerTitle: ''
-          }}
-        />
-
-        {/*시장정보 게시물 눌렀을 떄 더 자세하게 게시물 보여줌*/}
-        <Stack.Screen name={'marketInfo-detail'} component={MarketInfoDetailScreen}
-          options={{
-            headerTitle: '',
-            headerLeft: () => <HeaderWithBackButton title={'시장 정보 알아보기'}/>,
-          }}
-        />
-
-      </Stack.Navigator>
+      {/*시장정보 게시물 눌렀을 떄 더 자세하게 게시물 보여줌*/}
+      <Stack.Screen
+        name={'marketInfo-detail'}
+        component={MarketInfoDetailScreen}
+        options={{
+          headerTitle: '',
+          headerLeft: () => <HeaderWithBackButton title={'시장 정보 알아보기'} />,
+        }}
+      />
+    </Stack.Navigator>
   );
 }
 

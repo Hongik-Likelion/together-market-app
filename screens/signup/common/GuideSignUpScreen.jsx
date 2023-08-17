@@ -19,16 +19,20 @@ function GuideSignUpScreen(props) {
   const onPressPreviousBtn = () => {
     selectGuide('');
     if (userType === 1) {
-      navigation.navigate('ownerSignUpScreen'); // 이 부분 나중에 사장님 회원가입 부분 만들고 수정되어야함
+      navigation.navigate('ownerSignUpSpecificScreen');
     } else if (userType === 2) {
       navigation.navigate('userSignUpScreen');
     }
   };
 
   const onPressContinueBtn = () => {
-    //(userType)이 1이라면 안내 동영상으로, 2라면 홈페이지로
-    navigation.navigate('home-tab'); //우선은 홈으로
+    if (guide === 1) {
+      navigation.navigate('home-tab', { screen: 'marketInfo' });
+    } else {
+      navigation.navigate('home-tab');
+    }
   };
+
   return (
     <Container>
       <GuideTopTab />

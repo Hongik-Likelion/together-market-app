@@ -1,63 +1,101 @@
 import { COLORS } from 'colors';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { styled } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { getAllMarkets } from 'api/auth';
+import { View, Text } from 'react-native';
 
-function SelectMarketTab({ setAddedMarket, content, onChangeLocation, onPressAdd }) {
-  const tempmarketList = ['망원시장', '광장시장', 'A시장', 'B시장'];
+function SelectMarketTab({ addedMarket, setAddedMarket, content, onChangeLocation, onPressAdd }) {
+  //시장 조회 API
+  const [ShopData, setShopData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    getAllMarkets()
+      .then((res) => {
+        //console.log(format(res.data));
+        setShopData(res.data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsError(true);
+        setIsLoading(false);
+      });
+  }, []);
+
+  //입력받은 시장 존재하는지
   const [existMarket, setExistMarket] = useState(false);
 
   const findMarketList = (text) => {
-    if (tempmarketList.includes(text)) {
+    const foundMarket = ShopData.find((item) => item.market_name === text);
+
+    if (foundMarket) {
       setExistMarket(true);
     } else {
       setExistMarket(false);
     }
   };
 
+  if (isLoading) {
+    return (
+      <View>
+        <Text>로딩중...</Text>
+      </View>
+    );
+  }
+
+  if (isError) {
+    return (
+      <View>
+        <Text>에러 발생</Text>
+      </View>
+    );
+  }
+
   return (
     <>
-      <KeyboardAwareScrollView>
-        <Tab>
-          <Input
-            value={content}
-            onChangeText={(text) => {
-              onChangeLocation(text);
-              findMarketList(text);
+      <Tab>
+        <Input
+          value={content}
+          onChangeText={(text) => {
+            onChangeLocation(text);
+            findMarketList(text);
+          }}
+          placeholder="망원시장"
+          placeholderTextColor={COLORS.gray01}
+          editable={!addedMarket}
+        />
+        {existMarket ? (
+          <Ionicons
+            name={'add'}
+            size={25}
+            color={COLORS.main}
+            style={{ position: 'absolute', top: hp(5), right: 30 }}
+            onPress={() => {
+              setAddedMarket(true);
+              setExistMarket(false);
+              onChangeLocation('');
+              onPressAdd();
             }}
-            placeholder="망원시장"
-            placeholderTextColor={COLORS.gray01}
           />
-          {existMarket ? (
-            <Ionicons
-              name={'add'}
-              size={25}
-              color={COLORS.main}
-              style={{ position: 'absolute', top: hp(5), right: 30 }}
-              onPress={() => {
-                setAddedMarket(true);
-                setExistMarket(false);
-                onChangeLocation('');
-                onPressAdd();
-              }}
-            />
-          ) : (
-            <Feather
-              name={'search'}
-              size={25}
-              color={COLORS.main}
-              style={{ position: 'absolute', top: hp(5), right: 30 }}
-            />
-          )}
-        </Tab>
-      </KeyboardAwareScrollView>
+        ) : (
+          <Feather
+            name={'search'}
+            size={25}
+            color={COLORS.main}
+            style={{ position: 'absolute', top: hp(5), right: 30 }}
+          />
+        )}
+      </Tab>
 
-      <SubTxt>한 곳 이상 설정해주세요. (필수)</SubTxt>
+      <SubTxt>복수 입력 불가</SubTxt>
     </>
   );
 }

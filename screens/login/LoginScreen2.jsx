@@ -1,16 +1,61 @@
+import React, { useState } from 'react';
+// import { Platform } from 'react-native';
 import { AccessPhoto, AccessCamera, StartBtn } from '@assets/login/LoginScreen2Icon';
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
+// import { check, request } from 'react-native-permissions';
 
-function LoginScreen2() {
+const LoginScreen2 = () => {
   const navigation = useNavigation();
 
   const onPressStart = () => {
     navigation.navigate('commonSignUpScreen');
   };
+
+  //엑세스 허용 시도 부분
+  /*
+  const requestPhotoPermission = async () => {
+    const permission = Platform.OS === 'android' ? 'android.permission.READ_EXTERNAL_STORAGE' : 'photo';
+
+    try {
+      const result = await check(permission);
+      if (result === 'denied' || result === 'blocked') {
+        const granted = await request(permission);
+        if (granted === 'granted') {
+          console.log('사진 엑세스 권한 허용됨');
+        } else {
+          console.log('사진 엑세스 권한 거부됨');
+        }
+      } else if (result === 'granted') {
+        console.log('이미 사진 엑세스 권한이 허용되어 있음');
+      }
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+
+  const requestCameraPermission = async () => {
+    const permission = Platform.OS === 'android' ? 'android.permission.CAMERA' : 'camera';
+
+    try {
+      const result = await check(permission);
+      if (result === 'denied' || result === 'blocked') {
+        const granted = await request(permission);
+        if (granted === 'granted') {
+          console.log('카메라 엑세스 권한 허용됨');
+        } else {
+          console.log('카메라 엑세스 권한 거부됨');
+        }
+      } else if (result === 'granted') {
+        console.log('이미 카메라 엑세스 권한이 허용되어 있음');
+      }
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+  */
 
   return (
     <>
@@ -22,6 +67,11 @@ function LoginScreen2() {
         <AccessIcon>
           <AccessPhoto />
           <AccessCamera />
+
+          {/* 
+          <AccessPhoto onPress={requestPhotoPermission} />
+          <AccessCamera onPress={requestCameraPermission} />
+          */}
         </AccessIcon>
         <Icon onPress={onPressStart}>
           <StartBtn />
@@ -29,8 +79,7 @@ function LoginScreen2() {
       </Container>
     </>
   );
-}
-
+};
 const MainBackground2 = styled.Image`
   position: absolute;
   z-index: -1;
