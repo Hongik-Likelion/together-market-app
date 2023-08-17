@@ -11,21 +11,34 @@
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
+    "plugins": [
+      [
+        "@react-native-seoul/kakao-login",
+        {
+          "kakaoAppKey": "311500b29c50356116384b49bcd20593",
+          "kotlinVersion": "1.5.20"
+        }
+      ]
     ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.rpdyddns.togethermarketapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/LoadingPage.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.togethermarketapp"
+      "package": "com.rpdyddns.togethermarketapp"
     },
     "web": {
       "favicon": "./assets/LoadingPage.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "71e3060f-d7e1-4e49-84ff-acf5aaa64b3e"
+      }
     }
   }
 }
