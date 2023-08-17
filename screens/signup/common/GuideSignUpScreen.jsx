@@ -26,8 +26,8 @@ function GuideSignUpScreen(props) {
   };
 
   const onPressContinueBtn = () => {
-    if (guide == 1) {
-      userType == 1 ? navigation.navigate('ownerGuideYoutube') : navigation.navigate('userGuideYoutube');
+    if (guide === 1) {
+      navigation.navigate('home-tab', { screen: 'marketInfo' });
     } else {
       navigation.navigate('home-tab');
     }
