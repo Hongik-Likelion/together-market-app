@@ -1,23 +1,63 @@
 import { COLORS } from 'colors';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { styled } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { getAllMarkets } from 'api/auth';
+import { View, Text } from 'react-native';
 
 function GetMarketTab({ addedMarket, setAddedMarket, content, onChangeLocation, onPressAdd }) {
-  const tempmarketList = ['망원시장', '광장시장'];
+  //시장 조회 API
+  const [ShopData, setShopData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    getAllMarkets()
+      .then((res) => {
+        //console.log(format(res.data));
+        setShopData(res.data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsError(true);
+        setIsLoading(false);
+      });
+  }, []);
+
+  //입력받은 시장 존재하는지
   const [existMarket, setExistMarket] = useState(false);
 
   const findMarketList = (text) => {
-    if (tempmarketList.includes(text)) {
+    const foundMarket = ShopData.find((item) => item.market_name === text);
+
+    if (foundMarket) {
       setExistMarket(true);
     } else {
       setExistMarket(false);
     }
   };
+
+  if (isLoading) {
+    return (
+      <View>
+        <Text>로딩중...</Text>
+      </View>
+    );
+  }
+
+  if (isError) {
+    return (
+      <View>
+        <Text>에러 발생</Text>
+      </View>
+    );
+  }
 
   return (
     <>
