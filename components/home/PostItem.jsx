@@ -125,17 +125,17 @@ function PostItem({profile, user, name, rating, date, content, image, like, comm
                             <RatingStar rating={rating}/>
                             <RatingModalLabel>{rating}<Label>/5</Label></RatingModalLabel>
                         </RatingModal>
+
                         <SubGroup>
-                            <LeftGroup>
-                                <Title>주소</Title>
-                                <Title>영업시간</Title>
-                                <Title>판매 상품</Title>
-                            </LeftGroup>
-                            <RightGroup>
-                                <Detail>{address}</Detail>
-                                <Detail>{time}</Detail>
-                                <Detail>{goods}</Detail>
-                            </RightGroup>
+                            <FirstLine>
+                                <Title>주소</Title><Detail>{address}</Detail>
+                            </FirstLine>
+                            <SecondLine>
+                                <Title>영업시간</Title><Detail>{time}</Detail>
+                            </SecondLine>
+                            <ThirdLine>
+                                <Title>판매 상품</Title><Detail>{goods}</Detail>
+                            </ThirdLine>
                         </SubGroup>
                     </MarketInfoModal>
                     </TouchableWithoutFeedback>
@@ -251,15 +251,15 @@ const BoxLabel = styled.Text`
 
 
 const MarketInfoModal = styled.View`
-
     background-color: #FFFFFF;
     border: solid 2px ${COLORS.main};
     border-radius: 10px;
     margin-left: ${wp(5)}px;
     margin-right: ${wp(5)}px;
-    height: 180px;
+    
     margin-top: ${hp(55)}px;
     padding: 15px;
+    
 
 `;
 
@@ -307,28 +307,34 @@ const Label = styled.Text`
 `;
 
 const SubGroup = styled.View`
+    width: 100%;
+`;
+
+const FirstLine = styled.View`
     flex-direction: row;
-    
 `;
 
-const LeftGroup = styled.View`
-
+const SecondLine = styled.View`
+    flex-direction: row;
 `;
 
-const RightGroup = styled.View`
-  
+const ThirdLine = styled.View`
+    flex-direction: row;
 `;
 
 const Title = styled.Text`
     font-size: ${RFValue(13)}px;
     font-weight: 700;
-    line-height: 28px;
+    width: 24%;
+    line-height: 25px;
+
 `;
 
 const Detail = styled.Text`
     font-size: ${RFValue(13)}px;
-    line-height: 28px;
-    margin-left: 13px;
+    width: 76%;
+    line-height: 25px;
+
 `;
 
 const Container = styled.View`
@@ -392,7 +398,7 @@ const Name = styled.Text`
 
 const Rating = styled.Text`
     font-size: ${RFValue(10)}px;
-    width: ${wp(25)}px;
+    width: ${wp(30)}px;
 
 `;
 
