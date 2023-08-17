@@ -6,7 +6,6 @@ import { styled } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { getAllMarkets } from 'api/auth';
 import { View, Text } from 'react-native';
-import format from 'pretty-format';
 
 function MarketChangeInfo({ favMarket, changedFavMarket, onChangeFavMarket, getChangedMarketName }) {
   //시장 조회 API
