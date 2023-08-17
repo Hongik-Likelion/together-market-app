@@ -11,11 +11,6 @@ function UserTopTab(props) {
   const { nickname, profile } = props;
   const navigation = useNavigation();
 
-  const onPressFinishBtn = () => {
-    //!!!!!!!!! [추가] 여기서 이제 수정완료된 정보들을 백에 넘겨주는 API를 작성해야함
-    navigation.navigate('profile-screen');
-  };
-
   const onPressPreviousBtn = () => {
     navigation.navigate('profile-screen');
   };
@@ -33,15 +28,16 @@ function UserTopTab(props) {
 
       <Content>
         <ProfileImg>
-          <UserImage source={profile} />
+          <UserImage
+            source={{
+              uri: profile,
+            }}
+          />
         </ProfileImg>
         <Info>
           <Nickname>{nickname} 님</Nickname>
         </Info>
       </Content>
-      <Finish onPress={onPressFinishBtn}>
-        <FinishTxt>완료</FinishTxt>
-      </Finish>
     </Container>
   );
 }
@@ -74,25 +70,6 @@ const Nickname = styled.Text`
   font-size: ${RFValue(22)}px;
   font-weight: bold;
   margin-bottom: ${hp(1)}px;
-`;
-
-const Finish = styled.TouchableOpacity`
-  position: absolute;
-  right: ${wp(5)}px;
-  top: ${hp(8)}px;
-
-  background-color: ${COLORS.white};
-  width: ${RFValue(60)}px;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
-  border-radius: 4.36px;
-`;
-
-const FinishTxt = styled.Text`
-  color: ${COLORS.main};
-  font-size: ${RFValue(16)}px;
-  font-weight: 600;
 `;
 
 export default UserTopTab;

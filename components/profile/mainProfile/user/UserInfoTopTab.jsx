@@ -5,6 +5,7 @@ import React from 'react';
 import { styled } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import format from 'pretty-format';
 
 function UserInfoTopTab(props) {
   const { nickname, profile, introduction, is_owner, myPostingsCount, myFavMarketsCount, favMarket } = props;
@@ -17,6 +18,7 @@ function UserInfoTopTab(props) {
       introduction: introduction,
       favMarket: favMarket,
     });
+    console.log(format(favMarket));
   };
 
   const onPressWriteBtn = () => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import UserInfoTopTab from '@components/profile/mainProfile/user/UserInfoTopTab';
 import MyPostingList from '@components/profile/mainProfile/user/MyPostingList';
 import FavMarkList from '@components/profile/mainProfile/user/FavMarkList';
@@ -9,6 +9,7 @@ import { COLORS } from 'colors';
 import { fetchUserInfo, fetchMyPost, fetchMyfavShop } from 'api/auth';
 import { View, Text } from 'react-native';
 import format from 'pretty-format';
+import { useFocusEffect } from '@react-navigation/native';
 
 function UserProfileScreen() {
   //개인정보 조회 API
@@ -38,52 +39,56 @@ function UserProfileScreen() {
     selectFavMark(true);
   };
 
-  useEffect(() => {
-    setIsLoading(true);
-    fetchUserInfo()
-      .then((res) => {
-        console.log(format(res.data));
-        setUserData(res.data);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsError(true);
-        setIsLoading(false);
-      });
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      setIsLoading(true);
+      fetchUserInfo()
+        .then((res) => {
+          console.log(format(res.data));
+          setUserData(res.data);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsError(true);
+          setIsLoading(false);
+        });
+    }, []),
+  );
 
-  useEffect(() => {
-    setPostIsLoading(true);
-    fetchMyPost()
-      .then((res) => {
-        console.log(format(res.data));
-        setmyPostData(res.data);
-        setPostIsLoading(false);
-      })
-      .catch((err) => {
-        console.log('fetchMyPost');
-        console.log(err);
-        setPostIsError(true);
-        setPostIsLoading(false);
-      });
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      setPostIsLoading(true);
+      fetchMyPost()
+        .then((res) => {
+          console.log(format(res.data));
+          setmyPostData(res.data);
+          setPostIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setPostIsError(true);
+          setPostIsLoading(false);
+        });
+    }, []),
+  );
 
-  useEffect(() => {
-    setFavShopIsLoading(true);
-    fetchMyfavShop()
-      .then((res) => {
-        console.log(format(res.data));
-        setmyfavShopData(res.data);
-        setFavShopIsLoading(false);
-      })
-      .catch((err) => {
-        console.log('fetchMyFavSHop');
-        console.log(err);
-        setFavShopIsError(true);
-        setFavShopIsLoading(false);
-      });
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      setFavShopIsLoading(true);
+      fetchMyfavShop()
+        .then((res) => {
+          console.log(format(res.data));
+          setmyfavShopData(res.data);
+          setFavShopIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setFavShopIsError(true);
+          setFavShopIsLoading(false);
+        });
+    }, []),
+  );
 
   if (isLoading || isPostLoading || isfavShopLoading) {
     return (
@@ -111,7 +116,7 @@ function UserProfileScreen() {
           is_owner={userData.is_owner}
           myPostingsCount={myPostData ? myPostData.length : 0}
           myFavMarketsCount={myfavShopData ? myfavShopData.length : 0}
-          favMarket={userData.favMarket}
+          favMarket={userData.favourite_market.length > 0 ? userData.favourite_market[0].market_name : ' '}
         />
       )}
       <SelectMenu>
