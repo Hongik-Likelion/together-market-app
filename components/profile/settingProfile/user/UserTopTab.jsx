@@ -5,7 +5,6 @@ import React from 'react';
 import { styled } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import Feather from 'react-native-vector-icons/Feather';
 import { TouchableOpacity } from 'react-native';
 
 function UserTopTab(props) {
@@ -19,10 +18,6 @@ function UserTopTab(props) {
 
   const onPressPreviousBtn = () => {
     navigation.navigate('profile-screen');
-  };
-
-  const onPressEditBtn = () => {
-    //!!!!!!!!!!! [추가] 사진 수정되는 부분 추가해야함
   };
 
   return (
@@ -39,9 +34,6 @@ function UserTopTab(props) {
       <Content>
         <ProfileImg>
           <UserImage source={profile} />
-          <EditBtn onPress={onPressEditBtn}>
-            <Feather name={'edit-2'} size={25} color={COLORS.main} />
-          </EditBtn>
         </ProfileImg>
         <Info>
           <Nickname>{nickname} 님</Nickname>
@@ -69,15 +61,6 @@ const Content = styled.View`
 const UserImage = styled.Image`
   width: ${RFValue(110)}px;
   height: ${RFValue(110)}px;
-`;
-
-const EditBtn = styled.TouchableOpacity`
-  background-color: ${COLORS.white};
-  border-radius: 50%;
-  padding: 5px;
-  position: absolute;
-  top: ${hp(11)}px;
-  left: ${wp(23)}px;
 `;
 
 const ProfileImg = styled.View``;

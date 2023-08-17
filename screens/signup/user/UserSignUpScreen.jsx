@@ -78,17 +78,18 @@ function UserSignUpScreen() {
     </Container>
   );
 }
-const UserSignUpHeaderContainer = styled.View`
-  position: absolute;
-  left: 0;
-  right: 0;
-  align-items: center;
-`;
 
 const Container = styled.View`
   background-color: white;
   flex: 1;
   position: relative;
+`;
+
+const UserSignUpHeaderContainer = styled.View`
+  position: absolute;
+  left: 0;
+  right: 0;
+  align-items: center;
 `;
 
 const MainInfoTxt1 = styled.Text`

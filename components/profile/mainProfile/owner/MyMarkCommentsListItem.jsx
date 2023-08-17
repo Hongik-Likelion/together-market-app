@@ -20,7 +20,11 @@ function MyMarkCommentListItem({ myMarkComment }) {
 
   return (
     <Container onPress={onPressPostingItem}>
-      <Photo source={board_info.photo} />
+      <Photo
+        source={{
+          uri: board_info.photo,
+        }}
+      />
       <Info>
         <Firstline>
           <UserName>{user_info.nickname}</UserName>

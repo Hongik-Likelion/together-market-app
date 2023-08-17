@@ -3,7 +3,6 @@ import React from 'react';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
-import Stars from '@assets/profile/MyPostingPage';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 // import { useNavigation } from '@react-navigation/native';
 
@@ -19,13 +18,17 @@ function OwnerPostingListItem({ myPosting }) {
 
   return (
     <Container onPress={onPressPostingItem}>
-      <Photo source={board_info.photo} />
+      <Photo
+        source={{
+          uri: board_info.photo,
+        }}
+      />
       <Info>
         <Firstline>
           <ShopName>{shop_info.shop_name}</ShopName>
         </Firstline>
 
-        <CreatedAt>{board_info.created_at}</CreatedAt>
+        <CreatedAt>{board_info.updated_at}</CreatedAt>
         <Content>{board_info.content}</Content>
         {board_info.content.length > 40 && (
           <ReadMore>

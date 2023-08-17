@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import OwnerInfoTopTab from '@components/profile/mainProfile/owner/OwnerInfoTopTab';
 import MyMarkCommentList from '@components/profile/mainProfile/owner/MyMarkCommentsList';
 import OwnerPostingList from '@components/profile/mainProfile/owner/OwnerPostingList';
@@ -9,106 +9,71 @@ import { styled } from 'styled-components/native';
 import { COLORS } from 'colors';
 
 function OwnerProfileScreen() {
-  //개인정보 조회 API 응답 데이터 예시
-  const userInfo = {
-    id: 1,
-    email: 'gdhkvdkd@gmail.com',
-    nickname: '바삭마차',
-    profile: require('@assets/profile/profileOwner.png'),
-    introduction: '바삭함으로 승부보는 튀김전문점 바삭마차',
-    is_owner: true,
-    opening_time: '11:00',
-    closing_time: '18:00',
-  };
+  //개인정보 조회 API
+  const [userData, setUserData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
-  // 나의 게시물 API 응답 데이터 예시
-  const myPostings = [
-    {
-      shop_info: {
-        shop_name: '바삭마차',
-      },
-      board_info: {
-        board_id: 1,
-        created_at: '2023.08.18',
-        photo: require('@assets/profile/myProfileMarket.png'),
-        content: '오늘도 맛있게 조리중입니다. 갓튀긴 바삭바삭한 돈까스와 바삭마차의 조화를 느껴보세요',
-      },
-    },
-  ];
+  useEffect(() => {
+    setIsLoading(true);
+    fetchUserInfo()
+      .then((res) => {
+        setUserData(res.userData);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsError(true);
+        setIsLoading(false);
+      });
+  }, []);
 
-  // 가게 후기 API 응답 데이터 예시
-  const myMarkComments = [
-    {
-      user_info: {
-        nickname: '나는야먹보',
-      },
-      board_info: {
-        board_id: 1,
-        created_at: '2023.08.18',
-        rating: 5,
-        photo: require('@assets/profile/myProfileMarket.png'),
-        content: '[바삭마차 리뷰] 와 튀김이 진짜 대박 완전 갓 튀겨가지고 맛있네용 사장님도 친절하시고',
-        like_count: 2,
-        is_liked: true,
-      },
-    },
-    {
-      user_info: {
-        nickname: '이것도사자',
-      },
-      board_info: {
-        board_id: 2,
-        created_at: '2023.08.18',
-        rating: 2,
-        photo: require('@assets/profile/myProfileMarket.png'),
-        content: '[바삭마차 리뷰] 와 튀김이 진짜 대박 완전 갓 튀겨가지고 맛있네용 사장님도 친절하시고',
-        like_count: 2,
-        is_liked: true,
-      },
-    },
-    {
-      user_info: {
-        nickname: '또다른사자',
-      },
-      board_info: {
-        board_id: 3,
-        created_at: '2023.08.18',
-        rating: 2,
-        photo: require('@assets/profile/myProfileMarket.png'),
-        content: '[바삭마차 리뷰] 와 튀김이 진짜 대박 완전 갓 튀겨가지고 맛있네용 사장님도 친절하시고',
-        like_count: 2,
-        is_liked: true,
-      },
-    },
-    {
-      user_info: {
-        nickname: '나는코끼리',
-      },
-      board_info: {
-        board_id: 4,
-        created_at: '2023.08.18',
-        rating: 2,
-        photo: require('@assets/profile/myProfileMarket.png'),
-        content: '[바삭마차 리뷰] 와 튀김이 진짜 대박 완전 갓 튀겨가지고 맛있네용 사장님도 친절하시고',
-        like_count: 2,
-        is_liked: true,
-      },
-    },
-    {
-      user_info: {
-        nickname: '배고파',
-      },
-      board_info: {
-        board_id: 5,
-        created_at: '2023.08.18',
-        rating: 2,
-        photo: require('@assets/profile/myProfileMarket.png'),
-        content: '[바삭마차 리뷰] 와 튀김이 진짜 대박 완전 갓 튀겨가지고 맛있네용 사장님도 친절하시고',
-        like_count: 2,
-        is_liked: true,
-      },
-    },
-  ];
+  //나의 게시물 API
+  const [myPostData, setMyPostData] = useState(null);
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetchMyPost()
+      .then((res) => {
+        setMyPostData(res.myPostData);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsError(true);
+        setIsLoading(false);
+      });
+  }, []);
+
+  //가게 후기 API
+  const [myMarkCommentData, setMyMarkCommentData] = useState(null);
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetchMyMarkComment()
+      .then((res) => {
+        setMyMarkCommentData(res.myMarkCommentData);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsError(true);
+        setIsLoading(false);
+      });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View>
+        <Text>로딩중...</Text>
+      </View>
+    );
+  }
+
+  if (isError) {
+    return (
+      <View>
+        <Text>에러 발생</Text>
+      </View>
+    );
+  }
 
   const [isMyPost, selectMyPost] = useState(true);
   const [isMarkComment, selecMarkComment] = useState(false);
@@ -125,14 +90,14 @@ function OwnerProfileScreen() {
   return (
     <Container>
       <OwnerInfoTopTab
-        nickname={userInfo.nickname}
-        profile={userInfo.profile}
-        introduction={userInfo.introduction}
-        is_owner={userInfo.is_owner}
-        myPostingsCount={myPostings.length}
-        myFavMarketsCount={myMarkComments.length}
-        opening_time={userInfo.opening_time}
-        closing_time={userInfo.closing_time}
+        nickname={userData.nickname}
+        profile={userData.profile}
+        introduction={userData.introduction}
+        is_owner={userData.is_owner}
+        myPostingsCount={myPostData.length}
+        myFavMarketsCount={myMarkCommentData.length}
+        opening_time={userData.market.opening_time}
+        closing_time={userData.market.closing_time}
       />
       <SelectMenu>
         <MyPost isMyPost={isMyPost} onPress={onPressMyPostBtn}>
@@ -144,9 +109,9 @@ function OwnerProfileScreen() {
       </SelectMenu>
       <ShowMainInfo>
         {isMarkComment ? (
-          <MyMarkCommentList myMarkComments={myMarkComments} />
+          <MyMarkCommentList myMarkComments={myMarkCommentData} />
         ) : (
-          <OwnerPostingList myPostings={myPostings} />
+          <OwnerPostingList myPostings={myPostData} />
         )}
       </ShowMainInfo>
     </Container>
