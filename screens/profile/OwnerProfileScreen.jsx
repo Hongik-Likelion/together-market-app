@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import OwnerInfoTopTab from '@components/profile/mainProfile/owner/OwnerInfoTopTab';
 import MyMarkCommentList from '@components/profile/mainProfile/owner/MyMarkCommentsList';
 import OwnerPostingList from '@components/profile/mainProfile/owner/OwnerPostingList';
+import { fetchUserInfo, fetchMyPost, fetchMyMarkComment } from 'api/auth';
 
 import { RFValue } from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
 import { COLORS } from 'colors';
+import { View, Text } from 'react-native';
+import format from 'pretty-format';
 
 function OwnerProfileScreen() {
   //개인정보 조회 API
@@ -18,46 +21,69 @@ function OwnerProfileScreen() {
     setIsLoading(true);
     fetchUserInfo()
       .then((res) => {
-        setUserData(res.userData);
+        console.log(format(res.data));
+        setUserData(res.data);
         setIsLoading(false);
       })
       .catch((err) => {
+        console.log('error fetchUserInfo');
+        console.log(err);
         setIsError(true);
         setIsLoading(false);
       });
   }, []);
 
   //나의 게시물 API
-  const [myPostData, setMyPostData] = useState(null);
+  const [myPostData, setmyPostData] = useState(null);
+  const [isPostLoading, setPostIsLoading] = useState(false);
+  const [isPostError, setPostIsError] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
+    setPostIsLoading(true);
     fetchMyPost()
       .then((res) => {
-        setMyPostData(res.myPostData);
-        setIsLoading(false);
+        console.log(format(res.data));
+        setmyPostData(res.data);
+        setPostIsLoading(false);
       })
       .catch((err) => {
-        setIsError(true);
-        setIsLoading(false);
+        console.log(err);
+        setPostIsError(true);
+        setPostIsLoading(false);
       });
   }, []);
 
-  //가게 후기 API
-  const [myMarkCommentData, setMyMarkCommentData] = useState(null);
+  // 가게 후기 API
+  const [myMarkCommentData, setmyMarkCommentData] = useState(null);
+  const [isCommentLoading, setCommentIsLoading] = useState(false);
+  const [isCommentError, setCommentIsError] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
+    setCommentIsLoading(true);
     fetchMyMarkComment()
       .then((res) => {
-        setMyMarkCommentData(res.myMarkCommentData);
-        setIsLoading(false);
+        console.log(format(res.data));
+        setmyMarkCommentData(res.data);
+        setCommentIsLoading(false);
       })
       .catch((err) => {
-        setIsError(true);
-        setIsLoading(false);
+        console.log('error myMarkComment');
+        console.log(err);
+        setCommentIsError(true);
+        setCommentIsLoading(false);
       });
   }, []);
+
+  const [isMyPost, selectMyPost] = useState(true);
+  const [isMarkComment, selecMarkComment] = useState(false);
+  const onPressMyPostBtn = () => {
+    selectMyPost(true);
+    selecMarkComment(false);
+  };
+  const onPressMarkCommentBtn = () => {
+    selectMyPost(false);
+    selecMarkComment(true);
+  };
 
   if (isLoading) {
     return (
@@ -75,30 +101,53 @@ function OwnerProfileScreen() {
     );
   }
 
-  const [isMyPost, selectMyPost] = useState(true);
-  const [isMarkComment, selecMarkComment] = useState(false);
+  if (isPostLoading) {
+    return (
+      <View>
+        <Text>로딩중...</Text>
+      </View>
+    );
+  }
 
-  const onPressMyPostBtn = () => {
-    selectMyPost(true);
-    selecMarkComment(false);
-  };
-  const onPressMarkCommentBtn = () => {
-    selectMyPost(false);
-    selecMarkComment(true);
-  };
+  if (isPostError) {
+    return (
+      <View>
+        <Text>에러 발생</Text>
+      </View>
+    );
+  }
+
+  if (isCommentLoading) {
+    return (
+      <View>
+        <Text>로딩중...</Text>
+      </View>
+    );
+  }
+
+  if (isCommentError) {
+    return (
+      <View>
+        <Text>에러 발생</Text>
+      </View>
+    );
+  }
 
   return (
     <Container>
-      <OwnerInfoTopTab
-        nickname={userData.nickname}
-        profile={userData.profile}
-        introduction={userData.introduction}
-        is_owner={userData.is_owner}
-        myPostingsCount={myPostData.length}
-        myFavMarketsCount={myMarkCommentData.length}
-        opening_time={userData.market.opening_time}
-        closing_time={userData.market.closing_time}
-      />
+      {userData !== null && (
+        <OwnerInfoTopTab
+          nickname={userData.nickname}
+          profile={userData.profile}
+          introduction={userData.introduction}
+          is_owner={userData.is_owner}
+          myPostingsCount={myPostData.length ? myPostData.length : 0}
+          myFavMarketsCount={2}
+          opening_time={userData.market.opening_time}
+          closing_time={userData.market.closing_time}
+        />
+      )}
+
       <SelectMenu>
         <MyPost isMyPost={isMyPost} onPress={onPressMyPostBtn}>
           <MyPostTxt isMyPost={isMyPost}>나의 게시물</MyPostTxt>
@@ -108,11 +157,9 @@ function OwnerProfileScreen() {
         </FavMark>
       </SelectMenu>
       <ShowMainInfo>
-        {isMarkComment ? (
-          <MyMarkCommentList myMarkComments={myMarkCommentData} />
-        ) : (
-          <OwnerPostingList myPostings={myPostData} />
-        )}
+        {isMarkComment
+          ? myMarkCommentData !== null && <MyMarkCommentList myMarkComments={myMarkCommentData} />
+          : myPostData !== null && <OwnerPostingList myPostings={myPostData} />}
       </ShowMainInfo>
     </Container>
   );
