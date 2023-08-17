@@ -20,7 +20,11 @@ function MyPostingListItem({ myPosting }) {
 
   return (
     <Container onPress={onPressPostingItem}>
-      <Photo source={board_info.photo} />
+      <Photo
+        source={{
+          uri: board_info.photo,
+        }}
+      />
       <Info>
         <Firstline>
           <ShopName>{shop_info.shop_name}</ShopName>
@@ -35,7 +39,7 @@ function MyPostingListItem({ myPosting }) {
           </Rating>
         </Firstline>
 
-        <CreatedAt>{board_info.created_at}</CreatedAt>
+        <CreatedAt>{board_info.updated_at}</CreatedAt>
         <Content>{board_info.content}</Content>
         {board_info.content.length > 40 && (
           <ReadMore>

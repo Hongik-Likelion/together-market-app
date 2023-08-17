@@ -39,7 +39,7 @@ function MyMarkCommentListItem({ myMarkComment }) {
           </Rating>
         </Firstline>
 
-        <CreatedAt>{board_info.created_at}</CreatedAt>
+        <CreatedAt>{board_info.updated_at}</CreatedAt>
         <Content>{board_info.content}</Content>
         {board_info.content.length > 47 && (
           <ReadMore>

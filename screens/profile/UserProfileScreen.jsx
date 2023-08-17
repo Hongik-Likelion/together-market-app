@@ -6,7 +6,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
 import { COLORS } from 'colors';
-import { fetchUserInfo, fetchMyfavShop, fetchMyPost } from 'api/auth';
+import { fetchUserInfo, fetchMyPost, fetchMyfavShop } from 'api/auth';
 import { View, Text } from 'react-native';
 import format from 'pretty-format';
 
@@ -15,6 +15,28 @@ function UserProfileScreen() {
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+
+  //나의 게시물 API
+  const [myPostData, setmyPostData] = useState(null);
+  const [isPostLoading, setPostIsLoading] = useState(false);
+  const [isPostError, setPostIsError] = useState(false);
+
+  //나의 관심 가게 API
+  const [myfavShopData, setmyfavShopData] = useState(null);
+  const [isfavShopLoading, setFavShopIsLoading] = useState(false);
+  const [isfavShopError, setFavShopIsError] = useState(false);
+
+  const [isMyPost, selectMyPost] = useState(true);
+  const [isFavMark, selectFavMark] = useState(false);
+
+  const onPressMyPostBtn = () => {
+    selectMyPost(true);
+    selectFavMark(false);
+  };
+  const onPressFavMarkBtn = () => {
+    selectMyPost(false);
+    selectFavMark(true);
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -31,27 +53,6 @@ function UserProfileScreen() {
       });
   }, []);
 
-  if (isLoading) {
-    return (
-      <View>
-        <Text>로딩중...</Text>
-      </View>
-    );
-  }
-
-  if (isError) {
-    return (
-      <View>
-        <Text>에러 발생</Text>
-      </View>
-    );
-  }
-
-  //나의 게시물 API
-  const [myPostData, setmyPostData] = useState(null);
-  const [isPostLoading, setPostIsLoading] = useState(false);
-  const [isPostError, setPostIsError] = useState(false);
-
   useEffect(() => {
     setPostIsLoading(true);
     fetchMyPost()
@@ -61,32 +62,12 @@ function UserProfileScreen() {
         setPostIsLoading(false);
       })
       .catch((err) => {
+        console.log('fetchMyPost');
         console.log(err);
         setPostIsError(true);
         setPostIsLoading(false);
       });
   }, []);
-
-  if (isPostLoading) {
-    return (
-      <View>
-        <Text>로딩중...</Text>
-      </View>
-    );
-  }
-
-  if (isPostError) {
-    return (
-      <View>
-        <Text>에러 발생</Text>
-      </View>
-    );
-  }
-
-  //나의 관심 가게 API
-  const [myfavShopData, setmyfavShopData] = useState(null);
-  const [isfavShopLoading, setFavShopIsLoading] = useState(false);
-  const [isfavShopError, setFavShopIsError] = useState(false);
 
   useEffect(() => {
     setFavShopIsLoading(true);
@@ -97,13 +78,14 @@ function UserProfileScreen() {
         setFavShopIsLoading(false);
       })
       .catch((err) => {
+        console.log('fetchMyFavSHop');
         console.log(err);
         setFavShopIsError(true);
         setFavShopIsLoading(false);
       });
   }, []);
 
-  if (isfavShopLoading) {
+  if (isLoading || isPostLoading || isfavShopLoading) {
     return (
       <View>
         <Text>로딩중...</Text>
@@ -111,25 +93,13 @@ function UserProfileScreen() {
     );
   }
 
-  if (isfavShopError) {
+  if (isError || isPostError || isfavShopError) {
     return (
       <View>
         <Text>에러 발생</Text>
       </View>
     );
   }
-
-  const [isMyPost, selectMyPost] = useState(true);
-  const [isFavMark, selectFavMark] = useState(false);
-
-  const onPressMyPostBtn = () => {
-    selectMyPost(true);
-    selectFavMark(false);
-  };
-  const onPressFavMarkBtn = () => {
-    selectMyPost(false);
-    selectFavMark(true);
-  };
 
   return (
     <Container>

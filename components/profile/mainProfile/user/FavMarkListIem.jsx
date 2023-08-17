@@ -9,11 +9,15 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 function FavMarkListItem({ myFavMarket }) {
   return (
     <Container>
-      <Photo source={myFavMarket.photo} />
+      {/* <Photo
+        source={{
+          uri: myFavMarket,
+        }}
+      /> */}
       <Info>
         <Firstline>
           <ShopName>{myFavMarket.shop_name}</ShopName>
-          <MarketName>{myFavMarket.market_name}</MarketName>
+          {/* <MarketName>{myFavMarket.market_name}</MarketName> */}
           <Heart>
             <AntDesign name={'heart'} size={RFValue(20)} color={COLORS.red} />
           </Heart>
@@ -26,7 +30,7 @@ function FavMarkListItem({ myFavMarket }) {
             color={COLORS.main}
             style={{ marginBottom: 2, marginRight: 4 }}
           />
-          <Rating>{myFavMarket.average_rating}</Rating>
+          <Rating>{myFavMarket.rating}</Rating>
         </Secondline>
         <Thirdline>
           <AddressTxt>주소</AddressTxt>
@@ -35,7 +39,7 @@ function FavMarkListItem({ myFavMarket }) {
         <Fourthline>
           <TimeTxt>영업시간</TimeTxt>
           <Time>
-            {myFavMarket.opening_frequency} {myFavMarket.opening_time}~{myFavMarket.opening_time}
+            {myFavMarket.opening_frequency} {myFavMarket.opening_time}~{myFavMarket.closing_time}
           </Time>
         </Fourthline>
       </Info>
@@ -54,11 +58,11 @@ const Container = styled.TouchableOpacity`
   border-bottom-color: ${COLORS.lightgray};
 `;
 
-const Photo = styled.Image`
-  margin-right: ${wp(2)}px;
-  width: ${RFValue(90)}px;
-  height: ${RFValue(90)}px;
-`;
+// const Photo = styled.Image`
+//   margin-right: ${wp(2)}px;
+//   width: ${RFValue(90)}px;
+//   height: ${RFValue(90)}px;
+// `;
 
 const Info = styled.View`
   flex: 1;
@@ -78,13 +82,13 @@ const ShopName = styled.Text`
   margin-top: ${hp(-0.2)}px;
 `;
 
-const MarketName = styled.Text`
-  font-size: ${RFValue(10)}px;
-  font-weight: bold;
-  margin-right: ${wp(3)}px;
-  margin-top: ${hp(-0.2)}px;
-  color: ${COLORS.darkgray};
-`;
+// const MarketName = styled.Text`
+//   font-size: ${RFValue(10)}px;
+//   font-weight: bold;
+//   margin-right: ${wp(3)}px;
+//   margin-top: ${hp(-0.2)}px;
+//   color: ${COLORS.darkgray};
+// `;
 
 const Heart = styled.View`
   position: absolute;

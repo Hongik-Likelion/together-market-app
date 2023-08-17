@@ -29,7 +29,11 @@ function UserInfoTopTab(props) {
       <AllContent>
         <Content>
           <ProfileImg>
-            <UserImage source={profile} />
+            <UserImage
+              source={{
+                uri: profile,
+              }}
+            />
           </ProfileImg>
           <Info>
             <Firstline>

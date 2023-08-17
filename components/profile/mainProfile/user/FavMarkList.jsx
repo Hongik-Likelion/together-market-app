@@ -7,7 +7,7 @@ function FavMarkList({ myFavMarkets }) {
     <Container>
       <FavMarkListScrollView>
         {myFavMarkets.map((myFavMarket) => (
-          <FavMarkListItem key={myFavMarket.market_name} myFavMarket={myFavMarket} />
+          <FavMarkListItem key={myFavMarket.shop_id} myFavMarket={myFavMarket} />
         ))}
       </FavMarkListScrollView>
     </Container>

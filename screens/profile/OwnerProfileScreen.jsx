@@ -47,6 +47,7 @@ function OwnerProfileScreen() {
         setPostIsLoading(false);
       })
       .catch((err) => {
+        console.log('error myPostData');
         console.log(err);
         setPostIsError(true);
         setPostIsLoading(false);
