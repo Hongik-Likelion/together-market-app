@@ -21,7 +21,7 @@ const Tab = createBottomTabNavigator();
  */
 function HomeTabRoutes() {
   return (
-    <Tab.Navigator initialRouteName="chat">
+    <Tab.Navigator initialRouteName="home">
       <Tab.Screen
         name="home"
         component={HomeScreenNavigator}
@@ -74,7 +74,6 @@ function HomeTabRoutes() {
             ),
         }}
       />
-
 
       <Tab.Screen
         name="profile"

@@ -15,13 +15,12 @@ function UserInfoTopTab(props) {
       nickname: nickname,
       profile: profile,
       introduction: introduction,
-      favMarket: favMarket, //자주 찾는 시장 이 부분 추가되어야할 것 같음
+      favMarket: favMarket,
     });
   };
 
   const onPressWriteBtn = () => {
-    //이거 게시물 작성하기 페이지로 넘어가야함 (수정필요)
-    navigation.navigate('home-tab');
+    navigation.navigate('home', { screen: 'user-posting' });
   };
 
   return (
