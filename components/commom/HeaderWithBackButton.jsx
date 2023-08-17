@@ -26,7 +26,7 @@ const BackButton = styled(SimpleLineIcons)`
 `;
 
 const Title = styled.Text`
-  font-size: ${RFValue(14)}px;
+  font-size: ${RFValue(18)}px;
   font-weight: 600;
 `;
 

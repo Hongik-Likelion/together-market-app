@@ -10,6 +10,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import ChatScreen from './chat/ChatScreen';
 import HomeScreenNavigator from './home/HomeScreenNavigator';
 import ProfileScreenNavigator from './profie/ProfileScreenNavigator';
+import MarketInfoScreenNavigator from './marketInfo/MarketInfoScreenNavigator';
+
 const Tab = createBottomTabNavigator();
 
 /**
@@ -24,10 +26,7 @@ function HomeTabRoutes() {
         name="home"
         component={HomeScreenNavigator}
         options={{
-          headerTitle: '',
-          headerTintColor: COLORS.white,
-          headerLeft: () => <MarketSelector />,
-          headerRight: () => <TabHeaderRight />,
+          headerShown: false,
           tabBarLabel: '홈',
           tabBarActiveTintColor: COLORS.main,
           tabBarInactiveTintColor: COLORS.black,
@@ -52,12 +51,30 @@ function HomeTabRoutes() {
           tabBarInactiveTintColor: COLORS.black,
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <Ionicons name="chatbubble-ellipses" size={RFValue(22)} color={COLORS.main} />
+              <Ionicons name="chatbubble-ellipses" size={RFValue(20)} color={COLORS.main} />
             ) : (
               <Ionicons name={'chatbubble-ellipses-outline'} size={RFValue(20)} />
             ),
         }}
       />
+
+      <Tab.Screen
+        name="marketInfo"
+        component={MarketInfoScreenNavigator}
+        options={{
+          headerShown: false,
+          tabBarLabel: '시장정보',
+          tabBarActiveTintColor: COLORS.main,
+          tabBarInactiveTintColor: COLORS.black,
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <Ionicons name="document-text" size={RFValue(20)} color={COLORS.main} />
+            ) : (
+              <Ionicons name={'document-text-outline'} size={RFValue(20)} />
+            ),
+        }}
+      />
+
 
       <Tab.Screen
         name="profile"

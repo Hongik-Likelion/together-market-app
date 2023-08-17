@@ -1,9 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components/native';
 import PostItem from './PostItem';
 import { FlatList } from 'react-native';
+import axios from 'axios';
 
 function Post() {
+
+  // const [postItems, setPostItems] = useState([]);
+
+//   useEffect(() => {
+//     axios.get('/markets')
+//     .then(res => {
+//       const markets= res.data;
+
+//       const boardData = markets.map(market => {
+//         const marketId = market.market_id;
+
+//         return axios.get(`/board?market_id=${marketId}`)
+//         .then(boardRes => boardRes.data);
+//       });
+
+//       Promise.all(boardDataPromises)
+//       .then(boardDataArray => {
+//         const combinedData = markets.map((market, index) => {
+//           return {
+//             ...market,
+//             boardData: boardDataArray[index],
+//           };
+//         });
+//       setPostItems(combinedData);
+//     })
+//     .catch(err => console.log('board data err', err));
+//   })
+//   .catch(err => console.log('market data err', err));
+// }, []);
+
   const postItems = [
     {
       id: 1,
