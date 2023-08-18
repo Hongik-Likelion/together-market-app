@@ -3,7 +3,7 @@ import GuideOption from '@components/signUp/guide/GuideOption';
 import GuideTopTab from '@components/signUp/guide/GuideTopTab';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
-import { UserInfo } from 'context/UserInfoContext';
+import { UserInfo } from 'context/AuthContext';
 import React, { useContext, useState } from 'react';
 import { Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';

@@ -1,16 +1,15 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useContext } from 'react';
-import { UserInfo } from 'context/UserInfoContext';
 import OwnerProfileScreen from '@screens/profile/OwnerProfileScreen';
-import UserProfileScreen from '@screens/profile/UserProfileScreen';
 import OwnerProfileSettingScreen from '@screens/profile/OwnerProfileSettingScreen';
+import UserProfileScreen from '@screens/profile/UserProfileScreen';
 import UserProfileSettingScreen from '@screens/profile/UserProfileSettingScreen';
 import { SharedStateProvider } from 'context/FavAndLikeContext';
+import React from 'react';
 
 const Stack = createNativeStackNavigator();
 
 function ProfileScreenNavigator() {
-  const { userType } = useContext(UserInfo);
+  const userType = 1;
 
   return (
     <SharedStateProvider>
