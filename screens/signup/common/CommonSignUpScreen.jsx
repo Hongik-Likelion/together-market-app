@@ -1,12 +1,12 @@
 import { OwnerSelect, CustomerSelect, PreviousBtn, ContinueBtn } from '@assets/signUp/CommonSignUpScreenIcon';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
-import { UserInfo } from 'context/UserInfoContext';
 import React, { useContext } from 'react';
 import { Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { UserInfo } from 'context/UserInfoContext';
 
 function CommonSignUpScreen() {
   const navigation = useNavigation();

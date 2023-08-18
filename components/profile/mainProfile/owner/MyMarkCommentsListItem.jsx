@@ -5,17 +5,17 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { styled } from 'styled-components/native';
 import Stars from '@assets/profile/MyPostingPage';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-// import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 function MyMarkCommentListItem({ myMarkComment }) {
   const { user_info, board_info } = myMarkComment;
   const numOfStars = board_info.rating;
 
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
 
-  //게시글 수정 페이지로 이동해야함. ( 나중에 소연 게시물 수정부분 API 진행한거보고 이 부분도 수정해야함)
+  //게시글 수정 페이지로 이동
   const onPressPostingItem = () => {
-    //navigation.navigate('home-detail');
+    navigation.navigate('owner-posting', board_info.board_id);
   };
 
   return (

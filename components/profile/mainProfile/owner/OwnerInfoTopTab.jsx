@@ -7,13 +7,22 @@ import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 function OwnerInfoTopTab(props) {
-  const { nickname, profile, introduction, is_owner, myPostingsCount, myFavMarketsCount, opening_time, closing_time } =
-    props;
+  const {
+    nickname,
+    profile,
+    introduction,
+    is_owner,
+    myPostingsCount,
+    myFavMarketsCount,
+    opening_time,
+    closing_time,
+    shop_name,
+  } = props;
   const navigation = useNavigation();
 
   const onPressSettingBtn = () => {
     navigation.navigate('owner-profile-setting', {
-      nickname: nickname,
+      shop_name: shop_name,
       profile: profile,
       introduction: introduction,
       opening_time: opening_time,
@@ -22,8 +31,7 @@ function OwnerInfoTopTab(props) {
   };
 
   const onPressWriteBtn = () => {
-    //이거 게시물 작성하기 페이지로 넘어가야함 (수정필요)
-    navigation.navigate('home-tab');
+    navigation.navigate('home', { screen: 'user-posting' });
   };
 
   return (
@@ -54,7 +62,7 @@ function OwnerInfoTopTab(props) {
               </SettingIcon>
             </Firstline>
 
-            <Nickname>{nickname} 님</Nickname>
+            <Nickname>{nickname}님</Nickname>
             <Introduction>{introduction}</Introduction>
             {is_owner ? (
               <StoredInfo>
@@ -138,7 +146,7 @@ const UserTypeOwn = styled.View`
 const SettingIcon = styled.TouchableOpacity`
   position: absolute;
   right: 0;
-  margin-right: ${wp(-2)}px;
+  margin-right: ${wp(-17)}px;
 `;
 
 const UserTypeOwner = styled.Text`

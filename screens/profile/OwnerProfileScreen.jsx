@@ -10,6 +10,7 @@ import { styled } from 'styled-components/native';
 import { COLORS } from 'colors';
 import { View, Text } from 'react-native';
 import format from 'pretty-format';
+import { useFocusEffect } from '@react-navigation/native';
 
 function OwnerProfileScreen() {
   //개인정보 조회 API
@@ -17,63 +18,69 @@ function OwnerProfileScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  useEffect(() => {
-    setIsLoading(true);
-    fetchUserInfo()
-      .then((res) => {
-        console.log(format(res.data));
-        setUserData(res.data);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log('error fetchUserInfo');
-        console.log(err);
-        setIsError(true);
-        setIsLoading(false);
-      });
-  }, []);
-
   //나의 게시물 API
   const [myPostData, setmyPostData] = useState(null);
   const [isPostLoading, setPostIsLoading] = useState(false);
   const [isPostError, setPostIsError] = useState(false);
-
-  useEffect(() => {
-    setPostIsLoading(true);
-    fetchMyPost()
-      .then((res) => {
-        console.log(format(res.data));
-        setmyPostData(res.data);
-        setPostIsLoading(false);
-      })
-      .catch((err) => {
-        console.log('error myPostData');
-        console.log(err);
-        setPostIsError(true);
-        setPostIsLoading(false);
-      });
-  }, []);
 
   // 가게 후기 API
   const [myMarkCommentData, setmyMarkCommentData] = useState(null);
   const [isCommentLoading, setCommentIsLoading] = useState(false);
   const [isCommentError, setCommentIsError] = useState(false);
 
-  useEffect(() => {
-    setCommentIsLoading(true);
-    fetchMyMarkComment()
-      .then((res) => {
-        console.log(format(res.data));
-        setmyMarkCommentData(res.data);
-        setCommentIsLoading(false);
-      })
-      .catch((err) => {
-        console.log('error myMarkComment');
-        console.log(err);
-        setCommentIsError(true);
-        setCommentIsLoading(false);
-      });
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      setIsLoading(true);
+      fetchUserInfo()
+        .then((res) => {
+          console.log(format(res.data));
+          setUserData(res.data);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log('error fetchUserInfo');
+          console.log(err);
+          setIsError(true);
+          setIsLoading(false);
+        });
+    }, []),
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setPostIsLoading(true);
+      fetchMyPost()
+        .then((res) => {
+          console.log(format(res.data));
+          setmyPostData(res.data);
+          setPostIsLoading(false);
+        })
+        .catch((err) => {
+          console.log('error myPostData');
+          console.log(err);
+          setPostIsError(true);
+          setPostIsLoading(false);
+        });
+    }, []),
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setCommentIsLoading(true);
+      fetchMyMarkComment()
+        .then((res) => {
+          console.log(format(res.data));
+          setmyMarkCommentData(res.data);
+          setCommentIsLoading(false);
+        })
+        .catch((err) => {
+          console.log('error myMarkComment');
+          console.log(err);
+          setCommentIsError(true);
+          setCommentIsLoading(false);
+        });
+    }, []),
+  );
 
   const [isMyPost, selectMyPost] = useState(true);
   const [isMarkComment, selecMarkComment] = useState(false);
@@ -86,7 +93,7 @@ function OwnerProfileScreen() {
     selecMarkComment(true);
   };
 
-  if (isLoading) {
+  if (isLoading || isPostLoading || isCommentLoading) {
     return (
       <View>
         <Text>로딩중...</Text>
@@ -94,39 +101,7 @@ function OwnerProfileScreen() {
     );
   }
 
-  if (isError) {
-    return (
-      <View>
-        <Text>에러 발생</Text>
-      </View>
-    );
-  }
-
-  if (isPostLoading) {
-    return (
-      <View>
-        <Text>로딩중...</Text>
-      </View>
-    );
-  }
-
-  if (isPostError) {
-    return (
-      <View>
-        <Text>에러 발생</Text>
-      </View>
-    );
-  }
-
-  if (isCommentLoading) {
-    return (
-      <View>
-        <Text>로딩중...</Text>
-      </View>
-    );
-  }
-
-  if (isCommentError) {
+  if (isError || isPostError || isCommentError) {
     return (
       <View>
         <Text>에러 발생</Text>
@@ -142,10 +117,11 @@ function OwnerProfileScreen() {
           profile={userData.profile}
           introduction={userData.introduction}
           is_owner={userData.is_owner}
-          myPostingsCount={myPostData.length ? myPostData.length : 0}
-          myFavMarketsCount={2}
+          myPostingsCount={myPostData ? myPostData.length : 0}
+          myFavMarketsCount={myMarkCommentData ? myMarkCommentData.length : 0}
           opening_time={userData.market.opening_time}
           closing_time={userData.market.closing_time}
+          shop_name={userData.market.shop_name}
         />
       )}
 

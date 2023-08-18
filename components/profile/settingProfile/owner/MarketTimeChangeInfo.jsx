@@ -6,7 +6,13 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; // 이전에 주어진 색상 관련 모듈은 사용되지 않았으므로 제거
 import { COLORS } from 'colors';
 
-function MarketTimeChangeInfo({ opening_time, closing_time, onSaveChangedTimeData }) {
+function MarketTimeChangeInfo({
+  changedStartTimeString,
+  changeEndTimeString,
+  opening_time,
+  closing_time,
+  onSaveChangedTimeData,
+}) {
   const formatTimeToDateHours = (timeStr) => {
     const [hours, minutes] = timeStr.split(':');
     const date = new Date();
@@ -29,6 +35,10 @@ function MarketTimeChangeInfo({ opening_time, closing_time, onSaveChangedTimeDat
   }, [startTime, endTime, onSaveChangedTimeData]);
 
   const formatTimeTo24Hours = (time) => {
+    console.log(changedStartTimeString);
+    console.log(changeEndTimeString);
+    console.log(opening_time);
+    console.log(closing_time);
     if (time instanceof Date) {
       const hours = time.getHours().toString().padStart(2, '0');
       const minutes = time.getMinutes().toString().padStart(2, '0');
@@ -71,7 +81,7 @@ function MarketTimeChangeInfo({ opening_time, closing_time, onSaveChangedTimeDat
             </StartTime>
             <StartTimeContainer>
               {showStartTimePicker && (
-                <DateTimePicker value={startTime} mode="time" display="spinner" onChange={onStartTimeChange} />
+                <DateTimePicker value={new Date()} mode="time" display="spinner" onChange={onStartTimeChange} />
               )}
             </StartTimeContainer>
           </Start>
@@ -89,7 +99,7 @@ function MarketTimeChangeInfo({ opening_time, closing_time, onSaveChangedTimeDat
             <EndTimeContainer>
               {showEndTimePicker && (
                 <DateTimePicker
-                  value={endTime}
+                  value={new Date()}
                   mode="time"
                   display="spinner"
                   onChange={onEndTimeChange}
