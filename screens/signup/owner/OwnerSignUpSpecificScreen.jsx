@@ -15,7 +15,6 @@ import GetOpenDay from '@components/signUp/owner/GetOpenDay';
 
 function OwnerSignUpSpecificScreen() {
   const route = useRoute();
-  const { marketName, sellFoods } = route.params;
   const navigation = useNavigation();
 
   const [marketAddress, setMarketAddress] = useState(''); // 가게 주소
@@ -37,15 +36,6 @@ function OwnerSignUpSpecificScreen() {
 
   const onPressContinueBtn = () => {
     if (marketAddress && mainProducts && startTimeString && endTimeString) {
-      // console로 저장된 값 확인
-      console.log('shop_name 가게이름:', marketName);
-      console.log('shop_address 가게 주소:', marketAddress);
-      console.log('selling_products 대표 상품명:', mainProducts);
-      console.log('opening_time 시작 영업시간:', startTimeString);
-      console.log('closing_time 종료 영업시간:', endTimeString);
-      console.log('opening_frequency 영업일:', openDays);
-      console.log('product_categories 판매하는 상품들:', sellFoods);
-
       navigation.navigate('guideSignUpScreen');
     }
   };

@@ -1,40 +1,28 @@
 import { PreviousBtn, ContinueBtn } from '@assets/signUp/CommonSignUpScreenIcon';
 import OwnerSignUpHeader from '@assets/signUp/OwnerSignUpScreen';
 import ChooseSellingFoodBtn from '@components/signUp/owner/ChooseSellingFoodBtn';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { v4 as uuidv4 } from 'uuid';
+import { Auth } from 'context/AuthContext';
 
 function OwnerSignUpFoodScreen() {
-  const route = useRoute();
-  const { marketName } = route.params;
+  const {
+    shop: [shopRequest, setShopRequest],
+  } = useContext(Auth);
+
+  const { product_categories } = shopRequest;
+
   const navigation = useNavigation();
-  const [sellFoods, selectSellFood] = useState([]); // 판매하는 상품 분류 저장 배열
-
-  const onSelectFood = (photoInfo) => {
-    const newSellFood = {
-      id: uuidv4(),
-      content: photoInfo,
-    };
-    selectSellFood((prev) => [...prev, newSellFood]);
-  };
-
-  const onDeleteFood = (selectedPhotoInfo) => {
-    selectSellFood((prev) => prev.filter((sellFood) => sellFood.content !== selectedPhotoInfo));
-  };
-
   const onPressPreviousBtn = () => navigation.navigate('ownerSignUpScreen');
 
   const onPressContinueBtn = () => {
-    navigation.navigate('ownerSignUpSpecificScreen', {
-      marketName: marketName,
-      sellFoods: sellFoods,
-    });
+    navigation.navigate('ownerSignUpSpecificScreen');
+    console.log(product_categories);
   };
 
   return (
@@ -54,11 +42,11 @@ function OwnerSignUpFoodScreen() {
         <Text style={{ color: COLORS.main }}>어떤 상품을 </Text>판매하시나요?
       </MainInfoTxt2>
       <SubTxt>판매하는 상품 분류를 한가지 이상 선택해주세요. (필수)</SubTxt>
-      <ChooseSellingFoodBtn sellFoods={sellFoods} onSelectFood={onSelectFood} onDeleteFood={onDeleteFood} />
+      <ChooseSellingFoodBtn />
       <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
       <ContinueBtn
-        fontColor={sellFoods.length > 0 ? 'white' : COLORS.main}
-        backColor={sellFoods.length > 0 ? COLORS.main : 'white'}
+        fontColor={product_categories.length > 0 ? 'white' : COLORS.main}
+        backColor={product_categories.length > 0 ? COLORS.main : 'white'}
         width={wp(100)}
         marginBottom={hp(6.15)}
         justifyContent="center"

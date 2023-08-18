@@ -3,6 +3,9 @@ import { client } from './client';
 // 로그인
 const login = (email) => client.post('/user/login/', { email });
 
+//먹거리 조회
+const fetchEatingCatergory = () => client.get('/products/', {});
+
 //[프로필] 개인 정보 조회
 const fetchUserInfo = () =>
   client.get('/user/info', {
@@ -57,4 +60,13 @@ const getAllMarkets = () =>
     },
   });
 
-export { fetchUserInfo, fetchMyPost, fetchMyfavShop, patchUserModify, fetchMyMarkComment, getAllMarkets, login };
+export {
+  fetchEatingCatergory,
+  fetchUserInfo,
+  fetchMyPost,
+  fetchMyfavShop,
+  patchUserModify,
+  fetchMyMarkComment,
+  getAllMarkets,
+  login,
+};

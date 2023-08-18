@@ -1,7 +1,6 @@
 import { PreviousBtn, ContinueBtn } from '@assets/signUp/CommonSignUpScreenIcon';
 import UserSignUpHeader from '@assets/signUp/UserSignUpScreen';
 import SelectMarketTab from '@components/signUp/user/SelectMarketTab';
-import SelectedMarketList from '@components/signUp/common/SelectedMarketList';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
 import React, { useState } from 'react';
@@ -64,7 +63,6 @@ function UserSignUpScreen() {
         onChangeLocation={onChangeLocation}
         onPressAdd={onPressAdd}
       />
-      <SelectedMarketList addedMarket={addedMarket} marketLocations={marketLocations} onPressDelete={onPressDelete} />
 
       <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
       <ContinueBtn
