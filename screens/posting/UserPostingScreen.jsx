@@ -31,13 +31,14 @@ function UserPostingScreen() {
   } = useContext(CommonPostingContext);
 
   const isOwner = route.params?.isOwner;
+  console.log(myPosting.board_info.rating);
 
   return (
     <Container>
       <KeyboardAwareScrollView>
-        <RatingStar></RatingStar>
+        <RatingStar rating={myPosting.board_info.rating}></RatingStar>
         <MarketName></MarketName>
-        <ShopName></ShopName>
+        <ShopName shopName={myPosting.shop_info.shop_name}></ShopName>
         <ItemCategory isOwner={isOwner}></ItemCategory>
         <Image></Image>
         <Review></Review>
