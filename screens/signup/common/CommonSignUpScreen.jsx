@@ -7,6 +7,7 @@ import { Text } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
+import format from 'pretty-format';
 
 function CommonSignUpScreen() {
   const navigation = useNavigation();
@@ -19,8 +20,8 @@ function CommonSignUpScreen() {
 
   const USER_TYPE = useMemo(
     () => ({
-      CUSTOMER: 1,
-      OWNER: 2,
+      CUSTOMER: 2,
+      OWNER: 1,
     }),
     [],
   );
@@ -34,17 +35,19 @@ function CommonSignUpScreen() {
 
   const onPressContinueBtn = () => {
     if (userType === CUSTOMER) {
+      console.log('고객입니다');
       setSignUpRequest((prev) => ({
         ...prev,
         is_owner: false,
       }));
-      navigation.navigate('ownerSignUpScreen');
+      navigation.navigate('userSignUpScreen');
     } else if (userType === OWNER) {
+      console.log('사장입니다');
       setSignUpRequest((prev) => ({
         ...prev,
         is_owner: true,
       }));
-      navigation.navigate('userSignUpScreen');
+      navigation.navigate('ownerSignUpScreen');
     }
   };
 
@@ -57,16 +60,16 @@ function CommonSignUpScreen() {
       <SubTxt>한 가지 유형을 선택해주세요. (필수)</SubTxt>
       <SelectOption>
         <OwnerSelect
-          backColor={userType === CUSTOMER ? '#E4FFF5' : '#FFFFFF'}
-          strokeColor={userType === CUSTOMER ? COLORS.main : COLORS.gray01}
-          fontColor={userType === CUSTOMER ? COLORS.black : '#666666'}
-          onPress={() => setUserType(CUSTOMER)}
-        />
-        <CustomerSelect
           backColor={userType === OWNER ? '#E4FFF5' : '#FFFFFF'}
           strokeColor={userType === OWNER ? COLORS.main : COLORS.gray01}
           fontColor={userType === OWNER ? COLORS.black : '#666666'}
           onPress={() => setUserType(OWNER)}
+        />
+        <CustomerSelect
+          backColor={userType === CUSTOMER ? '#E4FFF5' : '#FFFFFF'}
+          strokeColor={userType === CUSTOMER ? COLORS.main : COLORS.gray01}
+          fontColor={userType === CUSTOMER ? COLORS.black : '#666666'}
+          onPress={() => setUserType(CUSTOMER)}
         />
       </SelectOption>
       <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />

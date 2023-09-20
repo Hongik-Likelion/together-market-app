@@ -15,7 +15,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { RFValue } from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import styled from 'styled-components/native';
-import { v4 as uuidv4 } from 'uuid';
 
 function OwnerSignUpScreen() {
   const {
@@ -44,6 +43,8 @@ function OwnerSignUpScreen() {
     /** 시장 등록하고, 가게 이름 등록해야 다음으로 이동 가능 */
     if (market_id !== -1 && shop_name !== '') navigation.navigate('ownerSignUpFoodScreen');
   };
+
+  console.log(format(signUpRequest));
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>

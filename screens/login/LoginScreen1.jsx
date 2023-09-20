@@ -50,8 +50,8 @@ function LoginScreen1() {
 
     setSignUpRequest((prev) => ({
       ...prev,
-      email: 'hjhkkj@jkjk.com',
-      nickname: '사자',
+      email: 'fnjd@jkk.com',
+      nickname: '하위하',
       profile: 'https://example.com/profile-image.jpg', // 실제 이미지 URL로 대체
     }));
 

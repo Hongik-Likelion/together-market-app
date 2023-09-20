@@ -22,7 +22,6 @@ function OwnerSignUpFoodScreen() {
 
   const onPressContinueBtn = () => {
     navigation.navigate('ownerSignUpSpecificScreen');
-    console.log(product_categories);
   };
 
   return (
@@ -45,8 +44,8 @@ function OwnerSignUpFoodScreen() {
       <ChooseSellingFoodBtn />
       <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
       <ContinueBtn
-        fontColor={product_categories.length > 0 ? 'white' : COLORS.main}
-        backColor={product_categories.length > 0 ? COLORS.main : 'white'}
+        fontColor={product_categories ? 'white' : COLORS.main}
+        backColor={product_categories ? COLORS.main : 'white'}
         width={wp(100)}
         marginBottom={hp(6.15)}
         justifyContent="center"
