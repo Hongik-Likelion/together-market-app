@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import HomeScreen from '@screens/home/HomeScreen';
-import HomeDetailScreen from '@screens/home/HomeDetailScreen';
+
 
 import { SharedStateProvider } from 'context/FavAndLikeContext';
 import MarketSelectScreen from '@screens/home/MarketSelectScreen';
@@ -12,11 +12,13 @@ import MarketSelector from '@components/home/MarketSelector';
 import TabHeaderRight from '@components/commom/TabHeaderRight';
 import HeaderWithBackButton from '@components/commom/HeaderWithBackButton';
 import HeaderWithDelete from '@components/posting/HeaderWithDelete';
+import { ModalProvider } from 'context/MarketModalContext';
 
 const Stack = createNativeStackNavigator();
 
 function HomeScreenNavigator() {
   return (
+    <ModalProvider>
     <SharedStateProvider>
       <CommonPostingProvider>
       <Stack.Navigator initialRouteName={'home'}>
@@ -30,13 +32,13 @@ function HomeScreenNavigator() {
           }}
         />
 
-        {/*게시물 눌렀을 떄 더 자세하게 게시물 보여줌*/}
+        {/* 게시물 눌렀을 떄 더 자세하게 게시물 보여줌
         <Stack.Screen name={'home-detail'} component={HomeDetailScreen}
           options={{
             headerLeft: () => <HeaderWithBackButton title={'망원시장'}/>,
             headerTitle: ''
           }}
-        />
+        /> */}
 
         {/*상단탭에서 시장 선택할 수 있음*/}
         <Stack.Screen name={'market-select'} component={MarketSelectScreen}
@@ -65,6 +67,7 @@ function HomeScreenNavigator() {
       </Stack.Navigator>
       </CommonPostingProvider>
     </SharedStateProvider>
+    </ModalProvider>
   );
 }
 

@@ -4,9 +4,13 @@ import { COLORS } from 'colors';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { CommonPostingContext } from 'context/CommonPostingContext';
+import { useNavigation } from '@react-navigation/native';
 
 
 function PostingButton() {
+
+    const navigation = useNavigation();
+
     const {
         marketExists,
         shopExists,
@@ -17,12 +21,9 @@ function PostingButton() {
     const isAllFilled = marketExists && shopExists && selectedTag !== -1 && reviewText !== "";
     return (
         <Container>
-            <PostingBtn isAllFilled={isAllFilled} disabled={!isAllFilled}>
+            <PostingBtn isAllFilled={isAllFilled} disabled={!isAllFilled} onPress={() => navigation.navigate('home-list')}>
                 <ButtonLabel isAllFilled={isAllFilled}>게시물 올리기</ButtonLabel>
             </PostingBtn>
-            {/* <PostingBtn>
-                <ButtonLabel>게시물 올리기</ButtonLabel>
-            </PostingBtn> */}
         </Container>
     );
 }

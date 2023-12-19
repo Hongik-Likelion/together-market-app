@@ -6,13 +6,14 @@ import HomeTabRoutes from 'routes/HomeTabRoutes';
 import HeaderWithBackButton from '@components/commom/HeaderWithBackButton';
 import AlarmScreen from '@screens/AlarmScreen';
 import AuthRoutes from 'routes/AuthRoutes';
+
 const Stack = createNativeStackNavigator();
 
 //라우팅관련된 것은 다 app.js에서 (최상위 라우팅은 여기서)
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="auth">
+      <Stack.Navigator initialRouteName="home-tab">
         <Stack.Screen name="auth" component={AuthRoutes} options={{ headerShown: false }} />
 
         <Stack.Screen
@@ -32,6 +33,7 @@ export default function App() {
           }}
         />
       </Stack.Navigator>
-    </NavigationContainer>
+    </NavigationContainer>      
+
   );
 }

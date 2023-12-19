@@ -1,5 +1,5 @@
 import { COLORS } from 'colors';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { styled } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -11,15 +11,23 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Modal, Pressable, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSharedState } from 'context/FavAndLikeContext';
-import RatingStar from '@components/home/RatingStar';
+import MarketModal from './MarketModal';
+import { useModalContext } from 'context/MarketModalContext';
+import format from 'pretty-format';
+import { doLike, doUnlike } from 'api/board';
 
 
-function PostItem({profile, user, name, rating, date, content, image, like, comment, open, address, time, goods}) {
+
+
+function PostItem({ post }) {
+    
+
+    const { user_info: { user_id, isOwner: is_owner, nickname, profile }, shop_info: { shop_id, shop_name, average_rating }, board_info: { board_id,updated_at: date, rating, photo: image, content, like_count, is_liked } } = post;
     const { favorite, setFavorite, userLike, setUserLike, likeCount, setLikeCount } = useSharedState();
 
 
-    // '가게 정보' 버튼 클릭시 가게 정보 모달창 띄우기
     const [modal, setModal] = useState(false);
+    // // '가게 정보' 버튼 클릭시 가게 정보 모달창 띄우기
     const toggleModal = () => {
         setModal(!modal);
     }
@@ -33,116 +41,70 @@ function PostItem({profile, user, name, rating, date, content, image, like, comm
     const [banModal, setBanModal] = useState(false);
 
     // 하트 아이콘(관심 기능)
-    // const [favorite, setFavorite] = useState(false);
     const addFav = () => {
         setFavorite(!favorite);
         // DB에 저장된 정보(유저 정보, 하트 누른 게시물 등...) 수정하는 코드 작성?
     }
 
     // 좋아요 기능
-    // const [userLike, setUserLike] = useState(false);
-    // const [likeCount, setLikeCount] = useState(parseInt(like));
     const addLike = () => {
-        setUserLike(!userLike);
+        
         // DB에 저장된 정보(유저 정보, 좋아요 누른 게시물 등...) 수정하는 코드 작성?
         // DB 연동해서 좋아요 개수 업데이트 시키는 거 구현해야됨
-        if (userLike) {
-            setLikeCount(likeCount - 1);
-        
+        if (!is_liked) {
+            doLike(board_id).then(res => {
+                console.log('좋아요 성공');
+            }).catch(err => {
+                console.log('좋아요 실패');
+            })
+
         } else {
-            setLikeCount(likeCount + 1);
-            
+            doUnlike(board_id).then(res => {
+                console.log('싫어요 성공');
+            }).catch(err => {
+                console.log('싫어요 실패');
+            })
         }
     }
 
-    
+
     return (
         <Container>
-            <SubContainer onPress={() => navigation.navigate('home-detail', {
-                profile, user, name, rating, date,
-                content, image, like, comment, open,
-                address, time, goods,
-                // favorit: favorite, userLike: userLike,
-            })}>
-            <Info>
-                <Profile source={profile}/>
-                <Wrapper>
-                    <User user={user}>
-                        <UserLabel numberOfLines={1}>{user}</UserLabel>
-                    </User>
-                    <Name numberOfLines={1}>{name}</Name>
-                    <Rating>
-                        {user === '사장님' ? '평균 별점 ' : '평균 리뷰 별점 '}
-                        <RatingLabel><FontAwesome name={'star'}/> {rating}</RatingLabel>
-                    </Rating>
-                </Wrapper>
-                <SubWrapper>
-                    <Date>{date}</Date>
-                </SubWrapper>
-            </Info>
-            <Content numberOfLines={2}>{content}</Content>
-            <Img>
-                <Image source={image}/>
-            </Img>
+            <SubContainer>
+                <Info>
+                    <Profile source={{ uri: profile }} />
+                    <Wrapper>
+                        <User user={is_owner}>
+                            <UserLabel numberOfLines={1}>
+                                {is_owner ? '사장님' : '시장탐방러'}
+                            </UserLabel>
+                        </User>
+                        <Name numberOfLines={1}>{nickname}</Name>
+                        <Rating>
+                            {is_owner ? '평균 별점 ' : '평균 리뷰 별점 '}
+                            <RatingLabel><FontAwesome name={'star'} /> {average_rating}</RatingLabel>
+                        </Rating>
+                    </Wrapper>
+                    <SubWrapper>
+                        <Date>{date}</Date>
+                    </SubWrapper>
+                </Info>
+                <Content>{content}</Content>
+                <Img>
+                    <Image source={{ uri: image }} />
+                </Img>
             </SubContainer>
 
             <Button>
-                <InfoButton onPress={() => toggleModal()}>
-                    <MaterialIcons name={'storefront'} color={COLORS.main} size={RFValue(15)}/>
+                <InfoButton onPress={(() => setModal(true))}>
+                    <MaterialIcons name={'storefront'} color={COLORS.main} size={RFValue(15)} />
                     <ButtonLabel> 가게 정보</ButtonLabel>
                 </InfoButton>
-                
-                <Modal
-                    animationType='none'
-                    transparent={true}
-                    visible={modal}
-                    onRequestClose={toggleModal}
-                >
-                    <TouchableWithoutFeedback onPress={() => toggleModal()}>
-                        {/*일단 모달창 한번더 클릭했을 때 닫히도록 구현 */}
-                        {/*onBackdropPress 옵션 찾아보기 */}
-                    <MarketInfoModal favorite={favorite}>
-                        <Group>
-                            <NameAndOpen>
-                                <NameModal>{name}</NameModal>
-                                <OpenModal>{open}</OpenModal>
-                            </NameAndOpen>
 
-                            {favorite ? (
-                                <Pressable onPress={() => addFav()}>
-                                    <AntDesign name={'heart'} size={RFValue(18)} color={COLORS.red}/>
-                                </Pressable>
-                            ) : (
-                                <Pressable onPress={() => addFav()}>
-                                    <AntDesign name={'hearto'} size={RFValue(18)}/>
-                                </Pressable>
-                            )}
-
-                        </Group>
-
-                        <RatingModal>
-                            {/* <FontAwesome name={'star'} size={RFValue(14)}/> */}
-                            <RatingStar rating={rating}/>
-                            <RatingModalLabel>{rating}<Label>/5</Label></RatingModalLabel>
-                        </RatingModal>
-
-                        <SubGroup>
-                            <FirstLine>
-                                <Title>주소</Title><Detail>{address}</Detail>
-                            </FirstLine>
-                            <SecondLine>
-                                <Title>영업시간</Title><Detail>{time}</Detail>
-                            </SecondLine>
-                            <ThirdLine>
-                                <Title>판매 상품</Title><Detail>{goods}</Detail>
-                            </ThirdLine>
-                        </SubGroup>
-                    </MarketInfoModal>
-                    </TouchableWithoutFeedback>
-                </Modal>
+                <MarketModal shop_id={shop_id} modal={modal} toggleModal={toggleModal} />
 
                 <ChatButton onPress={() => navigation.navigate('chat')}>
-                    <Ionicons name={'chatbubble-ellipses-outline'} color={COLORS.main} size={RFValue(15)}/>
+                    <Ionicons name={'chatbubble-ellipses-outline'} color={COLORS.main} size={RFValue(15)} />
                     <ButtonLabel> 채팅 문의</ButtonLabel>
                 </ChatButton>
             </Button>
@@ -150,31 +112,31 @@ function PostItem({profile, user, name, rating, date, content, image, like, comm
 
             <Line>
                 <Like>
-                    {userLike ? (
+                    {is_liked ? (
                         <Pressable onPress={() => addLike()}>
-                            <AntDesign name={'like1'} size={RFValue(15)} color={COLORS.main}/>
+                            <AntDesign name={'like1'} size={RFValue(15)} color={COLORS.main} />
                         </Pressable>
                     ) : (
                         <Pressable onPress={() => addLike()}>
-                            <AntDesign name={'like2'} size={RFValue(15)}/>
+                            <AntDesign name={'like2'} size={RFValue(15)} />
                         </Pressable>
                     )}
-                    
+
                     <LikeNum>{likeCount}</LikeNum>
                 </Like>
                 <Comment>
-                    <Ionicons name={'chatbubble-ellipses-outline'} size={RFValue(15)}/>
-                    <CommentNum>{comment}</CommentNum>
+                    <Ionicons name={'chatbubble-ellipses-outline'} size={RFValue(15)} />
+                    <CommentNum>0</CommentNum>
                 </Comment>
                 <Other>
                     <TouchableOpacity onPress={() => setBanModal(true)}>
-                        <Entypo name={'dots-three-horizontal'} size={RFValue(13)}/>
+                        <Entypo name={'dots-three-horizontal'} size={RFValue(13)} />
                     </TouchableOpacity>
 
                     <Modal
                         animationType='none'
                         transparent={true}
-                        visible={banModal}  
+                        visible={banModal}
                     >
                         <BanModal>
                             <Box1><BoxLabel color={COLORS.black}>게시물 신고하기</BoxLabel></Box1>
@@ -183,26 +145,26 @@ function PostItem({profile, user, name, rating, date, content, image, like, comm
                         </BanModal>
                     </Modal>
 
-                    
+
                     {favorite ? (
                         <Pressable onPress={() => addFav()}>
-                            <AntDesign name={'heart'} size={RFValue(15)} color={COLORS.red}/>
+                            <AntDesign name={'heart'} size={RFValue(15)} color={COLORS.red} />
                         </Pressable>
                     ) : (
                         <Pressable onPress={() => addFav()}>
-                            <AntDesign name={'hearto'} size={RFValue(15)}/>
+                            <AntDesign name={'hearto'} size={RFValue(15)} />
                         </Pressable>
                     )}
-            
-                    
+
+
                 </Other>
             </Line>
-            
+
         </Container>
     );
 }
 
-const SubContainer = styled.TouchableOpacity`
+const SubContainer = styled.View`
 
 `;
 
@@ -250,93 +212,6 @@ const BoxLabel = styled.Text`
 `;
 
 
-const MarketInfoModal = styled.View`
-    background-color: #FFFFFF;
-    border: solid 2px ${COLORS.main};
-    border-radius: 10px;
-    margin-left: ${wp(5)}px;
-    margin-right: ${wp(5)}px;
-    
-    margin-top: ${hp(55)}px;
-    padding: 15px;
-    
-
-`;
-
-const Group = styled.View`
-    flex-direction: row;
-
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-`;
-
-const NameAndOpen = styled.View`
-    flex-direction: row;
-    align-items: center;
-`;
-
-const NameModal = styled.Text`
-    font-size: ${RFValue(18)}px;
-    font-weight: 700;
-    margin-right: ${wp(2)}px;
-`;
-
-const OpenModal = styled.Text`
-    font-size: ${RFValue(11)}px;
-    font-weight: 700;
-    color: ${COLORS.main};
-`;
-
-const RatingModal = styled.View`
-    flex-direction: row;
-
-    margin-bottom: 10px;
-    align-items: center;
-
-`;
-
-const RatingModalLabel = styled.Text`
-    font-size: ${RFValue(14)}px;
-    font-weight: 500;
-    margin-left: ${wp(1)}px;
-`;
-
-const Label = styled.Text`
-    color: ${COLORS.gray01};
-`;
-
-const SubGroup = styled.View`
-    width: 100%;
-`;
-
-const FirstLine = styled.View`
-    flex-direction: row;
-`;
-
-const SecondLine = styled.View`
-    flex-direction: row;
-`;
-
-const ThirdLine = styled.View`
-    flex-direction: row;
-`;
-
-const Title = styled.Text`
-    font-size: ${RFValue(13)}px;
-    font-weight: 700;
-    width: 24%;
-    line-height: 25px;
-
-`;
-
-const Detail = styled.Text`
-    font-size: ${RFValue(13)}px;
-    width: 76%;
-    line-height: 25px;
-
-`;
-
 const Container = styled.View`
     padding-left: ${wp(6)}px;
     padding-right: ${wp(6)}px;
@@ -370,8 +245,8 @@ const SubWrapper = styled.View`
 `;
 
 const User = styled.View`
-    ${({user}) => 
-        user === '사장님' 
+    ${({ user }) =>
+        user
             ? `background-color: ${COLORS.main};` : `background-color: ${COLORS.gray01};`
     };
     

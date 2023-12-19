@@ -9,13 +9,15 @@ import { CommonPostingContext } from 'context/CommonPostingContext';
 
 function MarketName() {
 
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState(""); // 유저가 입력한 시장
   // const [marketExists, setMarketExists] = useState(false);
-  const {
+  
+  const { // 입력한 시장이 일치하는지
     marketExists,
     setMarketExists,
   } = useContext(CommonPostingContext);
   
+
   // 시장 더미데이터
   const dummyMarkets = [
     { 
@@ -40,7 +42,7 @@ function MarketName() {
     setSearchText(text);
 
     const exists = checkInDummyMarkets(text);
-    setMarketExists(exists);
+    setMarketExists(exists); // 더미에 존재하면 marketExists 상태 업데이트
   };
     return (
         <Container>
