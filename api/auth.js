@@ -54,7 +54,7 @@ const fetchMyfavShop = () =>
 
 //[프로필-고객] 자기소개 수정
 const patchUserModify = (data) =>
-  client.patch('/user/modify/', data, {
+  client.patch('/user/modify', data, {
     headers: {
       Authorization:
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJpQGkuY29tIiwiaWQiOjEyLCJleHAiOjE3MDM1OTg2MjZ9.CDrTNNm306L-TO6PfcHQmSbFPvdZ45kdjQd1xpD-9VM',
