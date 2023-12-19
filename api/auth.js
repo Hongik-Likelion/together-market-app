@@ -30,7 +30,7 @@ const fetchUserInfo = () =>
   client.get('/user/info', {
     headers: {
       Authorization:
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGEuY29tIiwiaWQiOjQsImV4cCI6MTcwMzU5ODU2MX0.4SbyqXdyMp9ZvKv4A4Qq0luq1YufLKLRWTz_CynGsxQ',
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJpQGkuY29tIiwiaWQiOjEyLCJleHAiOjE3MDM1OTg2MjZ9.CDrTNNm306L-TO6PfcHQmSbFPvdZ45kdjQd1xpD-9VM',
     },
   });
 
@@ -39,13 +39,13 @@ const fetchMyPost = () =>
   client.get('/board', {
     headers: {
       Authorization:
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGEuY29tIiwiaWQiOjQsImV4cCI6MTcwMzU5ODU2MX0.4SbyqXdyMp9ZvKv4A4Qq0luq1YufLKLRWTz_CynGsxQ',
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJpQGkuY29tIiwiaWQiOjEyLCJleHAiOjE3MDM1OTg2MjZ9.CDrTNNm306L-TO6PfcHQmSbFPvdZ45kdjQd1xpD-9VM',
     },
   });
 
 //[프로필-고객] 나의 관심 가게
 const fetchMyfavShop = () =>
-  client.get('/shop/', {
+  client.get('/shop', {
     headers: {
       Authorization:
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJpQGkuY29tIiwiaWQiOjEyLCJleHAiOjE3MDM1OTg2MjZ9.CDrTNNm306L-TO6PfcHQmSbFPvdZ45kdjQd1xpD-9VM',

@@ -116,7 +116,7 @@ function UserProfileScreen() {
           is_owner={userData.is_owner}
           myPostingsCount={myPostData ? myPostData.length : 0}
           myFavMarketsCount={myfavShopData ? myfavShopData.length : 0}
-          favMarket={userData.favourite_market.length > 0 ? userData.favourite_market[0].market_name : ' '}
+          favMarket={userData.favourite_markets.length > 0 ? userData.favourite_markets[0].market_name : ' '}
         />
       )}
       <SelectMenu>

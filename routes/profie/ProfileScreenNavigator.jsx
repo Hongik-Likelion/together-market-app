@@ -9,7 +9,7 @@ import React from 'react';
 const Stack = createNativeStackNavigator();
 
 function ProfileScreenNavigator() {
-  const userType = 1;
+  const userType = 2;
 
   return (
     <SharedStateProvider>
