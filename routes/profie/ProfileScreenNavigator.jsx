@@ -9,7 +9,7 @@ import React from 'react';
 const Stack = createNativeStackNavigator();
 
 function ProfileScreenNavigator() {
-  const userType = 2;
+  const userType = 1; //이거 나중에 로그인까지 진행하면 빼야함!!!!!!!!
 
   return (
     <SharedStateProvider>

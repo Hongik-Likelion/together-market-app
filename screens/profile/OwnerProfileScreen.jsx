@@ -142,8 +142,8 @@ function OwnerProfileScreen() {
           profile={userData.profile}
           introduction={userData.introduction}
           is_owner={userData.is_owner}
-          myPostingsCount={myPostData.length ? myPostData.length : 0}
-          myFavMarketsCount={2}
+          myPostingsCount={myPostData ? myPostData.length : 0}
+          myFavMarketsCount={myMarkCommentData ? myMarkCommentData.length : 0}
           opening_time={userData.market.opening_time}
           closing_time={userData.market.closing_time}
         />
