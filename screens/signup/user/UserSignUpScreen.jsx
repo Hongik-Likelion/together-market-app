@@ -106,16 +106,14 @@ function UserSignUpScreen() {
           <InformationContainer>
             <MainInfoTxt1>{signUpRequest.nickname}님,</MainInfoTxt1>
             <MainInfoTxt2>
-              <Text style={{ color: COLORS.main }}>시장 위치와 가게 이름</Text>을 입력해주세요.
+              <Text style={{ color: COLORS.main }}>자주 방문하는 시장</Text>을 설정해주세요.
             </MainInfoTxt2>
-            <SubTxt>시장 위치, 가게 이름 모두 입력해주세요. (필수)</SubTxt>
           </InformationContainer>
         </Header>
         <Form>
           <MarketInputGroup market={market} onPress={() => setModal(true)} />
           <SelectedMarketItem marketName={market} onPressDelete={onPressDelete} />
         </Form>
-
         <ButtonContainer>
           <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
 
@@ -128,13 +126,13 @@ function UserSignUpScreen() {
             onPress={onPressContinueBtn}
           />
         </ButtonContainer>
-
         <SelectMarketModal
           open={modal}
           onClose={() => setModal(false)}
           market={market}
           onSelect={(market) => setMarket(market)}
         />
+        {console.log('Modal State:', modal)}
       </Container>
     </SafeAreaView>
   );
