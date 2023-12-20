@@ -18,7 +18,7 @@ export default function AppGuideYoutubeCard() {
         height={160}
         width={160}
         play={playing}
-        videoId={"fMiN67xd2zQ"}
+        videoId={"OjkTSOg5EDU"}
         onChangeState={onStateChange}
       />
       
