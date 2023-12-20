@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components/native';
 import { COLORS } from 'colors';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -6,8 +6,24 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { useNavigation } from '@react-navigation/native';
 
 import Feather from 'react-native-vector-icons/Feather';
+import { getAllMarkets } from 'api/auth';
 
 function MarketSelectScreen() {
+
+  // 시장 조회
+  const [marketData, setMarketData] = useState([]);
+
+  useEffect(() => {
+    getAllMarkets()
+    .then(res => {
+      console.log(format(res.data));
+      setMarketData(res.data);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }, [])
+
 
   const navigation = useNavigation();
 
@@ -16,23 +32,23 @@ function MarketSelectScreen() {
   // const [selectedMarket, setSelectedMarket] = useState("");
   
   // 시장 더미데이터
-  const dummyMarkets = [
-    { 
-      market_id : 1,
-      market_name : '망원시장'
-    },
-    { 
-      market_id : 2,
-      market_name : '광장시장'
-    },
-    { 
-      market_id : 3,
-      market_name : '어떤시장'
-    },
-  ];
+  // const dummyMarkets = [
+  //   { 
+  //     market_id : 1,
+  //     market_name : '망원시장'
+  //   },
+  //   { 
+  //     market_id : 2,
+  //     market_name : '광장시장'
+  //   },
+  //   { 
+  //     market_id : 3,
+  //     market_name : '어떤시장'
+  //   },
+  // ];
 
   const checkInDummyMarkets = (marketName) => {
-    return dummyMarkets.some((market) => market.market_name === marketName);
+    return marketData.some((market) => market.market_name === marketName);
   }
 
   const handleSearchTextChange = (text) => {

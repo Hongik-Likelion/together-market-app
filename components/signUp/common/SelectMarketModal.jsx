@@ -3,7 +3,7 @@ import { fetchMarkets } from 'api/market';
 import { Auth } from 'context/AuthContext';
 import PropTypes from 'prop-types';
 import React, { useContext, useState } from 'react';
-import { Modal, Platform } from 'react-native';
+import { Modal, Platform, StatusBar } from 'react-native';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';

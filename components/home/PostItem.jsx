@@ -1,5 +1,5 @@
 import { COLORS } from 'colors';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { styled } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -11,498 +11,400 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Modal, Pressable, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSharedState } from 'context/FavAndLikeContext';
-import RatingStar from '@components/home/RatingStar';
+import MarketModal from './MarketModal';
+import { useModalContext } from 'context/MarketModalContext';
+import format from 'pretty-format';
+import { doLike, doUnlike, doReport, doUserBlock } from 'api/board';
+import { doFav, doUnFav } from 'api/market';
 
+function PostItem({ post }) {
+  const {
+    user_info: { user_id, isOwner: is_owner, nickname, profile },
+    shop_info: { shop_id, shop_name, average_rating },
+    board_info: { board_id, updated_at: date, rating, photo: image, content, like_count, is_liked },
+  } = post;
+  // const { favorite } = useSharedState();
 
-function PostItem({profile, user, name, rating, date, content, image, like, comment, open, address, time, goods}) {
-    const { favorite, setFavorite, userLike, setUserLike, likeCount, setLikeCount } = useSharedState();
+  const [modal, setModal] = useState(false);
+  // // '가게 정보' 버튼 클릭시 가게 정보 모달창 띄우기
+  const toggleModal = () => {
+    setModal(!modal);
+  };
 
+  // '채팅 문의' 버튼 클릭시 채팅탭으로(chat)
+  // 게시물 클릭시 자세하게 볼 수 있도록(home-detail)
+  const navigation = useNavigation();
 
-    // '가게 정보' 버튼 클릭시 가게 정보 모달창 띄우기
-    const [modal, setModal] = useState(false);
-    const toggleModal = () => {
-        setModal(!modal);
+  // 신고/차단 팝업창 띄우기
+  const [banModal, setBanModal] = useState(false);
+
+  // 게시물 신고 기능
+  const reportPost = () => {
+    doReport(board_id)
+      .then((res) => {
+        console.log('신고 성공');
+        setBanModal(false);
+      })
+      .catch((err) => {
+        console.log('신고 실패', err.response.data);
+      });
+  };
+
+  // 사용자 차단 기능
+  const userBlock = () => {
+    doUserBlock(user_id).then((res) => {
+        console.log('차단 성공');
+        setBanModal(false);
+    })
+    .catch((err) => {
+        console.log('차단 실패', err.response.data);
+    });
+  }
+
+  // 하트 아이콘(관심 기능)
+  const [favorite, setFavorite] = useState(false);
+
+  const addFav = () => {
+    // setFavorite(!favorite);
+    if (!favorite) {
+      doFav(shop_id)
+        .then((res) => {
+          console.log('관심 기능 성공');
+          setFavorite(true);
+        })
+        .catch((err) => {
+          console.log('관심 기능 실패', err.response.data);
+        });
+    } else {
+      doUnFav(shop_id)
+        .then((res) => {
+          console.log('관심 기능 해제 성공');
+          setFavorite(false);
+        })
+        .catch((err) => {
+          console.log('관심 기능 해제 실패', err.response.data);
+        });
     }
+  };
 
-    // '채팅 문의' 버튼 클릭시 채팅탭으로(chat)
-    // 게시물 클릭시 자세하게 볼 수 있도록(home-detail)
-    const navigation = useNavigation();
+  // 좋아요 기능
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
 
-
-    // 신고 팝업창 띄우기
-    const [banModal, setBanModal] = useState(false);
-
-    // 하트 아이콘(관심 기능)
-    // const [favorite, setFavorite] = useState(false);
-    const addFav = () => {
-        setFavorite(!favorite);
-        // DB에 저장된 정보(유저 정보, 하트 누른 게시물 등...) 수정하는 코드 작성?
+  const addLike = () => {
+    if (!isLiked) {
+      doLike(board_id)
+        .then((res) => {
+          console.log('좋아요 성공');
+          setIsLiked(true);
+          setLikeCount(likeCount + 1);
+        })
+        .catch((err) => {
+          console.log('좋아요 실패', err.response.data);
+        });
+    } else {
+      doUnlike(board_id)
+        .then((res) => {
+          console.log('싫어요 성공');
+          setIsLiked(false);
+          setLikeCount(likeCount - 1);
+        })
+        .catch((err) => {
+          console.log('싫어요 실패', err.response.data);
+        });
     }
+  };
 
-    // 좋아요 기능
-    // const [userLike, setUserLike] = useState(false);
-    // const [likeCount, setLikeCount] = useState(parseInt(like));
-    const addLike = () => {
-        setUserLike(!userLike);
-        // DB에 저장된 정보(유저 정보, 좋아요 누른 게시물 등...) 수정하는 코드 작성?
-        // DB 연동해서 좋아요 개수 업데이트 시키는 거 구현해야됨
-        if (userLike) {
-            setLikeCount(likeCount - 1);
-        
-        } else {
-            setLikeCount(likeCount + 1);
-            
-        }
-    }
+  return (
+    <Container>
+      <SubContainer>
+        <Info>
+          <Profile source={{ uri: profile }} />
+          <Wrapper>
+            <User user={is_owner}>
+              <UserLabel numberOfLines={1}>{is_owner ? '사장님' : '시장탐방러'}</UserLabel>
+            </User>
+            <Name numberOfLines={1}>{nickname}</Name>
+            <Rating>
+              {is_owner ? '평균 별점 ' : '평균 리뷰 별점 '}
+              <RatingLabel>
+                <FontAwesome name={'star'} /> {average_rating}
+              </RatingLabel>
+            </Rating>
+          </Wrapper>
+          <SubWrapper>
+            <Date>{date}</Date>
+          </SubWrapper>
+        </Info>
+        <Content>{content}</Content>
+        <Img>
+          <Image source={{ uri: image }} />
+        </Img>
+      </SubContainer>
 
-    
-    return (
-        <Container>
-            <SubContainer onPress={() => navigation.navigate('home-detail', {
-                profile, user, name, rating, date,
-                content, image, like, comment, open,
-                address, time, goods,
-                // favorit: favorite, userLike: userLike,
-            })}>
-            <Info>
-                <Profile source={profile}/>
-                <Wrapper>
-                    <User user={user}>
-                        <UserLabel numberOfLines={1}>{user}</UserLabel>
-                    </User>
-                    <Name numberOfLines={1}>{name}</Name>
-                    <Rating>
-                        {user === '사장님' ? '평균 별점 ' : '평균 리뷰 별점 '}
-                        <RatingLabel><FontAwesome name={'star'}/> {rating}</RatingLabel>
-                    </Rating>
-                </Wrapper>
-                <SubWrapper>
-                    <Date>{date}</Date>
-                </SubWrapper>
-            </Info>
-            <Content numberOfLines={2}>{content}</Content>
-            <Img>
-                <Image source={image}/>
-            </Img>
-            </SubContainer>
+      <Button>
+        <InfoButton onPress={() => setModal(true)}>
+          <MaterialIcons name={'storefront'} color={COLORS.main} size={RFValue(15)} />
+          <ButtonLabel> 가게 정보</ButtonLabel>
+        </InfoButton>
 
-            <Button>
-                <InfoButton onPress={() => toggleModal()}>
-                    <MaterialIcons name={'storefront'} color={COLORS.main} size={RFValue(15)}/>
-                    <ButtonLabel> 가게 정보</ButtonLabel>
-                </InfoButton>
-                
-                <Modal
-                    animationType='none'
-                    transparent={true}
-                    visible={modal}
-                    onRequestClose={toggleModal}
-                >
-                    <TouchableWithoutFeedback onPress={() => toggleModal()}>
-                        {/*일단 모달창 한번더 클릭했을 때 닫히도록 구현 */}
-                        {/*onBackdropPress 옵션 찾아보기 */}
-                    <MarketInfoModal favorite={favorite}>
-                        <Group>
-                            <NameAndOpen>
-                                <NameModal>{name}</NameModal>
-                                <OpenModal>{open}</OpenModal>
-                            </NameAndOpen>
+        <MarketModal shop_id={shop_id} modal={modal} toggleModal={toggleModal} />
 
-                            {favorite ? (
-                                <Pressable onPress={() => addFav()}>
-                                    <AntDesign name={'heart'} size={RFValue(18)} color={COLORS.red}/>
-                                </Pressable>
-                            ) : (
-                                <Pressable onPress={() => addFav()}>
-                                    <AntDesign name={'hearto'} size={RFValue(18)}/>
-                                </Pressable>
-                            )}
+        <ChatButton onPress={() => navigation.navigate('chat')}>
+          <Ionicons name={'chatbubble-ellipses-outline'} color={COLORS.main} size={RFValue(15)} />
+          <ButtonLabel> 채팅 문의</ButtonLabel>
+        </ChatButton>
+      </Button>
 
-                        </Group>
+      <Line>
+        <Like>
+          {isLiked ? (
+            <Pressable onPress={() => addLike()}>
+              <AntDesign name={'like1'} size={RFValue(15)} color={COLORS.main} />
+            </Pressable>
+          ) : (
+            <Pressable onPress={() => addLike()}>
+              <AntDesign name={'like2'} size={RFValue(15)} />
+            </Pressable>
+          )}
 
-                        <RatingModal>
-                            {/* <FontAwesome name={'star'} size={RFValue(14)}/> */}
-                            <RatingStar rating={rating}/>
-                            <RatingModalLabel>{rating}<Label>/5</Label></RatingModalLabel>
-                        </RatingModal>
+          <LikeNum>{likeCount}</LikeNum>
+        </Like>
+        <Comment>
+          <Ionicons name={'chatbubble-ellipses-outline'} size={RFValue(15)} />
+          <CommentNum>0</CommentNum>
+        </Comment>
+        <Other>
+          <TouchableOpacity onPress={() => setBanModal(true)}>
+            <Entypo name={'dots-three-horizontal'} size={RFValue(13)} />
+          </TouchableOpacity>
 
-                        <SubGroup>
-                            <FirstLine>
-                                <Title>주소</Title><Detail>{address}</Detail>
-                            </FirstLine>
-                            <SecondLine>
-                                <Title>영업시간</Title><Detail>{time}</Detail>
-                            </SecondLine>
-                            <ThirdLine>
-                                <Title>판매 상품</Title><Detail>{goods}</Detail>
-                            </ThirdLine>
-                        </SubGroup>
-                    </MarketInfoModal>
-                    </TouchableWithoutFeedback>
-                </Modal>
+          <Modal animationType="none" transparent={true} visible={banModal}>
+            <BanModal>
+              <Box1 onPress={() => reportPost()}>
+                <BoxLabel color={COLORS.black}>게시물 신고하기</BoxLabel>
+              </Box1>
+              <Box2 onPress={() => userBlock()}>
+                <BoxLabel color={COLORS.red}>사용자 차단하기</BoxLabel>
+              </Box2>
+              <Box3 onPress={() => setBanModal(false)}>
+                <BoxLabel color={COLORS.black}>취소</BoxLabel>
+              </Box3>
+            </BanModal>
+          </Modal>
 
-                <ChatButton onPress={() => navigation.navigate('chat')}>
-                    <Ionicons name={'chatbubble-ellipses-outline'} color={COLORS.main} size={RFValue(15)}/>
-                    <ButtonLabel> 채팅 문의</ButtonLabel>
-                </ChatButton>
-            </Button>
-
-
-            <Line>
-                <Like>
-                    {userLike ? (
-                        <Pressable onPress={() => addLike()}>
-                            <AntDesign name={'like1'} size={RFValue(15)} color={COLORS.main}/>
-                        </Pressable>
-                    ) : (
-                        <Pressable onPress={() => addLike()}>
-                            <AntDesign name={'like2'} size={RFValue(15)}/>
-                        </Pressable>
-                    )}
-                    
-                    <LikeNum>{likeCount}</LikeNum>
-                </Like>
-                <Comment>
-                    <Ionicons name={'chatbubble-ellipses-outline'} size={RFValue(15)}/>
-                    <CommentNum>{comment}</CommentNum>
-                </Comment>
-                <Other>
-                    <TouchableOpacity onPress={() => setBanModal(true)}>
-                        <Entypo name={'dots-three-horizontal'} size={RFValue(13)}/>
-                    </TouchableOpacity>
-
-                    <Modal
-                        animationType='none'
-                        transparent={true}
-                        visible={banModal}  
-                    >
-                        <BanModal>
-                            <Box1><BoxLabel color={COLORS.black}>게시물 신고하기</BoxLabel></Box1>
-                            <Box2><BoxLabel color={COLORS.red}>사용자 차단하기</BoxLabel></Box2>
-                            <Box3 onPress={() => setBanModal(false)}><BoxLabel color={COLORS.black}>취소</BoxLabel></Box3>
-                        </BanModal>
-                    </Modal>
-
-                    
-                    {favorite ? (
-                        <Pressable onPress={() => addFav()}>
-                            <AntDesign name={'heart'} size={RFValue(15)} color={COLORS.red}/>
-                        </Pressable>
-                    ) : (
-                        <Pressable onPress={() => addFav()}>
-                            <AntDesign name={'hearto'} size={RFValue(15)}/>
-                        </Pressable>
-                    )}
-            
-                    
-                </Other>
-            </Line>
-            
-        </Container>
-    );
+          {favorite ? (
+            <Pressable onPress={() => addFav()}>
+              <AntDesign name={'heart'} size={RFValue(15)} color={COLORS.red} />
+            </Pressable>
+          ) : (
+            <Pressable onPress={() => addFav()}>
+              <AntDesign name={'hearto'} size={RFValue(15)} />
+            </Pressable>
+          )}
+        </Other>
+      </Line>
+    </Container>
+  );
 }
 
-const SubContainer = styled.TouchableOpacity`
-
-`;
+const SubContainer = styled.View``;
 
 const BanModal = styled.View`
-
-    margin-left: ${wp(5)}px;
-    margin-right: ${wp(5)}px;
-    height: 180px;
-    margin-top: ${hp(75)}px;
-    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
-
+  margin-left: ${wp(5)}px;
+  margin-right: ${wp(5)}px;
+  height: 180px;
+  margin-top: ${hp(75)}px;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
 `;
 
 const Box1 = styled.TouchableOpacity`
-    background-color: ${COLORS.white};
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    align-items: center;
-    height: ${hp(6)}px;
-    justify-content: center;
-    margin-bottom: 1px;
+  background-color: ${COLORS.white};
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  align-items: center;
+  height: ${hp(6)}px;
+  justify-content: center;
+  margin-bottom: 1px;
 `;
 
 const Box2 = styled.TouchableOpacity`
-    background-color: ${COLORS.white};
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    align-items: center;
-    height: ${hp(6)}px;
-    justify-content: center;
-    margin-bottom: 2px;
+  background-color: ${COLORS.white};
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  align-items: center;
+  height: ${hp(6)}px;
+  justify-content: center;
+  margin-bottom: 2px;
 `;
 
 const Box3 = styled.TouchableOpacity`
-    background-color: ${COLORS.white};
-    border-radius: 10px;
-    align-items: center;
-    height: ${hp(7)}px;
-    justify-content: center;
+  background-color: ${COLORS.white};
+  border-radius: 10px;
+  align-items: center;
+  height: ${hp(7)}px;
+  justify-content: center;
 `;
 
 const BoxLabel = styled.Text`
-    font-size: ${RFValue(18)}px;
-    color : ${(props) => (props.color)};
-`;
-
-
-const MarketInfoModal = styled.View`
-    background-color: #FFFFFF;
-    border: solid 2px ${COLORS.main};
-    border-radius: 10px;
-    margin-left: ${wp(5)}px;
-    margin-right: ${wp(5)}px;
-    
-    margin-top: ${hp(55)}px;
-    padding: 15px;
-    
-
-`;
-
-const Group = styled.View`
-    flex-direction: row;
-
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-`;
-
-const NameAndOpen = styled.View`
-    flex-direction: row;
-    align-items: center;
-`;
-
-const NameModal = styled.Text`
-    font-size: ${RFValue(18)}px;
-    font-weight: 700;
-    margin-right: ${wp(2)}px;
-`;
-
-const OpenModal = styled.Text`
-    font-size: ${RFValue(11)}px;
-    font-weight: 700;
-    color: ${COLORS.main};
-`;
-
-const RatingModal = styled.View`
-    flex-direction: row;
-
-    margin-bottom: 10px;
-    align-items: center;
-
-`;
-
-const RatingModalLabel = styled.Text`
-    font-size: ${RFValue(14)}px;
-    font-weight: 500;
-    margin-left: ${wp(1)}px;
-`;
-
-const Label = styled.Text`
-    color: ${COLORS.gray01};
-`;
-
-const SubGroup = styled.View`
-    width: 100%;
-`;
-
-const FirstLine = styled.View`
-    flex-direction: row;
-`;
-
-const SecondLine = styled.View`
-    flex-direction: row;
-`;
-
-const ThirdLine = styled.View`
-    flex-direction: row;
-`;
-
-const Title = styled.Text`
-    font-size: ${RFValue(13)}px;
-    font-weight: 700;
-    width: 24%;
-    line-height: 25px;
-
-`;
-
-const Detail = styled.Text`
-    font-size: ${RFValue(13)}px;
-    width: 76%;
-    line-height: 25px;
-
+  font-size: ${RFValue(18)}px;
+  color: ${(props) => props.color};
 `;
 
 const Container = styled.View`
-    padding-left: ${wp(6)}px;
-    padding-right: ${wp(6)}px;
-    padding-top: ${hp(2)}px;
-    border-bottom-color: ${COLORS.gray01};
-    border-bottom-width: 1px;
+  padding-left: ${wp(6)}px;
+  padding-right: ${wp(6)}px;
+  padding-top: ${hp(2)}px;
+  border-bottom-color: ${COLORS.gray01};
+  border-bottom-width: 1px;
 `;
 
 const Info = styled.View`
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 const Profile = styled.Image`
-    height: 55px;
-    width: 55px;
+  height: 55px;
+  width: 55px;
 `;
 
 const Wrapper = styled.View`
-    margin-left: ${wp(1)}px;
-    width: ${wp(50)}px;
-    height: 100%;
-
+  margin-left: ${wp(1)}px;
+  width: ${wp(50)}px;
+  height: 100%;
 `;
 
 const SubWrapper = styled.View`
-     height: 100%;
-     width: ${wp(20)}px;
+  height: 100%;
+  width: ${wp(20)}px;
 `;
 
 const User = styled.View`
-    ${({user}) => 
-        user === '사장님' 
-            ? `background-color: ${COLORS.main};` : `background-color: ${COLORS.gray01};`
-    };
-    
-    height: ${hp(2)}px;
-    width: ${wp(13)}px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    margin-bottom: ${hp(0.5)}px;
+  ${({ user }) => (user ? `background-color: ${COLORS.main};` : `background-color: ${COLORS.gray01};`)};
+
+  height: ${hp(2)}px;
+  width: ${wp(13)}px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  margin-bottom: ${hp(0.5)}px;
 `;
 
 const UserLabel = styled.Text`
-    font-size: ${RFValue(9)}px;
-    color: ${COLORS.white};
-    
+  font-size: ${RFValue(9)}px;
+  color: ${COLORS.white};
 `;
 
 const Name = styled.Text`
-    font-size: ${RFValue(14)}px;
-    font-weight: 700;
-    width: ${wp(20)}px;
-    margin-bottom: ${hp(0.5)}px;
+  font-size: ${RFValue(14)}px;
+  font-weight: 700;
+  width: ${wp(20)}px;
+  margin-bottom: ${hp(0.5)}px;
 `;
 
 const Rating = styled.Text`
-    font-size: ${RFValue(10)}px;
-    width: ${wp(30)}px;
-
+  font-size: ${RFValue(10)}px;
+  width: ${wp(30)}px;
 `;
 
 const RatingLabel = styled.Text`
-    color: ${COLORS.main};
-
+  color: ${COLORS.main};
 `;
 
 const Date = styled.Text`
-    font-size: ${RFValue(10)}px;
-    text-align: right;
-
+  font-size: ${RFValue(10)}px;
+  text-align: right;
 `;
 
 const Content = styled.Text`
-    font-size: ${RFValue(13)}px;
-    padding: 13px 0px;
-    line-height: 25px;
-
+  font-size: ${RFValue(13)}px;
+  padding: 13px 0px;
+  line-height: 25px;
 `;
 
 const Img = styled.View`
-    justify-content: center;
-    align-items: center;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Image = styled.Image`
-    height: 153px;
-    width: 100%;
+  height: 153px;
+  width: 100%;
 `;
 
 const Button = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0px;
 
-    width: 100%;
+  width: 100%;
 `;
 
-const InfoButton = styled.TouchableOpacity` 
-    width: 48%;
-    height: ${hp(4.5)}px;
-    border: solid 1px ${COLORS.main};
-    border-radius: 10px;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-
+const InfoButton = styled.TouchableOpacity`
+  width: 48%;
+  height: ${hp(4.5)}px;
+  border: solid 1px ${COLORS.main};
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
 `;
 
-const ChatButton = styled.TouchableOpacity` 
-    width: 48%;
-    height: ${hp(4.5)}px;
-    border: solid 1px ${COLORS.main};
-    border-radius: 10px;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
+const ChatButton = styled.TouchableOpacity`
+  width: 48%;
+  height: ${hp(4.5)}px;
+  border: solid 1px ${COLORS.main};
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
 `;
 
 const ButtonLabel = styled.Text`
-    font-size: ${RFValue(13)}px;
-    color: ${COLORS.main};
-    font-weight: 700;
+  font-size: ${RFValue(13)}px;
+  color: ${COLORS.main};
+  font-weight: 700;
 `;
 
 const Line = styled.View`
-    flex-direction: row;
-    padding-bottom: 13px;
-    width: 100%;
+  flex-direction: row;
+  padding-bottom: 13px;
+  width: 100%;
 `;
 
 const Like = styled.View`
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    width: 12%;
-
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 12%;
 `;
 
 const LikeNum = styled.Text`
-    font-size: ${RFValue(14)}px;
+  font-size: ${RFValue(14)}px;
 `;
 
 const Comment = styled.View`
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    width: 11%;
-    margin-left: 10px;
-
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 11%;
+  margin-left: 10px;
 `;
 
 const CommentNum = styled.Text`
-    font-size: ${RFValue(14)}px;
+  font-size: ${RFValue(14)}px;
 `;
 
 const Other = styled.View`
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    width: 74%;
-    padding-left: 200px;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 74%;
+  padding-left: 200px;
 `;
 
 export default PostItem;

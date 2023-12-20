@@ -4,36 +4,23 @@ import { styled } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import PostIcon from '@assets/PostItem/PostIcon';
-// import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import { fetchUserInfo } from 'api/auth';
 
 function PostButton() {
-    // const [isOwner, setIsOwner] = useState(false);
+    const [isOwner, setIsOwner] = useState(false);
 
     const navigation = useNavigation();
 
-    const isOwner = true; // 일단 손님
-
-    // const dummyUser = [
-    //     {
-    //         id: 5,
-    //         is_owner: true,
-    //     },
-    //     {
-    //         id: 6,
-    //         is_owner: false,
-    //     },
-    // ];
-
-
-    // useEffect(() => {
-    //     axios.get('/user/info')
-    //     .then(res => {
-    //         const data = res.data;
-    //         setIsOwner(data.is_owner);
-    //     })
-    //     .catch(err => console.log(err));
-    // }, []);
+    // 개인정보조회해서 isOwner 확인(사장님/손님)
+    useEffect(() => {
+        fetchUserInfo()
+        .then(res => {
+            // console.log(res.data.is_owner);
+            setIsOwner(res.data.is_owner);
+        })
+        .catch(err => console.log(err));
+    })
 
     const onPressPosting = () => {
         navigation.navigate(isOwner ? 'owner-posting' : 'user-posting', {isOwner});
