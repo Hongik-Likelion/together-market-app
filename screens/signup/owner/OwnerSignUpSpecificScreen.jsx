@@ -4,18 +4,26 @@ import OwnerSignUpHeader from '@assets/signUp/OwnerSignUpScreen';
 import GetMarketAddressTab from '@components/signUp/owner/GetMarketAddressTab';
 import GetMainProductTab from '@components/signUp/owner/GetMainProductTab';
 import GetOpenTime from '@components/signUp/owner/GetOpenTime';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
-import React, { useState } from 'react';
-import { Text } from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
+import { View, Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import GetOpenDay from '@components/signUp/owner/GetOpenDay';
+import { Auth } from 'context/AuthContext';
+import format from 'pretty-format';
+import { signUp, postOwnerShop } from 'api/auth';
 
 function OwnerSignUpSpecificScreen() {
-  const route = useRoute();
-  const { marketName, sellFoods } = route.params;
+  const {
+    user: [signUpRequest, setSignUpRequest],
+    shop: [shopRequest, setShopRequest],
+  } = useContext(Auth);
+
+  const { shop_address, selling_products, opening_time, closing_tme, opening_frequency } = shopRequest;
+
   const navigation = useNavigation();
 
   const [marketAddress, setMarketAddress] = useState(''); // 가게 주소
@@ -35,20 +43,74 @@ function OwnerSignUpSpecificScreen() {
     setEndTimeString(end);
   };
 
+  //회원가입 API
+  const [userData, setUserData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [shopIsError, setShopIsError] = useState(false);
+  //상점 등록 API
+  const [shopData, setShopData] = useState(null);
+
   const onPressContinueBtn = () => {
     if (marketAddress && mainProducts && startTimeString && endTimeString) {
-      // console로 저장된 값 확인
-      console.log('shop_name 가게이름:', marketName);
-      console.log('shop_address 가게 주소:', marketAddress);
-      console.log('selling_products 대표 상품명:', mainProducts);
-      console.log('opening_time 시작 영업시간:', startTimeString);
-      console.log('closing_time 종료 영업시간:', endTimeString);
-      console.log('opening_frequency 영업일:', openDays);
-      console.log('product_categories 판매하는 상품들:', sellFoods);
+      const request = {
+        ...shopRequest,
 
-      navigation.navigate('guideSignUpScreen');
+        shop_address: marketAddress,
+        selling_products: mainProducts,
+        opening_time: startTimeString,
+        closing_time: endTimeString,
+        opening_frequency: openDays,
+      };
+
+      console.log(format(request));
+      console.log(format(signUpRequest));
+
+      // API 호출 및 데이터 처리
+      setIsLoading(true);
+      signUp(signUpRequest)
+        .then((res) => {
+          console.log(format(res.data));
+          setUserData(res.data);
+
+          postOwnerShop(request, res.data.access_token)
+            .then((res) => {
+              console.log(format(res.data));
+              setShopData(res.data);
+            })
+            .catch((err) => {
+              console.log('상점등록 오류');
+              console.log(err);
+              setShopIsError(true);
+            });
+        })
+        .catch((err) => {
+          console.log('회원가입오류');
+          console.log(err);
+          setIsError(true);
+        })
+        .finally(() => {
+          setIsLoading(false);
+          navigation.navigate('guideSignUpScreen'); // 이동은 여기서 호출
+        });
     }
   };
+
+  if (isLoading) {
+    return (
+      <View>
+        <Text>로딩중...</Text>
+      </View>
+    );
+  }
+
+  if (isError || shopIsError) {
+    return (
+      <View>
+        <Text>에러 발생</Text>
+      </View>
+    );
+  }
 
   return (
     <Container>

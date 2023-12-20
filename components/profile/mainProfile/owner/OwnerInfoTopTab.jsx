@@ -22,8 +22,7 @@ function OwnerInfoTopTab(props) {
   };
 
   const onPressWriteBtn = () => {
-    //이거 게시물 작성하기 페이지로 넘어가야함 (수정필요)
-    navigation.navigate('home-tab');
+    navigation.navigate('home', { screen: 'user-posting' });
   };
 
   return (

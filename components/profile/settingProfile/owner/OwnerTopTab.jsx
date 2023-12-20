@@ -11,11 +11,6 @@ function OwnerTopTab(props) {
   const { nickname, profile } = props;
   const navigation = useNavigation();
 
-  const onPressFinishBtn = () => {
-    //!!!!!!!!! [추가] 여기서 이제 수정완료된 정보들을 백에 넘겨주는 API를 작성해야함
-    navigation.navigate('profile-screen');
-  };
-
   const onPressPreviousBtn = () => {
     navigation.navigate('profile-screen');
   };
@@ -33,15 +28,16 @@ function OwnerTopTab(props) {
 
       <Content>
         <ProfileImg>
-          <UserImage source={profile} />
+          <UserImage
+            source={{
+              uri: profile,
+            }}
+          />
         </ProfileImg>
         <Info>
           <Nickname>{nickname} 님</Nickname>
         </Info>
       </Content>
-      <Finish onPress={onPressFinishBtn}>
-        <FinishTxt>완료</FinishTxt>
-      </Finish>
     </Container>
   );
 }
