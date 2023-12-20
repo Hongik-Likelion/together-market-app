@@ -12,7 +12,7 @@ const fetchBoardList = (marketId) =>
 
 // 게시글 좋아요
 const doLike = (board_id) =>
-  client.patch(`/board/${board_id}/like`, {
+  client.patch(`/board/${board_id}/like`, null, {
     headers: {
       Authorization:
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGEuY29tIiwiaWQiOjQsImV4cCI6MTcwMzY2Mjc4Nn0.VYKzTp5tth1zMyIudKQJ-0GnHRjoQluGceeLWx-pIq0',
@@ -21,7 +21,7 @@ const doLike = (board_id) =>
 
 // 게시글 좋아요 삭제
 const doUnlike = (board_id) =>
-  client.patch(`/board/${board_id}/unlike`, {
+  client.patch(`/board/${board_id}/unlike`, null, {
     headers: {
       Authorization:
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGEuY29tIiwiaWQiOjQsImV4cCI6MTcwMzY2Mjc4Nn0.VYKzTp5tth1zMyIudKQJ-0GnHRjoQluGceeLWx-pIq0',
@@ -30,7 +30,7 @@ const doUnlike = (board_id) =>
 
 // 게시글 신고
 const doReport = (board_id) =>
-  client.patch(`/board/${board_id}/report`, {
+  client.patch(`/board/${board_id}/report`, null, {
     headers: {
         Authorization:
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGEuY29tIiwiaWQiOjQsImV4cCI6MTcwMzY2Mjc4Nn0.VYKzTp5tth1zMyIudKQJ-0GnHRjoQluGceeLWx-pIq0',
