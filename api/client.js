@@ -1,6 +1,6 @@
 import axios from 'axios';
 
 export const client = axios.create({
-  baseURL: '',
+  baseURL: 'https://market.cloudyong.store',
   withCredentials: true,
 });

@@ -3,12 +3,12 @@ import GuideOption from '@components/signUp/guide/GuideOption';
 import GuideTopTab from '@components/signUp/guide/GuideTopTab';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
-import { UserInfo } from 'context/UserInfoContext';
-import React, { useContext, useState } from 'react';
-import { Text } from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { UserInfo } from 'context/UserInfoContext';
+import { View, Text } from 'react-native';
 
 function GuideSignUpScreen(props) {
   const navigation = useNavigation();

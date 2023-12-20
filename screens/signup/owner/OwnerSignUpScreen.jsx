@@ -1,125 +1,144 @@
-import { PreviousBtn, ContinueBtn } from '@assets/signUp/CommonSignUpScreenIcon';
+import { ContinueBtn, PreviousBtn } from '@assets/signUp/CommonSignUpScreenIcon';
 import OwnerSignUpHeader from '@assets/signUp/OwnerSignUpScreen';
-import SelectedMarketList from '@components/signUp/common/SelectedMarketList';
-import GetMarketTab from '@components/signUp/owner/GetMarketTab';
-import SetMarketNameTab from '@components/signUp/owner/SetMarketNameTab';
+import SelectMarketModal from '@components/signUp/common/SelectMarketModal';
+import SelectedMarketItem from '@components/signUp/common/SelectedMarketItem';
+import MarketInputGroup from '@components/signUp/owner/MarketInputGroup';
+import ShopNameInputGroup from '@components/signUp/owner/ShopNameInputGroup';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
-import React, { useState } from 'react';
-import { Text } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import styled from 'styled-components/native';
+
+import { Auth } from 'context/AuthContext';
+import format from 'pretty-format';
+import React, { useContext, useState } from 'react';
+import { SafeAreaView, Text } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { v4 as uuidv4 } from 'uuid';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import styled from 'styled-components/native';
 
 function OwnerSignUpScreen() {
+  const {
+    user: [signUpRequest, setSignUpRequest],
+    shop: [shopRequest, setShopRequest],
+  } = useContext(Auth);
   const navigation = useNavigation();
+  const { market_id, shop_name } = shopRequest;
 
-  const [marketLocations, setMarketLocations] = useState([]); // 배열상에 선택한 시장들 저장
-  const [marketName, setMarketName] = useState('');
-  const [addedMarket, setAddedMarket] = useState(false);
+  /** 선택된 시장 */
+  const [market, setMarket] = useState('');
+  /** 시장 선택 모달 상태 */
+  const [modal, setModal] = useState(false);
 
-  const [content, setContent] = useState('');
-  const onChangeLocation = (text) => setContent(text);
-
-  const onPressAdd = () => {
-    const newmarketLocations = {
-      id: uuidv4(),
-      content,
-    };
-    setMarketLocations((prev) => [...prev, newmarketLocations]);
-    setContent('');
+  /** 시장 선택 취소 */
+  const onPressDelete = () => {
+    setMarket('');
+    setShopRequest((prev) => ({ ...prev, market_id: -1 }));
   };
 
-  const onChangeMarketName = (text) => setMarketName(text);
+  /** 이전 버튼 */
+  const onPressPreviousBtn = () => navigation.goBack();
 
-  const onPressDelete = (marketLocationId) => {
-    setMarketLocations((prev) => prev.filter((marketLocation) => marketLocation.id !== marketLocationId));
-    setAddedMarket(false);
-  };
-
-  const onPressPreviousBtn = () => navigation.navigate('commonSignUpScreen');
-
+  /** 다음으로 가기 버튼 */
   const onPressContinueBtn = () => {
-    if (addedMarket && marketName) {
-      navigation.navigate('ownerSignUpFoodScreen', {
-        marketName: marketName,
-      });
-    }
+    /** 시장 등록하고, 가게 이름 등록해야 다음으로 이동 가능 */
+    if (market_id !== -1 && shop_name !== '') navigation.navigate('ownerSignUpFoodScreen');
   };
+
+  console.log(format(signUpRequest));
 
   return (
-    <Container>
-      <UserSignUpHeaderContainer>
-        <OwnerSignUpHeader
-          secondPage={COLORS.main}
-          thirdPage={COLORS.gray01}
-          fourthPage={COLORS.gray01}
-          fifthPage={COLORS.gray01}
-          position="absolute"
-          marginTop={hp(10)}
-        />
-      </UserSignUpHeaderContainer>
-      <MainInfoTxt1>김영희님,</MainInfoTxt1>
-      <MainInfoTxt2>
-        <Text style={{ color: COLORS.main }}>시장 위치와 가게 이름</Text>을 입력해주세요.
-      </MainInfoTxt2>
-      <SubTxt>시장 위치, 가게 이름 모두 입력해주세요. (필수)</SubTxt>
-      <GetMarketTab
-        addedMarket={addedMarket}
-        setAddedMarket={setAddedMarket}
-        content={content}
-        onChangeLocation={onChangeLocation}
-        onPressAdd={onPressAdd}
-      />
-      <SelectedMarketList addedMarket={addedMarket} marketLocations={marketLocations} onPressDelete={onPressDelete} />
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+      <Container contentContainerStyle={{ flexGrow: 1 }}>
+        <Header>
+          <StatusContainer>
+            <OwnerSignUpHeader
+              secondPage={COLORS.main}
+              thirdPage={COLORS.gray01}
+              fourthPage={COLORS.gray01}
+              fifthPage={COLORS.gray01}
+            />
+          </StatusContainer>
+          <InformationContainer>
+            <MainInfoTxt1>{signUpRequest.nickname}님,</MainInfoTxt1>
+            <MainInfoTxt2>
+              <Text style={{ color: COLORS.main }}>시장 위치와 가게 이름</Text>을 입력해주세요.
+            </MainInfoTxt2>
+            <SubTxt>시장 위치, 가게 이름 모두 입력해주세요. (필수)</SubTxt>
+          </InformationContainer>
+        </Header>
+        <Form>
+          <MarketInputGroup market={market} onPress={() => setModal(true)} />
+          <SelectedMarketItem marketName={market} onPressDelete={onPressDelete} />
+          <ShopNameInputGroup />
+        </Form>
 
-      <SetMarketNameTab marketName={marketName} onChangeMarketName={onChangeMarketName} />
-      <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
-      <ContinueBtn
-        fontColor={addedMarket && marketName ? 'white' : COLORS.main}
-        backColor={addedMarket && marketName ? COLORS.main : 'white'}
-        width={wp(100)}
-        marginBottom={hp(6.15)}
-        justifyContent="center"
-        onPress={onPressContinueBtn}
-      />
-    </Container>
+        <ButtonContainer>
+          <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
+
+          <ContinueBtn
+            fontColor={market_id !== -1 && shop_name !== '' ? 'white' : COLORS.main}
+            backColor={market_id !== -1 && shop_name !== '' ? COLORS.main : 'white'}
+            width={wp(100)}
+            marginBottom={hp(6.15)}
+            justifyContent="center"
+            onPress={onPressContinueBtn}
+          />
+        </ButtonContainer>
+
+        <SelectMarketModal
+          open={modal}
+          onClose={() => setModal(false)}
+          market={market}
+          onSelect={(market) => setMarket(market)}
+        />
+      </Container>
+    </SafeAreaView>
   );
 }
 
-const Container = styled.View`
+const Container = styled(KeyboardAwareScrollView)`
+  flex: 1;
   background-color: white;
+`;
+
+const Header = styled.View`
   flex: 1;
 `;
 
-const UserSignUpHeaderContainer = styled.View`
-  position: absolute;
-  left: 0;
-  right: 0;
+const StatusContainer = styled.View`
+  flex: 2;
+  justify-content: center;
   align-items: center;
 `;
 
+const InformationContainer = styled.View`
+  flex: 3;
+  padding: ${RFValue(12)}px ${RFValue(12)}px;
+`;
+
+const Form = styled.View`
+  flex: 2;
+`;
+
 const MainInfoTxt1 = styled.Text`
-  font-size: ${RFValue(20)}px;
+  font-size: ${RFValue(18)}px;
   font-weight: bold;
-  margin-left: ${wp(4.8)}px;
-  margin-top: ${hp(18.7)}px;
 `;
 
 const MainInfoTxt2 = styled.Text`
-  font-size: ${RFValue(20)}px;
+  font-size: ${RFValue(18)}px;
+  margin-top: ${RFValue(4)}px;
   font-weight: bold;
-  margin-left: ${wp(4.8)}px;
-  margin-top: ${RFValue(5)}px;
 `;
 
 const SubTxt = styled.Text`
-  position: relative;
   color: ${COLORS.gray01};
-  margin-left: ${wp(5)}px;
-  top: ${hp(1.23)}px;
+  margin-top: ${RFValue(12)}px;
   font-size: ${RFValue(14)}px;
+`;
+
+const ButtonContainer = styled.View`
+  flex: 0.5;
 `;
 
 export default OwnerSignUpScreen;

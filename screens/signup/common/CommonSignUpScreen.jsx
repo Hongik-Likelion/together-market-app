@@ -1,16 +1,32 @@
-import { OwnerSelect, CustomerSelect, PreviousBtn, ContinueBtn } from '@assets/signUp/CommonSignUpScreenIcon';
+import { ContinueBtn, CustomerSelect, OwnerSelect, PreviousBtn } from '@assets/signUp/CommonSignUpScreenIcon';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
-import { UserInfo } from 'context/UserInfoContext';
-import React, { useContext } from 'react';
+import { Auth } from 'context/AuthContext';
+import React, { useContext, useMemo, useState } from 'react';
 import { Text } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { styled } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { styled } from 'styled-components/native';
+import format from 'pretty-format';
 
 function CommonSignUpScreen() {
   const navigation = useNavigation();
-  const { userType, setUserType } = useContext(UserInfo);
+
+  const {
+    user: [signUpRequest, setSignUpRequest],
+  } = useContext(Auth);
+
+  const [userType, setUserType] = useState(1);
+
+  const USER_TYPE = useMemo(
+    () => ({
+      CUSTOMER: 2,
+      OWNER: 1,
+    }),
+    [],
+  );
+
+  const { CUSTOMER, OWNER } = USER_TYPE;
 
   const onPressPreviousBtn = () => {
     setUserType('');
@@ -18,32 +34,42 @@ function CommonSignUpScreen() {
   };
 
   const onPressContinueBtn = () => {
-    if (userType === 1) {
-      navigation.navigate('ownerSignUpScreen');
-    } else if (userType === 2) {
+    if (userType === CUSTOMER) {
+      console.log('고객입니다');
+      setSignUpRequest((prev) => ({
+        ...prev,
+        is_owner: false,
+      }));
       navigation.navigate('userSignUpScreen');
+    } else if (userType === OWNER) {
+      console.log('사장입니다');
+      setSignUpRequest((prev) => ({
+        ...prev,
+        is_owner: true,
+      }));
+      navigation.navigate('ownerSignUpScreen');
     }
   };
 
   return (
     <Container>
-      <MainInfoTxt1>김영희님,</MainInfoTxt1>
+      <MainInfoTxt1>{signUpRequest.nickname}님,</MainInfoTxt1>
       <MainInfoTxt2>
         <Text style={{ color: COLORS.main }}>유형</Text>을 선택해주세요!
       </MainInfoTxt2>
       <SubTxt>한 가지 유형을 선택해주세요. (필수)</SubTxt>
       <SelectOption>
         <OwnerSelect
-          backColor={userType === 1 ? '#E4FFF5' : '#FFFFFF'}
-          strokeColor={userType === 1 ? COLORS.main : COLORS.gray01}
-          fontColor={userType === 1 ? COLORS.black : '#666666'}
-          onPress={() => setUserType(1)}
+          backColor={userType === OWNER ? '#E4FFF5' : '#FFFFFF'}
+          strokeColor={userType === OWNER ? COLORS.main : COLORS.gray01}
+          fontColor={userType === OWNER ? COLORS.black : '#666666'}
+          onPress={() => setUserType(OWNER)}
         />
         <CustomerSelect
-          backColor={userType === 2 ? '#E4FFF5' : '#FFFFFF'}
-          strokeColor={userType === 2 ? COLORS.main : COLORS.gray01}
-          fontColor={userType === 2 ? COLORS.black : '#666666'}
-          onPress={() => setUserType(2)}
+          backColor={userType === CUSTOMER ? '#E4FFF5' : '#FFFFFF'}
+          strokeColor={userType === CUSTOMER ? COLORS.main : COLORS.gray01}
+          fontColor={userType === CUSTOMER ? COLORS.black : '#666666'}
+          onPress={() => setUserType(CUSTOMER)}
         />
       </SelectOption>
       <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
