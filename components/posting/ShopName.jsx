@@ -8,7 +8,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import { CommonPostingContext } from 'context/CommonPostingContext';
 
 function ShopName() {
-    const [searchText, setSearchText] = useState("");
+    const [searchText, setSearchText] = useState(""); // 유저가 입력한 가게
     // const [shopExists, setShopExists] = useState(false);
     const {
       shopExists,

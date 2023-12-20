@@ -46,7 +46,7 @@ function PostItem({ post }) {
         doReport(board_id).then(res => {
             console.log('신고 성공');
         }).catch(err => {
-            console.log('신고 실패');
+            console.log('신고 실패', err.response.data);
         })
         
     }
@@ -77,7 +77,7 @@ function PostItem({ post }) {
             doUnlike(board_id).then(res => {
                 console.log('싫어요 성공');
             }).catch(err => {
-                console.log('싫어요 실패');
+                console.log('싫어요 실패', err.response.data);
             })
         }
     }
