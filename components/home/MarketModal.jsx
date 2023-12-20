@@ -13,6 +13,7 @@ function MarketModal({shop_id, modal, toggleModal}) {
     if(isError) return null;
 
     if (shop !=null)
+    // console.log("shop", shop);
     return (
 
         <Container>

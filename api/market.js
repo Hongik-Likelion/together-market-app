@@ -6,17 +6,26 @@ const fetchShop = (shop_id) =>
 {
     headers: {
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGEuY29tIiwiaWQiOjQsImV4cCI6MTcwMzU5ODU2MX0.4SbyqXdyMp9ZvKv4A4Qq0luq1YufLKLRWTz_CynGsxQ',
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzYUBuYXYuY29tIiwiaWQiOjIsImV4cCI6MTcwMzY2NjkwM30.KdaqhSEKJHTb8my3IxMxzOMIi5Qsfcq4aq81n5ozTl8',
       },
 });
 
 // 상점 즐겨찾기 (하트)
 const doFav = (shop_id) =>
-    client.patch(`/shop/${shop_id}/favorite`, {
+    client.patch(`/shop/${shop_id}/favourite`, null, {
         headers: {
             Authorization:
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGEuY29tIiwiaWQiOjQsImV4cCI6MTcwMzU5ODU2MX0.4SbyqXdyMp9ZvKv4A4Qq0luq1YufLKLRWTz_CynGsxQ',
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzYUBuYXYuY29tIiwiaWQiOjIsImV4cCI6MTcwMzY2NjkwM30.KdaqhSEKJHTb8my3IxMxzOMIi5Qsfcq4aq81n5ozTl8',
           },
     });
 
-export {fetchShop, doFav};
+// 상점 즐겨찾기 해제 (하트)
+const doUnFav = (shop_id) =>
+    client.patch(`/shop/${shop_id}/favourite`, null, {
+        headers: {
+            Authorization:
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzYUBuYXYuY29tIiwiaWQiOjIsImV4cCI6MTcwMzY2NjkwM30.KdaqhSEKJHTb8my3IxMxzOMIi5Qsfcq4aq81n5ozTl8',
+          },
+    });
+
+export {fetchShop, doFav, doUnFav};

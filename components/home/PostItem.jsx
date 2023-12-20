@@ -15,15 +15,14 @@ import MarketModal from './MarketModal';
 import { useModalContext } from 'context/MarketModalContext';
 import format from 'pretty-format';
 import { doLike, doUnlike, doReport } from 'api/board';
-import { doFav } from 'api/market';
+import { doFav, doUnFav } from 'api/market';
 
 function PostItem({ post }) {
-  const {
-    user_info: { user_id, isOwner: is_owner, nickname, profile },
-    shop_info: { shop_id, shop_name, average_rating },
-    board_info: { board_id, updated_at: date, rating, photo: image, content, like_count, is_liked },
-  } = post;
-  const { favorite, setFavorite, userLike, setUserLike, likeCount, setLikeCount } = useSharedState();
+    
+
+    const { user_info: { user_id, isOwner: is_owner, nickname, profile }, shop_info: { shop_id, shop_name, average_rating }, board_info: { board_id,updated_at: date, rating, photo: image, content, like_count, is_liked } } = post;
+    // const { favorite } = useSharedState();
+
 
   const [modal, setModal] = useState(false);
   // // '가게 정보' 버튼 클릭시 가게 정보 모달창 띄우기
@@ -38,49 +37,64 @@ function PostItem({ post }) {
   // 신고 팝업창 띄우기
   const [banModal, setBanModal] = useState(false);
 
-  // 게시물 신고 기능
-  const reportPost = () => {
-    doReport(board_id)
-      .then((res) => {
-        console.log('신고 성공');
-      })
-      .catch((err) => {
-        console.log('신고 실패');
-      });
-  };
-
-  // 하트 아이콘(관심 기능)
-  const addFav = () => {
-    // setFavorite(!favorite);
-    if (!favorite) {
-      doFav(shop_id)
-        .then((res) => {
-          console.log('관심 기능 성공');
+    // 게시물 신고 기능
+    const reportPost = () => {
+        doReport(board_id).then(res => {
+            console.log('신고 성공');
+            setBanModal(false);
+        }).catch(err => {
+            console.log('신고 실패', err.response.data);
         })
-        .catch((err) => {
-          console.log('관심 기능 실패', err.response.data);
-        });
+        
     }
-  };
 
-  // 좋아요 기능
-  const addLike = () => {
-    if (!is_liked) {
-      doLike(board_id)
-        .then((res) => {
-          console.log('좋아요 성공');
-        })
-        .catch((err) => {
-          console.log('좋아요 실패', err.response.data);
-        });
-    } else {
-      doUnlike(board_id)
-        .then((res) => {
-          console.log('싫어요 성공');
-        })
-        .catch((err) => {
-          console.log('싫어요 실패');
-        });
+    // 하트 아이콘(관심 기능)
+    const [favorite, setFavorite] = useState(false);
+
+    const addFav = () => {
+        // setFavorite(!favorite);
+        if (!favorite) {
+            doFav(shop_id).then(res => {
+                console.log('관심 기능 성공');
+                setFavorite(true);
+            }).catch(err => {
+                console.log('관심 기능 실패', err.response.data);
+            })
+        } else {
+            doUnFav(shop_id).then(res => {
+                console.log('관심 기능 해제 성공');
+                setFavorite(false);
+            }).catch(err => {
+                console.log('관심 기능 해제 실패', err.response.data);
+            })
+        }
+    }
+
+
+    // 좋아요 기능
+    const [isLiked, setIsLiked] = useState(false);
+    const [likeCount, setLikeCount] = useState(0);
+
+    const addLike = () => {
+        
+        if (!isLiked) {
+            doLike(board_id).then(res => {
+                console.log('좋아요 성공');
+                setIsLiked(true);
+                setLikeCount(likeCount + 1);
+            }).catch(err => {
+                console.log('좋아요 실패', err.response.data);
+            })
+
+        } else {
+            doUnlike(board_id).then(res => {
+                console.log('싫어요 성공');
+                setIsLiked(false);
+                setLikeCount(likeCount - 1);
+            }).catch(err => {
+                console.log('싫어요 실패', err.response.data);
+            })
+        }
     }
   };
 
@@ -125,17 +139,17 @@ function PostItem({ post }) {
         </ChatButton>
       </Button>
 
-      <Line>
-        <Like>
-          {is_liked ? (
-            <Pressable onPress={() => addLike()}>
-              <AntDesign name={'like1'} size={RFValue(15)} color={COLORS.main} />
-            </Pressable>
-          ) : (
-            <Pressable onPress={() => addLike()}>
-              <AntDesign name={'like2'} size={RFValue(15)} />
-            </Pressable>
-          )}
+            <Line>
+                <Like>
+                    {isLiked ? (
+                        <Pressable onPress={() => addLike()}>
+                            <AntDesign name={'like1'} size={RFValue(15)} color={COLORS.main} />
+                        </Pressable>
+                    ) : (
+                        <Pressable onPress={() => addLike()}>
+                            <AntDesign name={'like2'} size={RFValue(15)} />
+                        </Pressable>
+                    )}
 
           <LikeNum>{likeCount}</LikeNum>
         </Like>

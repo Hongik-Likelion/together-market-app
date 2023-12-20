@@ -2,32 +2,38 @@ import RatingStar from '@components/home/RatingStar';
 import { COLORS } from 'colors';
 import { useSharedState } from 'context/FavAndLikeContext';
 import format from 'pretty-format';
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, Pressable, TouchableWithoutFeedback } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { styled } from 'styled-components/native';
+import { doFav, doUnFav } from 'api/market';
 
 function MarketModalItem({modal, shop, toggleModal}) {
 
     console.log(format(shop));
-    const {shop_name, shop_address, selling_products, rating, opening_time, opening_frequency, closing_time} = shop;
-    const { favorite, setFavorite, userLike, setUserLike, likeCount, setLikeCount } = useSharedState();
+    const {shop_id, shop_name, shop_address, selling_products, rating, opening_time, opening_frequency, closing_time} = shop;
 
-    
-    
-    
-    // '가게 정보' 버튼 클릭시 가게 정보 모달창 띄우기
-    // const [modal, setModal] = useState(false);
-    // const toggleModal = () => {
-    //     setModal(!modal);
-    // }
-    
     // 하트 아이콘(관심 기능)
+    const [favorite, setFavorite] = useState(false);
+
     const addFav = () => {
-        setFavorite(!favorite);
-        // DB에 저장된 정보(유저 정보, 하트 누른 게시물 등...) 수정하는 코드 작성?
+        if (!favorite) {
+            doFav(shop_id).then(res => {
+                console.log('관심 기능 성공');
+                setFavorite(true);
+            }).catch(err => {
+                console.log('관심 기능 실패', err.response.data);
+            })
+        } else {
+            doUnFav(shop_id).then(res => {
+                console.log('관심 기능 해제 성공');
+                setFavorite(false);
+            }).catch(err => {
+                console.log('관심 기능 해제 실패', err.response.data);
+            })
+        }
     }
 
     
