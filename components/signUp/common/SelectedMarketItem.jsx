@@ -2,7 +2,7 @@ import { COLORS } from 'colors';
 import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { UserInfo } from 'context/AuthContext';
+
 import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import { styled } from 'styled-components/native';
