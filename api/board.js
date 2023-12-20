@@ -32,7 +32,7 @@ const doUnlike = (board_id) =>
 const doReport = (board_id) =>
   client.patch(`/board/${board_id}/report`, {
     headers: {
-        Authorization:
+      Authorization:
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGEuY29tIiwiaWQiOjQsImV4cCI6MTcwMzU5ODU2MX0.4SbyqXdyMp9ZvKv4A4Qq0luq1YufLKLRWTz_CynGsxQ',
     },
   });
