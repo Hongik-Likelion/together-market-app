@@ -6,7 +6,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { Text } from 'react-native';
 import { CommonPostingContext } from 'context/CommonPostingContext';
 
-function ItemCategory({ isOwner, purchased_products, setPurchase_Product }) {
+function ItemCategory({ isOwner, setPurchase_Product }) {
   const { selectedTag, setSelectedTag } = useContext(CommonPostingContext);
 
   const handleTagSelect = (index) => {

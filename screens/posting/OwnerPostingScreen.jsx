@@ -38,19 +38,16 @@ function OwnerPostingScreen({ route }) {
   console.log('shop_id:', shop_id);
   console.log('shop_name:', shop_name);
   console.log('purchased_products:', purchased_products);
+  console.log('content: ', content);
 
   return (
     <Container>
       <KeyboardAwareScrollView>
         <MarketName setMarket_id={setMarket_id} setMarket_name={setMarket_name}></MarketName>
         <ShopName market_id={market_id} setShop_id={setShop_id} setShop_name={setShop_name}></ShopName>
-        <ItemCategory
-          isOwner={isOwner}
-          purchased_products={purchased_products}
-          setPurchase_Product={setPurchase_Product}
-        ></ItemCategory>
+        <ItemCategory isOwner={isOwner} setPurchase_Product={setPurchase_Product}></ItemCategory>
         <Image></Image>
-        <Review></Review>
+        <Review setContent={setContent}></Review>
         <PostingButton
           marketExists={marketExists}
           shopExists={shopExists}
