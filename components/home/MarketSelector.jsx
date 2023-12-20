@@ -8,7 +8,9 @@ import { styled } from 'styled-components/native';
 function MarketSelector() {
 // 회원가입시 설정한 시장으로 뜨도록 수정해야함
   const navigation = useNavigation();
-
+  
+  
+  
   return (
     <Container>
       <MarketName>망원시장</MarketName>
