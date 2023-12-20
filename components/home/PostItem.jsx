@@ -14,7 +14,8 @@ import { useSharedState } from 'context/FavAndLikeContext';
 import MarketModal from './MarketModal';
 import { useModalContext } from 'context/MarketModalContext';
 import format from 'pretty-format';
-import { doLike, doUnlike } from 'api/board';
+import { doLike, doUnlike, doReport } from 'api/board';
+import { doFav } from 'api/market';
 
 
 
@@ -40,22 +41,36 @@ function PostItem({ post }) {
     // 신고 팝업창 띄우기
     const [banModal, setBanModal] = useState(false);
 
+    // 게시물 신고 기능
+    const reportPost = () => {
+        doReport(board_id).then(res => {
+            console.log('신고 성공');
+        }).catch(err => {
+            console.log('신고 실패');
+        })
+        
+    }
+
     // 하트 아이콘(관심 기능)
     const addFav = () => {
-        setFavorite(!favorite);
-        // DB에 저장된 정보(유저 정보, 하트 누른 게시물 등...) 수정하는 코드 작성?
+        // setFavorite(!favorite);
+        if (!favorite) {
+            doFav(shop_id).then(res => {
+                console.log('관심 기능 성공');
+            }).catch(err => {
+                console.log('관심 기능 실패', err.response.data);
+            })
+        }
     }
 
     // 좋아요 기능
     const addLike = () => {
         
-        // DB에 저장된 정보(유저 정보, 좋아요 누른 게시물 등...) 수정하는 코드 작성?
-        // DB 연동해서 좋아요 개수 업데이트 시키는 거 구현해야됨
         if (!is_liked) {
             doLike(board_id).then(res => {
                 console.log('좋아요 성공');
             }).catch(err => {
-                console.log('좋아요 실패');
+                console.log('좋아요 실패', err.response.data);
             })
 
         } else {
@@ -139,7 +154,7 @@ function PostItem({ post }) {
                         visible={banModal}
                     >
                         <BanModal>
-                            <Box1><BoxLabel color={COLORS.black}>게시물 신고하기</BoxLabel></Box1>
+                            <Box1 onPress={() => reportPost()}><BoxLabel color={COLORS.black}>게시물 신고하기</BoxLabel></Box1>
                             <Box2><BoxLabel color={COLORS.red}>사용자 차단하기</BoxLabel></Box2>
                             <Box3 onPress={() => setBanModal(false)}><BoxLabel color={COLORS.black}>취소</BoxLabel></Box3>
                         </BanModal>

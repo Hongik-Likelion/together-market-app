@@ -10,20 +10,31 @@ const fetchBoardList = (marketId) =>
     },
   });
 
-const doLike = (data) =>
-  client.patch(`/board/${data}/like/`, {
+// 게시글 좋아요
+const doLike = (board_id) =>
+  client.patch(`/board/${board_id}/like`, {
     headers: {
       Authorization:
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGEuY29tIiwiaWQiOjQsImV4cCI6MTcwMzU5ODU2MX0.4SbyqXdyMp9ZvKv4A4Qq0luq1YufLKLRWTz_CynGsxQ',
     },
   });
 
+// 게시글 좋아요 삭제
 const doUnlike = (board_id) =>
-  client.patch(`/board/${board_id}/unlike/`, {
+  client.patch(`/board/${board_id}/unlike`, {
     headers: {
       Authorization:
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGEuY29tIiwiaWQiOjQsImV4cCI6MTcwMzU5ODU2MX0.4SbyqXdyMp9ZvKv4A4Qq0luq1YufLKLRWTz_CynGsxQ',
     },
   });
 
-export { fetchBoardList, doLike, doUnlike };
+// 게시글 신고
+const doReport = (board_id) =>
+  client.patch(`/board/${board_id}/report`, {
+    headers: {
+        Authorization:
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGEuY29tIiwiaWQiOjQsImV4cCI6MTcwMzU5ODU2MX0.4SbyqXdyMp9ZvKv4A4Qq0luq1YufLKLRWTz_CynGsxQ',
+    },
+  });
+
+export { fetchBoardList, doLike, doUnlike, doReport };
