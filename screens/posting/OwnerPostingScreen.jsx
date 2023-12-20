@@ -25,21 +25,24 @@ function OwnerPostingScreen({ route }) {
   const isOwner = route.params?.isOwner;
 
   // 사장님 글쓰기 API 넘길것
-  const [markt_id, setMarket_id] = useState(null);
+  const [market_id, setMarket_id] = useState(null);
   const [market_name, setMarket_name] = useState('');
-  const [shop_id, setShop_id] = useState('');
+  const [shop_id, setShop_id] = useState(null);
   const [shop_name, setShop_name] = useState('');
   const [purchased_products, setPurchase_Product] = useState([]);
   const [photo, setPhoto] = useState('');
   const [content, setContent] = useState('');
 
-  console.log('markt_id:', markt_id); // markt_id 값 콘솔에 출력
+  console.log('market_id:', market_id);
+  console.log('market_name:', market_name);
+  console.log('shop_id:', shop_id);
+  console.log('shop_name:', shop_name);
 
   return (
     <Container>
       <KeyboardAwareScrollView>
-        <MarketName market_id={markt_id} setMarket_id={setMarket_id}></MarketName>
-        <ShopName></ShopName>
+        <MarketName setMarket_id={setMarket_id} setMarket_name={setMarket_name}></MarketName>
+        <ShopName market_id={market_id} setShop_id={setShop_id} setShop_name={setShop_name}></ShopName>
         <ItemCategory isOwner={isOwner}></ItemCategory>
         <Image></Image>
         <Review></Review>

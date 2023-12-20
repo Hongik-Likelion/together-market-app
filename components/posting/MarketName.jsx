@@ -10,7 +10,7 @@ import { View, Text } from 'react-native';
 import format from 'pretty-format';
 
 function MarketName(props) {
-  const { market_id, setMarket_id } = props;
+  const { setMarket_id, setMarket_name } = props;
   const [searchText, setSearchText] = useState(''); // 유저가 입력한 시장
 
   const {
@@ -70,6 +70,7 @@ function MarketName(props) {
       const foundMarket = markets.find((market) => market.market_name === text);
       if (foundMarket) {
         setMarket_id(foundMarket.market_id); // marketId 상태값 설정
+        setMarket_name(foundMarket.market_name); //market_name 설정
       }
     }
   };
