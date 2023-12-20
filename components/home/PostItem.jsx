@@ -17,14 +17,11 @@ import format from 'pretty-format';
 import { doLike, doUnlike, doReport } from 'api/board';
 import { doFav } from 'api/market';
 
-
-
-
 function PostItem({ post }) {
     
 
     const { user_info: { user_id, isOwner: is_owner, nickname, profile }, shop_info: { shop_id, shop_name, average_rating }, board_info: { board_id,updated_at: date, rating, photo: image, content, like_count, is_liked } } = post;
-    const { favorite, setFavorite, userLike, setUserLike, likeCount, setLikeCount } = useSharedState();
+    // const { favorite } = useSharedState();
 
 
     const [modal, setModal] = useState(false);
@@ -45,6 +42,7 @@ function PostItem({ post }) {
     const reportPost = () => {
         doReport(board_id).then(res => {
             console.log('신고 성공');
+            setBanModal(false);
         }).catch(err => {
             console.log('신고 실패', err.response.data);
         })
@@ -52,23 +50,32 @@ function PostItem({ post }) {
     }
 
     // 하트 아이콘(관심 기능)
+    const [favorite, setFavorite] = useState(false);
+
     const addFav = () => {
         // setFavorite(!favorite);
         if (!favorite) {
             doFav(shop_id).then(res => {
                 console.log('관심 기능 성공');
+                setFavorite(true);
             }).catch(err => {
                 console.log('관심 기능 실패', err.response.data);
             })
         }
     }
 
+
     // 좋아요 기능
+    const [isLiked, setIsLiked] = useState(false);
+    const [likeCount, setLikeCount] = useState(0);
+
     const addLike = () => {
         
-        if (!is_liked) {
+        if (!isLiked) {
             doLike(board_id).then(res => {
                 console.log('좋아요 성공');
+                setIsLiked(true);
+                setLikeCount(likeCount + 1);
             }).catch(err => {
                 console.log('좋아요 실패', err.response.data);
             })
@@ -76,6 +83,8 @@ function PostItem({ post }) {
         } else {
             doUnlike(board_id).then(res => {
                 console.log('싫어요 성공');
+                setIsLiked(false);
+                setLikeCount(likeCount - 1);
             }).catch(err => {
                 console.log('싫어요 실패', err.response.data);
             })
@@ -127,7 +136,7 @@ function PostItem({ post }) {
 
             <Line>
                 <Like>
-                    {is_liked ? (
+                    {isLiked ? (
                         <Pressable onPress={() => addLike()}>
                             <AntDesign name={'like1'} size={RFValue(15)} color={COLORS.main} />
                         </Pressable>

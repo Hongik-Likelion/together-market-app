@@ -12,7 +12,7 @@ const fetchShop = (shop_id) =>
 
 // 상점 즐겨찾기 (하트)
 const doFav = (shop_id) =>
-    client.patch(`/shop/${shop_id}/favorite`, {
+    client.patch(`/shop/${shop_id}/favorite`, null, {
         headers: {
             Authorization:
               'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzYUBuYXYuY29tIiwiaWQiOjIsImV4cCI6MTcwMzY2NjkwM30.KdaqhSEKJHTb8my3IxMxzOMIi5Qsfcq4aq81n5ozTl8',
