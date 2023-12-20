@@ -15,7 +15,7 @@ import MarketModal from './MarketModal';
 import { useModalContext } from 'context/MarketModalContext';
 import format from 'pretty-format';
 import { doLike, doUnlike, doReport } from 'api/board';
-import { doFav } from 'api/market';
+import { doFav, doUnFav } from 'api/market';
 
 function PostItem({ post }) {
     
@@ -60,6 +60,13 @@ function PostItem({ post }) {
                 setFavorite(true);
             }).catch(err => {
                 console.log('관심 기능 실패', err.response.data);
+            })
+        } else {
+            doUnFav(shop_id).then(res => {
+                console.log('관심 기능 해제 성공');
+                setFavorite(false);
+            }).catch(err => {
+                console.log('관심 기능 해제 실패', err.response.data);
             })
         }
     }
