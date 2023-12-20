@@ -1,19 +1,75 @@
 import { COLORS } from 'colors';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-// import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { fetchUserInfo } from 'api/auth';
+import { getOneBoard } from 'api/board';
+import { View, Text } from 'react-native';
+import format from 'pretty-format';
 
 function OwnerPostingListItem({ myPosting }) {
   const { shop_info, board_info } = myPosting;
+  const [isOwner, setIsOwner] = useState(false);
 
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
 
-  //게시글 수정 페이지로 이동해야함. ( 나중에 소연 게시물 수정부분 API 진행한거보고 이 부분도 수정해야함)
+  // 개인정보조회해서 isOwner 확인(사장님/손님)
+  useEffect(() => {
+    fetchUserInfo()
+      .then((res) => {
+        // console.log(res.data.is_owner);
+        setIsOwner(res.data.is_owner);
+      })
+      .catch((err) => console.log(err));
+  });
+
+  // 게시글 단일 조회 API
+  const [oneBoardData, setOneBoardData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    getOneBoard(board_info.board_id)
+      .then((res) => {
+        console.log(format(res.data));
+        setOneBoardData(res.data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log('error getOneBoard');
+        console.log(err);
+        setIsError(true);
+        setIsLoading(false);
+      });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View>
+        <Text>로딩중...</Text>
+      </View>
+    );
+  }
+
+  if (isError) {
+    return (
+      <View>
+        <Text>에러 발생</Text>
+      </View>
+    );
+  }
+
+  //게시글 수정 페이지로 이동
   const onPressPostingItem = () => {
-    //navigation.navigate('home-detail');
+    navigation.navigate(isOwner ? 'owner-posting' : 'user-posting', {
+      isOwner: isOwner,
+      oneBoardData: oneBoardData,
+      board_id: board_info.board_id,
+    });
   };
 
   return (

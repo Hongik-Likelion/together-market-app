@@ -10,7 +10,7 @@ import { View, Text } from 'react-native';
 import format from 'pretty-format';
 
 function MarketName(props) {
-  const { setMarket_id, setMarket_name } = props;
+  const { setMarket_id, setMarket_name, market_name } = props;
   const [searchText, setSearchText] = useState(''); // 유저가 입력한 시장
 
   const {
@@ -83,7 +83,7 @@ function MarketName(props) {
         </TitleLabel>
       </Title>
       <Input
-        placeholder="망원시장"
+        placeholder={market_name !== '' ? market_name : '망원시장'}
         placeholderTextColor={COLORS.gray01}
         value={searchText}
         onChangeText={handleSearchTextChange}
