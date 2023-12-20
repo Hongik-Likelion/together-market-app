@@ -1,4 +1,4 @@
-import Image from '@components/posting/Image';
+import ImageUpload from '@components/posting/ImageUpload';
 import ItemCategory from '@components/posting/ItemCategory';
 import MarketName from '@components/posting/MarketName';
 import PostingButton from '@components/posting/PostingButton';
@@ -10,7 +10,7 @@ import { styled } from 'styled-components/native';
 import { CommonPostingContext } from 'context/CommonPostingContext';
 import RatingStar from '@components/posting/RatingStar';
 
-function UserPostingScreen({route}) {
+function UserPostingScreen({ route }) {
   const {
     marketExists,
     setMarketExists,
@@ -31,7 +31,7 @@ function UserPostingScreen({route}) {
         <MarketName></MarketName>
         <ShopName></ShopName>
         <ItemCategory isOwner={isOwner}></ItemCategory>
-        <Image></Image>
+        <ImageUpload></ImageUpload>
         <Review></Review>
         <PostingButton
           marketExists={marketExists}

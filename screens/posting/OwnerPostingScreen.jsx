@@ -1,4 +1,4 @@
-import Image from '@components/posting/Image';
+import ImageUpload from '@components/posting/ImageUpload';
 import ItemCategory from '@components/posting/ItemCategory';
 import MarketName from '@components/posting/MarketName';
 import Review from '@components/posting/Review';
@@ -33,13 +33,33 @@ function OwnerPostingScreen({ route }) {
   const [photo, setPhoto] = useState('');
   const [content, setContent] = useState('');
 
-  console.log('market_id:', market_id);
-  console.log('market_name:', market_name);
-  console.log('shop_id:', shop_id);
-  console.log('shop_name:', shop_name);
-  console.log('purchased_products:', purchased_products);
-  console.log('photo: ', photo);
-  console.log('content: ', content);
+  const data = {
+    market_id: market_id,
+    market_name: market_name,
+    shop_id: shop_id,
+    shop_name: shop_name,
+    purchased_products: purchased_products,
+    photo: [photo],
+    content: content,
+  };
+
+  const resetData = () => {
+    setMarket_id(null);
+    setMarket_name('');
+    setShop_id(null);
+    setShop_name('');
+    setPurchase_Product([]);
+    setPhoto('');
+    setContent('');
+  };
+
+  // console.log('market_id:', market_id);
+  // console.log('market_name:', market_name);
+  // console.log('shop_id:', shop_id);
+  // console.log('shop_name:', shop_name);
+  // console.log('purchased_products:', purchased_products);
+  // console.log('photo: ', photo);
+  // console.log('content: ', content);
 
   return (
     <Container>
@@ -47,13 +67,15 @@ function OwnerPostingScreen({ route }) {
         <MarketName setMarket_id={setMarket_id} setMarket_name={setMarket_name}></MarketName>
         <ShopName market_id={market_id} setShop_id={setShop_id} setShop_name={setShop_name}></ShopName>
         <ItemCategory isOwner={isOwner} setPurchase_Product={setPurchase_Product}></ItemCategory>
-        <Image setPhoto={setPhoto}></Image>
+        <ImageUpload setPhoto={setPhoto}></ImageUpload>
         <Review setContent={setContent}></Review>
         <PostingButton
           marketExists={marketExists}
           shopExists={shopExists}
           selectedTag={selectedTag}
           reviewText={reviewText}
+          data={data}
+          resetData={resetData}
         ></PostingButton>
       </KeyboardAwareScrollView>
     </Container>

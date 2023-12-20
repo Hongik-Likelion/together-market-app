@@ -5,6 +5,7 @@ import { FlatList } from 'react-native';
 import { fetchBoardList } from 'api/board';
 import format from 'pretty-format';
 import { View, Text } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 function Post() {
   //const [isLoading, isError, posts] = useFetchData(fetchBoardList);
@@ -15,23 +16,25 @@ function Post() {
   const [isError, setIsError] = useState(false);
 
   // !!!!!!!!!! 이거 추후 API에서 return 받은걸로 변경 필요.
-  const market_id = 1;
+  const market_id = 2;
 
-  useEffect(() => {
-    setIsLoading(true);
-    fetchBoardList(market_id)
-      .then((res) => {
-        console.log(format(res.data));
-        setPostsData(res.data);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log('error fetchBoardList');
-        console.log(err);
-        setIsError(true);
-        setIsLoading(false);
-      });
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      setIsLoading(true);
+      fetchBoardList(market_id)
+        .then((res) => {
+          console.log(format(res.data));
+          setPostsData(res.data);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log('error fetchBoardList');
+          console.log(err);
+          setIsError(true);
+          setIsLoading(false);
+        });
+    }, []),
+  );
 
   if (isLoading) {
     return (

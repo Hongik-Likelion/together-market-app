@@ -37,4 +37,13 @@ const doReport = (board_id) =>
     },
   });
 
-export { fetchBoardList, doLike, doUnlike, doReport };
+// 게시글 생성
+const makeNewBoard = (data) =>
+  client.post(`/board`, data, {
+    headers: {
+      Authorization:
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGEuY29tIiwiaWQiOjQsImV4cCI6MTcwMzY2Mjc4Nn0.VYKzTp5tth1zMyIudKQJ-0GnHRjoQluGceeLWx-pIq0',
+    },
+  });
+
+export { fetchBoardList, doLike, doUnlike, doReport, makeNewBoard };
