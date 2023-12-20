@@ -3,7 +3,7 @@ import { COLORS } from 'colors';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { AirbnbRating } from 'react-native-ratings';
 
-function RatingStar(props) {
+function RatingStar({ setRating }) {
   return (
     <AirbnbRating
       selectedColor={COLORS.main}

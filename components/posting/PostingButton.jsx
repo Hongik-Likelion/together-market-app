@@ -26,7 +26,7 @@ function PostingButton({ data, resetData }) {
       .then((res) => {
         console.log(format(res.data));
         setIsLoading(false);
-        resetData;
+        resetData();
         navigation.navigate('home-list');
       })
       .catch((err) => {
