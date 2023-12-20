@@ -10,36 +10,69 @@ import { CommonPostingContext } from 'context/CommonPostingContext';
 import { getShopList } from 'api/shop';
 import { useFocusEffect } from '@react-navigation/native';
 
-function ShopName() {
+function ShopName({ market_id, setShop_id, setShop_name }) {
   const [searchText, setSearchText] = useState('');
-  // const [shopExists, setShopExists] = useState(false);
+
   const { shopExists, setShopExists } = useContext(CommonPostingContext);
 
-  // 상점 더미데이터
-  const dummyShops = [
-    {
-      shop_id: 1,
-      shop_name: '싱글벙글 과일가게',
-    },
-    {
-      shop_id: 2,
-      shop_name: '하하호호 과일가게',
-    },
-    {
-      shop_id: 3,
-      shop_name: '이런저런 과일가게',
-    },
-  ];
+  // 상점 리스트 조회 API
+  const [shops, setShops] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
-  const checkInDummyShops = (shopName) => {
-    return dummyShops.some((shop) => shop.shop_name === shopName);
+  useFocusEffect(
+    React.useCallback(() => {
+      if (market_id) {
+        setIsLoading(true);
+        getShopList(market_id)
+          .then((res) => {
+            console.log(format(res.data));
+            setShops(res.data);
+            setIsLoading(false);
+          })
+          .catch((err) => {
+            console.log('error getShopList');
+            console.log(err);
+            setIsError(true);
+            setIsLoading(false);
+          });
+      }
+    }, [market_id]),
+  );
+
+  if (isLoading) {
+    return (
+      <View>
+        <Text>로딩중...</Text>
+      </View>
+    );
+  }
+
+  if (isError) {
+    return (
+      <View>
+        <Text>에러 발생</Text>
+      </View>
+    );
+  }
+
+  const checkInShops = (shopName) => {
+    return shops.some((shop) => shop.shop_name === shopName);
   };
 
   const handleSearchTextChange = (text) => {
     setSearchText(text);
 
-    const exists = checkInDummyShops(text);
+    const exists = checkInShops(text);
     setShopExists(exists);
+
+    if (exists) {
+      const foundShop = shops.find((shop) => shop.shop_name === text);
+      if (foundShop) {
+        setShop_id(foundShop.shop_id);
+        setShop_name(foundShop.shop_name);
+      }
+    }
   };
 
   return (
