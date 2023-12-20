@@ -8,8 +8,15 @@ import { styled } from 'styled-components/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import PostingButton from '@components/posting/PostingButton';
 import { CommonPostingContext } from 'context/CommonPostingContext';
+import { useNavigation } from '@react-navigation/native';
+import HeaderWithDelete from '@components/posting/HeaderWithDelete';
+import { deleteBoard } from 'api/board';
+import { View, Text } from 'react-native';
+import format from 'pretty-format';
 
 function OwnerPostingScreen({ route }) {
+  const navigation = useNavigation();
+
   // 해당 요소들이 다 작성되었는지 확인하는 부분
   const {
     marketExists,
@@ -74,6 +81,55 @@ function OwnerPostingScreen({ route }) {
     setPhoto('');
     setContent('');
   };
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  // OwnerPostingScreen 컴포넌트에서 navigation.setOptions 부분을 useEffect로 감싸서 처리
+  useEffect(() => {
+    if (navigation) {
+      navigation.setOptions({
+        headerRight: () => (
+          <HeaderWithDelete
+            onDelete={() => {
+              //게시물 삭제 API
+              setIsLoading(true);
+
+              deleteBoard(board_id)
+                .then((res) => {
+                  console.log(format(res.data));
+                  setIsLoading(false);
+                  resetData();
+                  navigation.navigate('profile');
+                })
+                .catch((err) => {
+                  console.log('error deleteBoard');
+                  console.log(err);
+                  setIsError(true);
+                  setIsLoading(false);
+                });
+            }}
+          />
+        ),
+      });
+    }
+  }, [navigation, board_id]);
+
+  if (isLoading) {
+    return (
+      <View>
+        <Text>로딩중...</Text>
+      </View>
+    );
+  }
+
+  if (isError) {
+    return (
+      <View>
+        <Text>에러 발생</Text>
+      </View>
+    );
+  }
 
   console.log('market_id:', market_id);
   console.log('market_name:', market_name);

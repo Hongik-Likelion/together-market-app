@@ -73,4 +73,13 @@ const modifyBoard = (board_id, data) =>
     },
   });
 
-export { fetchBoardList, doLike, doUnlike, doReport, makeNewBoard, doUserBlock, getOneBoard, modifyBoard };
+// 게시글 삭제
+const deleteBoard = (board_id) =>
+  client.delete(`/board/${board_id}`, {
+    headers: {
+      Authorization:
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGEuY29tIiwiaWQiOjQsImV4cCI6MTcwMzY2Mjc4Nn0.VYKzTp5tth1zMyIudKQJ-0GnHRjoQluGceeLWx-pIq0',
+    },
+  });
+
+export { fetchBoardList, doLike, doUnlike, doReport, makeNewBoard, doUserBlock, getOneBoard, modifyBoard, deleteBoard };
