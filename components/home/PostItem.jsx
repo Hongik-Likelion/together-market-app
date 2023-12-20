@@ -14,7 +14,7 @@ import { useSharedState } from 'context/FavAndLikeContext';
 import MarketModal from './MarketModal';
 import { useModalContext } from 'context/MarketModalContext';
 import format from 'pretty-format';
-import { doLike, doUnlike, doReport } from 'api/board';
+import { doLike, doUnlike, doReport, doUserBlock } from 'api/board';
 import { doFav, doUnFav } from 'api/market';
 
 function PostItem({ post }) {
@@ -35,7 +35,7 @@ function PostItem({ post }) {
   // 게시물 클릭시 자세하게 볼 수 있도록(home-detail)
   const navigation = useNavigation();
 
-  // 신고 팝업창 띄우기
+  // 신고/차단 팝업창 띄우기
   const [banModal, setBanModal] = useState(false);
 
   // 게시물 신고 기능
@@ -49,6 +49,17 @@ function PostItem({ post }) {
         console.log('신고 실패', err.response.data);
       });
   };
+
+  // 사용자 차단 기능
+  const userBlock = () => {
+    doUserBlock(user_id).then((res) => {
+        console.log('차단 성공');
+        setBanModal(false);
+    })
+    .catch((err) => {
+        console.log('차단 실패', err.response.data);
+    });
+  }
 
   // 하트 아이콘(관심 기능)
   const [favorite, setFavorite] = useState(false);
@@ -173,7 +184,7 @@ function PostItem({ post }) {
               <Box1 onPress={() => reportPost()}>
                 <BoxLabel color={COLORS.black}>게시물 신고하기</BoxLabel>
               </Box1>
-              <Box2>
+              <Box2 onPress={() => userBlock()}>
                 <BoxLabel color={COLORS.red}>사용자 차단하기</BoxLabel>
               </Box2>
               <Box3 onPress={() => setBanModal(false)}>

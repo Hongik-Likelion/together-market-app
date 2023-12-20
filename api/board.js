@@ -46,12 +46,13 @@ const makeNewBoard = (data) =>
     },
   });
 
-const PostCreate = (data) =>
-  client.post('/board', data, {
+// 사용자 차단
+const doUserBlock = (user_id) =>
+  client.patch(`/user/${user_id}/block`, null, {
     headers: {
       Authorization:
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGEuY29tIiwiaWQiOjQsImV4cCI6MTcwMzY2Mjc4Nn0.VYKzTp5tth1zMyIudKQJ-0GnHRjoQluGceeLWx-pIq0',
     },
-  });
+  })
 
-export { fetchBoardList, doLike, doUnlike, doReport, makeNewBoard, PostCreate };
+export { fetchBoardList, doLike, doUnlike, doReport, makeNewBoard, doUserBlock };
