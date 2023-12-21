@@ -10,12 +10,7 @@ const signUp = (data) => client.post('/user', { ...data });
 const fetchEatingCatergory = () => client.get('/products', {});
 
 //상점 등록 - 사장 회원가입
-const postOwnerShop = (data, token) =>
-  client.post('/shop', data, {
-    headers: {
-      Authorization: 'Bearer ' + token,
-    },
-  });
+const postOwnerShop = (data) => client.post('/shop', { ...data });
 
 // 자주 방문 시장 등록- 손님 회원가입
 const postfavMarket = (market_id) => client.post('/markets/favourite', { market_id: [market_id] });
