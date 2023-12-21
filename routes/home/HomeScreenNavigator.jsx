@@ -32,14 +32,6 @@ function HomeScreenNavigator() {
               }}
             />
 
-            {/* 게시물 눌렀을 떄 더 자세하게 게시물 보여줌
-        <Stack.Screen name={'home-detail'} component={HomeDetailScreen}
-          options={{
-            headerLeft: () => <HeaderWithBackButton title={'망원시장'}/>,
-            headerTitle: ''
-          }}
-        /> */}
-
             {/*상단탭에서 시장 선택할 수 있음*/}
             <Stack.Screen
               name={'market-select'}

@@ -1,9 +1,9 @@
 import { useFetchData } from '@hooks/fetch';
-import { fetchMarkets } from 'api/market';
+import { getAllMarkets } from 'api/auth';
 import { Auth } from 'context/AuthContext';
 import PropTypes from 'prop-types';
 import React, { useContext, useState } from 'react';
-import { Modal, Platform, StatusBar } from 'react-native';
+import { Modal } from 'react-native';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -26,11 +26,9 @@ function SelectMarketModal({ open, onClose, onSelect }) {
 
   const [marketInput, setMarketInput] = useState('');
   const [marketId, setMarketId] = useState(-1);
-  const [isLoading, isError, markets] = useFetchData(fetchMarkets);
+  const [isLoading, isError, markets] = useFetchData(getAllMarkets);
 
   if (isLoading) return null;
-
-  if (isError) return null;
 
   const filtered = markets && markets.filter((market) => market.market_name.includes(marketInput));
 
@@ -42,8 +40,7 @@ function SelectMarketModal({ open, onClose, onSelect }) {
           <Title>시장 위치 설정</Title>
           <CompleteButton
             onPress={() => {
-              setShopRequest((prev) => ({ ...prev, market_id: marketId }));
-              onSelect(marketInput);
+              onSelect(marketId, marketInput);
               onClose();
             }}
           >
@@ -80,8 +77,7 @@ function SelectMarketModal({ open, onClose, onSelect }) {
   );
 }
 
-const Container = styled.SafeAreaView`
-  padding-top: ${Platform.OS === 'android' ? StatusBar.currentHeight : 0};
+const Container = styled.View`
   background-color: ${COLORS.white};
   flex: 1;
 `;

@@ -11,16 +11,9 @@
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "plugins": [
-      [
-        "@react-native-seoul/kakao-login",
-        {
-          "kakaoAppKey": "311500b29c50356116384b49bcd20593",
-          "kotlinVersion": "1.5.20"
-        }
-      ]
+    "assetBundlePatterns": [
+      "**/*"
     ],
-    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.rpdyddns.togethermarketapp"
@@ -35,12 +28,11 @@
     "web": {
       "favicon": "./assets/LoadingPage.png"
     },
-
     "extra": {
       "eas": {
         "projectId": "71e3060f-d7e1-4e49-84ff-acf5aaa64b3e"
       }
-    }
-
+    },
+    "owner": "rpdyddns"
   }
 }

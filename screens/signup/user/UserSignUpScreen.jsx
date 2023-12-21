@@ -1,100 +1,58 @@
-import { PreviousBtn, ContinueBtn } from '@assets/signUp/CommonSignUpScreenIcon';
+import { ContinueBtn, PreviousBtn } from '@assets/signUp/CommonSignUpScreenIcon';
 import UserSignUpHeader from '@assets/signUp/UserSignUpScreen';
 import SelectMarketModal from '@components/signUp/common/SelectMarketModal';
 import SelectedMarketItem from '@components/signUp/common/SelectedMarketItem';
 import MarketInputGroup from '@components/signUp/owner/MarketInputGroup';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
-import React, { useState, useContext } from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { styled } from 'styled-components/native';
-import { RFValue } from 'react-native-responsive-fontsize';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { signUp, postfavMarket } from 'api/auth';
-import format from 'pretty-format';
 import { Auth } from 'context/AuthContext';
+import React, { useContext, useState } from 'react';
+import { SafeAreaView, Text } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { styled } from 'styled-components/native';
 
 function UserSignUpScreen() {
+  const navigation = useNavigation();
+
   const {
     user: [signUpRequest, setSignUpRequest],
-    shop: [shopRequest, setShopRequest],
+    market: [favouriteMarketRequest, setFavouriteMarketRequest],
   } = useContext(Auth);
 
-  const navigation = useNavigation();
-  const { market_id, shop_name } = shopRequest;
-
   /** 선택된 시장 */
-  const [market, setMarket] = useState('');
+  const [market, setMarket] = useState({
+    id: -1,
+    name: '',
+  });
+
   /** 시장 선택 모달 상태 */
   const [modal, setModal] = useState(false);
 
   /** 시장 선택 취소 */
-  const onPressDelete = () => {
-    setMarket('');
-    setShopRequest((prev) => ({ ...prev, market_id: -1 }));
-  };
+  const onPressDelete = () => setMarket(() => ({ id: -1, name: '' }));
 
   /** 이전 버튼 */
   const onPressPreviousBtn = () => navigation.goBack();
 
-  //회원가입 API
-  const [userData, setUserData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [shopIsError, setShopIsError] = useState(false);
-  //자주 찾는 시장 등록 API
-  const [shopData, setShopData] = useState(null);
-
-  const onPressContinueBtn = () => {
-    if (market_id !== -1) {
-      // API 호출 및 데이터 처리
-      setIsLoading(true);
-      console.log(format(signUpRequest));
-      signUp(signUpRequest)
-        .then((res) => {
-          console.log(format(res.data));
-          setUserData(res.data);
-
-          postfavMarket({ market_id }, res.data.access_token)
-            .then((res) => {
-              console.log(format(res.data));
-              setShopData(res.data);
-            })
-            .catch((err) => {
-              console.log('자주찾는시장등록 오류');
-              console.log(format(err.response));
-              setShopIsError(true);
-            });
-        })
-        .catch((err) => {
-          console.log('회원가입오류');
-          console.log(format(err.response));
-
-          setIsError(true);
-        })
-        .finally(() => {
-          setIsLoading(false);
-          navigation.navigate('guideSignUpScreen'); // 이동은 여기서 호출
-        });
-    }
+  const handleAddFavoriteMarket = (id, name) => {
+    setMarket((prev) => ({
+      ...prev,
+      id,
+      name,
+    }));
+    setFavouriteMarketRequest(id);
   };
 
-  if (isLoading) {
-    return (
-      <View>
-        <Text>로딩중...</Text>
-      </View>
-    );
-  }
+  const onPress = () => {
+    if (favouriteMarketRequest === -1) {
+      Alert.alert('오류', '자주가는 시장을 선택해주세요');
+      return;
+    }
+    navigation.navigate('guideSignUpScreen');
+  };
 
-  if (isError || shopIsError) {
-    return (
-      <View>
-        <Text>에러 발생</Text>
-      </View>
-    );
-  }
+  const handleModalOpen = () => setModal(true);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -111,34 +69,33 @@ function UserSignUpScreen() {
           </InformationContainer>
         </Header>
         <Form>
-          <MarketInputGroup market={market} onPress={() => setModal(true)} />
-          <SelectedMarketItem marketName={market} onPressDelete={onPressDelete} />
+          <MarketInputGroup market={market.name} onPress={handleModalOpen} />
+          <SelectedMarketItem marketName={market.name} onPressDelete={onPressDelete} />
         </Form>
         <ButtonContainer>
           <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
 
           <ContinueBtn
-            fontColor={market_id !== -1 ? 'white' : COLORS.main}
-            backColor={market_id !== -1 ? COLORS.main : 'white'}
+            fontColor={market.id !== -1 ? 'white' : COLORS.main}
+            backColor={market.id !== -1 ? COLORS.main : 'white'}
             width={wp(100)}
             marginBottom={hp(6.15)}
             justifyContent="center"
-            onPress={onPressContinueBtn}
+            onPress={onPress}
           />
         </ButtonContainer>
-        <SelectMarketModal
-          open={modal}
-          onClose={() => setModal(false)}
-          market={market}
-          onSelect={(market) => setMarket(market)}
-        />
-        {console.log('Modal State:', modal)}
       </Container>
+      <SelectMarketModal
+        open={modal}
+        onClose={() => setModal(false)}
+        market={market}
+        onSelect={handleAddFavoriteMarket}
+      />
     </SafeAreaView>
   );
 }
 
-const Container = styled(KeyboardAwareScrollView)`
+const Container = styled.View`
   flex: 1;
   background-color: white;
 `;
@@ -158,7 +115,7 @@ const InformationContainer = styled.View`
   padding: ${RFValue(12)}px ${RFValue(12)}px;
 `;
 
-const Form = styled.View`
+const Form = styled.Pressable`
   flex: 2;
 `;
 
