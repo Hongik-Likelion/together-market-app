@@ -6,10 +6,10 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { CommonPostingContext } from 'context/CommonPostingContext';
 import { useNavigation } from '@react-navigation/native';
-import { makeNewBoard } from 'api/board';
+import { makeNewBoard, modifyBoard } from 'api/board';
 import format from 'pretty-format';
 
-function PostingButton({ data, resetData }) {
+function PostingButton({ data, resetData, conditionBoard, board_id }) {
   const navigation = useNavigation();
   const { marketExists, shopExists, selectedTag, reviewText } = useContext(CommonPostingContext);
 
@@ -17,27 +17,48 @@ function PostingButton({ data, resetData }) {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [isSecondLoading, setIsSecondLoading] = useState(false);
+  const [isSecondError, setSecondIsError] = useState(false);
 
   const handlePosting = () => {
-    //게시물 생성 API
-    setIsLoading(true);
+    if (conditionBoard == '생성') {
+      //게시물 생성 API
+      setIsLoading(true);
 
-    makeNewBoard(data)
-      .then((res) => {
-        console.log(format(res.data));
-        setIsLoading(false);
-        resetData();
-        navigation.navigate('home-list');
-      })
-      .catch((err) => {
-        console.log('error makeNewBoard');
-        console.log(err);
-        setIsError(true);
-        setIsLoading(false);
-      });
+      makeNewBoard(board_id, data)
+        .then((res) => {
+          console.log(format(res.data));
+          setIsLoading(false);
+          resetData();
+          navigation.navigate('home-list');
+        })
+        .catch((err) => {
+          console.log('error makeNewBoard');
+          console.log(err);
+          setIsError(true);
+          setIsLoading(false);
+        });
+    } else if (conditionBoard == '수정') {
+      //게시물 수정 API
+      setIsSecondLoading(true);
+
+      modifyBoard(board_id, data)
+        .then((res) => {
+          console.log(format(res.data));
+          setIsSecondLoading(false);
+          resetData();
+          navigation.navigate('profile');
+        })
+        .catch((err) => {
+          console.log('error modifyBoard');
+          console.log(err);
+          setSecondIsError(true);
+          setIsSecondLoading(false);
+        });
+    }
   };
 
-  if (isLoading) {
+  if (isLoading || isSecondLoading) {
     return (
       <View>
         <Text>로딩중...</Text>
@@ -45,7 +66,7 @@ function PostingButton({ data, resetData }) {
     );
   }
 
-  if (isError) {
+  if (isError || isSecondError) {
     return (
       <View>
         <Text>에러 발생</Text>

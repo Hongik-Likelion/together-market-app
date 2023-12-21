@@ -10,7 +10,7 @@ import { CommonPostingContext } from 'context/CommonPostingContext';
 import { getShopList } from 'api/shop';
 import { useFocusEffect } from '@react-navigation/native';
 
-function ShopName({ market_id, setShop_id, setShop_name }) {
+function ShopName({ market_id, setShop_id, setShop_name, shop_name }) {
   const [searchText, setSearchText] = useState('');
 
   const { shopExists, setShopExists } = useContext(CommonPostingContext);
@@ -83,7 +83,7 @@ function ShopName({ market_id, setShop_id, setShop_name }) {
         </TitleLabel>
       </Title>
       <Input
-        placeholder="싱글벙글 과일가게"
+        placeholder={shop_name !== '' ? shop_name : '싱글벙글 과일가게'}
         placeholderTextColor={COLORS.gray01}
         value={searchText}
         onChangeText={handleSearchTextChange}

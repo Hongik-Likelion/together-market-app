@@ -7,7 +7,7 @@ import AddImage from '@assets/PostItem/AddImage';
 import { Text, Image, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
-function ImageUpload({ setPhoto }) {
+function ImageUpload({ setPhoto, photo }) {
   const [imgUrl, setImgUrl] = useState('');
 
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
@@ -42,13 +42,18 @@ function ImageUpload({ setPhoto }) {
       </Title>
       <ImgContainer>
         <TouchableOpacity onPress={uploadImage}>
-          {imgUrl ? (
+          {photo === '' ? (
+            <AddImage style={{ marginLeft: wp(5), marginTop: hp(2), marginBottom: hp(1) }} />
+          ) : imgUrl === '' || imgUrl === undefined ? (
+            <Image
+              source={{ uri: photo }}
+              style={{ width: 100, height: 100, marginLeft: wp(5), marginTop: hp(2), marginBottom: hp(1) }}
+            />
+          ) : (
             <Image
               source={{ uri: imgUrl }}
               style={{ width: 100, height: 100, marginLeft: wp(5), marginTop: hp(2), marginBottom: hp(1) }}
             />
-          ) : (
-            <AddImage style={{ marginLeft: wp(5), marginTop: hp(2), marginBottom: hp(1) }} />
           )}
         </TouchableOpacity>
         <SubText1>* 직접 촬영한 사진을 첨부해주세요.</SubText1>

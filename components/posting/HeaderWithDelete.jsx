@@ -5,21 +5,15 @@ import { COLORS } from 'colors';
 import { styled } from 'styled-components/native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-function HeaderWithDelete() {
-//   const navigation = useNavigation();
-
+function HeaderWithDelete({ onDelete }) {
   return (
-    <Container>
+    <Container onPress={onDelete}>
       <Title>삭제하기</Title>
     </Container>
   );
 }
 
-const Container = styled.TouchableOpacity`
-
-`;
-
-
+const Container = styled.TouchableOpacity``;
 
 const Title = styled.Text`
   font-size: ${RFValue(14)}px;

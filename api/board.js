@@ -53,6 +53,33 @@ const doUserBlock = (user_id) =>
       Authorization:
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGEuY29tIiwiaWQiOjQsImV4cCI6MTcwMzY2Mjc4Nn0.VYKzTp5tth1zMyIudKQJ-0GnHRjoQluGceeLWx-pIq0',
     },
-  })
+  });
 
-export { fetchBoardList, doLike, doUnlike, doReport, makeNewBoard, doUserBlock };
+// 게시글 단일 조회
+const getOneBoard = (board_id) =>
+  client.get(`/board/${board_id}`, {
+    headers: {
+      Authorization:
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGEuY29tIiwiaWQiOjQsImV4cCI6MTcwMzY2Mjc4Nn0.VYKzTp5tth1zMyIudKQJ-0GnHRjoQluGceeLWx-pIq0',
+    },
+  });
+
+// 게시글 수정
+const modifyBoard = (board_id, data) =>
+  client.put(`/board/${board_id}`, data, {
+    headers: {
+      Authorization:
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGEuY29tIiwiaWQiOjQsImV4cCI6MTcwMzY2Mjc4Nn0.VYKzTp5tth1zMyIudKQJ-0GnHRjoQluGceeLWx-pIq0',
+    },
+  });
+
+// 게시글 삭제
+const deleteBoard = (board_id) =>
+  client.delete(`/board/${board_id}`, {
+    headers: {
+      Authorization:
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGEuY29tIiwiaWQiOjQsImV4cCI6MTcwMzY2Mjc4Nn0.VYKzTp5tth1zMyIudKQJ-0GnHRjoQluGceeLWx-pIq0',
+    },
+  });
+
+export { fetchBoardList, doLike, doUnlike, doReport, makeNewBoard, doUserBlock, getOneBoard, modifyBoard, deleteBoard };

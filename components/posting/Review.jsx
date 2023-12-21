@@ -6,7 +6,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { Text } from 'react-native';
 import { CommonPostingContext } from 'context/CommonPostingContext';
 
-function Review({ setContent }) {
+function Review({ setContent, content }) {
   const { reviewText, setReviewText } = useContext(CommonPostingContext);
 
   const handleContentChange = (text) => {
@@ -22,7 +22,7 @@ function Review({ setContent }) {
         </TitleLabel>
       </Title>
       <Input
-        placeholder="방문 후기를 작성해주세요."
+        placeholder={content !== '' ? content : '방문 후기를 작성해주세요.'}
         placeholderTextColor={COLORS.gray01}
         value={reviewText}
         onChangeText={handleContentChange} // 내용 변경 시 함수 호출
