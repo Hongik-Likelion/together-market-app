@@ -1,13 +1,14 @@
 import { KakaoLoginBtn, MainIcon } from '@assets/login/LoginScreenIcon';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as KakaoLogins from '@react-native-seoul/kakao-login';
+
 import { useNavigation } from '@react-navigation/native';
 import { login } from 'api/auth';
 import { Auth } from 'context/AuthContext';
 import format from 'pretty-format';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Alert } from 'react-native';
 import { styled } from 'styled-components/native';
+import * as Google from 'expo-auth-session/providers/google';
 
 function LoginScreen1() {
   const {
@@ -15,6 +16,61 @@ function LoginScreen1() {
   } = useContext(Auth);
 
   const navigation = useNavigation();
+
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId: '779740922835-emm9m5evhd87eerncceaimgma8b2tqtn.apps.googleusercontent.com',
+  });
+
+  const handle = () => {
+    promptAsync();
+  };
+
+  useEffect(() => {
+    handleLoginWithGoogle();
+  }, [response]);
+
+  const handleLoginWithGoogle = async () => {
+    if (response?.type === 'success') {
+      console.log('login');
+      try {
+        const googleResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
+          headers: { Authorization: `Bearer ${response.authentication.accessToken}` },
+        });
+        const profile = await googleResponse.json();
+
+        const { email, name, picture } = profile;
+
+        try {
+          const loginResponse = await login(email);
+          // 로그인 성공 -> 홈 화면으로 이동
+
+          if (loginResponse.status === 202) {
+            const { accessToken, refreshToken } = loginResponse.data;
+
+            await AsyncStorage.setItem('access_token', accessToken);
+            await AsyncStorage.setItem('refresh_token', refreshToken);
+
+            navigation.reset({ routes: [{ name: 'home-tab' }] });
+          }
+        } catch (err) {
+          console.log(`error ${format(err)}`);
+          const status = err.response.status;
+          // 로그인 실패 -> 회원가입 페이지로 이동
+          if (status === 404) {
+            setSignUpRequest((prev) => ({
+              ...prev,
+              email,
+              nickname: name,
+              profile: picture,
+            }));
+            navigation.navigate('commonSignUpScreen');
+          }
+        }
+      } catch (err) {
+        console.log(`hello ${format(err)}`);
+      }
+    }
+  };
 
   const onPressLogin = () => {
     async function handleKakaoLogin() {
@@ -67,7 +123,7 @@ function LoginScreen1() {
         </StyledMainIcon>
         <LoginInfoText>카카오 로그인으로 시작해보세요!</LoginInfoText>
 
-        <KakaoButton onPress={onPressLogin}>
+        <KakaoButton onPress={handle}>
           <KakaoLoginBtn />
         </KakaoButton>
       </Container>
