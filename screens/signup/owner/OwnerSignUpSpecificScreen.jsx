@@ -1,20 +1,22 @@
 import { PreviousBtn } from '@assets/signUp/CommonSignUpScreenIcon';
-import CompleteBtn from '@assets/signUp/OwnerSignUpSpecificScreen';
 import OwnerSignUpHeader from '@assets/signUp/OwnerSignUpScreen';
-import GetMarketAddressTab from '@components/signUp/owner/GetMarketAddressTab';
-import GetMainProductTab from '@components/signUp/owner/GetMainProductTab';
-import GetOpenTime from '@components/signUp/owner/GetOpenTime';
+import CompleteBtn from '@assets/signUp/OwnerSignUpSpecificScreen';
+import SignUpInput from '@components/signUp/common/SignUpInput';
+import Feather from 'react-native-vector-icons/Feather';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 import { useNavigation } from '@react-navigation/native';
+import { postOwnerShop, signUp } from 'api/auth';
 import { COLORS } from 'colors';
-import React, { useContext, useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import styled from 'styled-components/native';
-import { RFValue } from 'react-native-responsive-fontsize';
-import GetOpenDay from '@components/signUp/owner/GetOpenDay';
 import { Auth } from 'context/AuthContext';
 import format from 'pretty-format';
-import { signUp, postOwnerShop } from 'api/auth';
+import React, { useContext, useState } from 'react';
+import { Alert, Pressable, Text, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import styled from 'styled-components/native';
 
 function OwnerSignUpSpecificScreen() {
   const {
@@ -22,164 +24,206 @@ function OwnerSignUpSpecificScreen() {
     shop: [shopRequest, setShopRequest],
   } = useContext(Auth);
 
-  const { shop_address, selling_products, opening_time, closing_tme, opening_frequency } = shopRequest;
+  const { shop_address, selling_products, opening_time, closing_time, opening_frequency } = shopRequest;
+
+  const [isVisibleTimePicker, setIsVisibleTimePicker] = useState(false);
+  const [inputTimeType, setInputTimeType] = useState('');
+
+  const handleOpenTimePicker = (timeType) => {
+    setIsVisibleTimePicker((visible) => !visible);
+    setInputTimeType(timeType);
+  };
 
   const navigation = useNavigation();
 
-  const [marketAddress, setMarketAddress] = useState(''); // 가게 주소
-  const [mainProducts, setMainProducts] = useState(''); // 대표 상품명
-  const [startTimeString, setStartTimeString] = useState(''); // 시작 시간 문자열
-  const [endTimeString, setEndTimeString] = useState(''); // 종료 시간 문자열
-  const [openDays, setOpenDays] = useState(''); // 영업일
-
-  const onChangeAddress = (text) => setMarketAddress(text);
-  const onChangeMainProducts = (text) => setMainProducts(text);
-  const onChangeOpenDays = (text) => setOpenDays(text);
-
-  const onPressPreviousBtn = () => navigation.navigate('ownerSignUpFoodScreen');
-
-  const onSaveTimeData = (start, end) => {
-    setStartTimeString(start);
-    setEndTimeString(end);
+  const onChangeAddress = (text) => {
+    console.log(text);
+    setShopRequest((prev) => ({
+      ...prev,
+      shop_address: text,
+    }));
   };
 
-  //회원가입 API
-  const [userData, setUserData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [shopIsError, setShopIsError] = useState(false);
-  //상점 등록 API
-  const [shopData, setShopData] = useState(null);
+  const onChangeMainProducts = (text) =>
+    setShopRequest((prev) => ({
+      ...prev,
+      selling_products: text,
+    }));
+  const onChangeOpenDays = (text) =>
+    setShopRequest((prev) => ({
+      ...prev,
+      opening_frequency: text,
+    }));
 
-  const onPressContinueBtn = () => {
-    if (marketAddress && mainProducts && startTimeString && endTimeString) {
-      const request = {
-        ...shopRequest,
+  const handleTimeChange = (event, date) => {
+    const { type } = event;
 
-        shop_address: marketAddress,
-        selling_products: mainProducts,
-        opening_time: startTimeString,
-        closing_time: endTimeString,
-        opening_frequency: openDays,
-      };
+    switch (type) {
+      case 'set':
+        if (!date) return;
 
-      console.log(format(request));
-      console.log(format(signUpRequest));
-
-      // API 호출 및 데이터 처리
-      setIsLoading(true);
-      signUp(signUpRequest)
-        .then((res) => {
-          console.log(format(res.data));
-          setUserData(res.data);
-
-          postOwnerShop(request, res.data.access_token)
-            .then((res) => {
-              console.log(format(res.data));
-              setShopData(res.data);
-            })
-            .catch((err) => {
-              console.log('상점등록 오류');
-              console.log(err);
-              setShopIsError(true);
-            });
-        })
-        .catch((err) => {
-          console.log('회원가입오류');
-          console.log(err);
-          setIsError(true);
-        })
-        .finally(() => {
-          setIsLoading(false);
-          navigation.navigate('guideSignUpScreen'); // 이동은 여기서 호출
-        });
+        if (inputTimeType === 'open') {
+          setShopRequest((prev) => ({
+            ...prev,
+            opening_time: getFormattedTime(date),
+          }));
+        } else if (inputTimeType === 'close') {
+          setShopRequest((prev) => ({
+            ...prev,
+            closing_time: getFormattedTime(date),
+          }));
+        }
+        setIsVisibleTimePicker(false);
+      case 'dismissed':
+        setIsVisibleTimePicker(false);
+        break;
+      default:
+        break;
     }
   };
 
-  if (isLoading) {
-    return (
-      <View>
-        <Text>로딩중...</Text>
-      </View>
-    );
+  const onPressPreviousBtn = () => navigation.navigate('ownerSignUpFoodScreen');
+
+  function getFormattedTime(date) {
+    const hour = date.getHours() % 12 || 12; // Use 12 for midnight
+    const minute = date.getMinutes();
+    const period = date.getHours() >= 12 ? 'PM' : 'AM';
+
+    return `${hour}:${minute} ${period}`;
   }
 
-  if (isError || shopIsError) {
-    return (
-      <View>
-        <Text>에러 발생</Text>
-      </View>
-    );
-  }
+  const onPressContinueBtn = () => {
+    if (shop_address && selling_products && opening_time && closing_time && opening_frequency) {
+      navigation.navigate('guideSignUpScreen'); // 이동은 여기서 호출
+    } else {
+      Alert.alert('오류', '모든 정보를 입력해주세요!.');
+      return;
+    }
+  };
 
   return (
     <Container>
-      <UserSignUpHeaderContainer>
-        <OwnerSignUpHeader
-          secondPage={COLORS.main}
-          thirdPage={COLORS.main}
-          fourthPage={COLORS.main}
-          fifthPage={COLORS.gray01}
-          position="absolute"
-          marginTop={hp(10)}
-        />
-      </UserSignUpHeaderContainer>
+      <OwnerSignUpHeader
+        secondPage={COLORS.main}
+        thirdPage={COLORS.main}
+        fourthPage={COLORS.main}
+        fifthPage={COLORS.gray01}
+        alignSelf="center"
+        marginTop={hp(4)}
+      />
       <MainInfoTxt1>김영희님,</MainInfoTxt1>
       <MainInfoTxt2>
         <Text style={{ color: COLORS.main }}>가게 상세 정보</Text>를 입력해주세요.
       </MainInfoTxt2>
       <SubTxt>모든 항목을 기입해주세요. (필수)</SubTxt>
+      <InputTitle>가게 주소</InputTitle>
+      <SignUpInput
+        name="shop_address"
+        value={shop_address}
+        placeholder="주소를 입력해주세요."
+        onChangeText={onChangeAddress}
+      >
+        <Feather name={'search'} size={25} color={COLORS.main} />
+      </SignUpInput>
+      <InputTitle>대표 상품명</InputTitle>
+      <SignUpInput
+        name="selling_products"
+        value={selling_products}
+        placeholder="떡볶이, 순대, 튀김"
+        onChangeText={onChangeMainProducts}
+      />
+      <InputTitle>영업 시간</InputTitle>
+      <OpenTimeInputGroup>
+        <OpenTimeSubTitle>시작</OpenTimeSubTitle>
+        <Pressable style={{ flexGrow: 1, marginRight: 12 }} onPress={handleOpenTimePicker.bind(this, 'open')}>
+          <SignUpInput value={opening_time} placeholder="11:00 AM" editable={false}>
+            <MaterialIcons name={'keyboard-arrow-down'} size={RFValue(18)} />
+          </SignUpInput>
+        </Pressable>
+        <OpenTimeSubTitle>종료</OpenTimeSubTitle>
+        <Pressable style={{ flexGrow: 1 }} onPress={handleOpenTimePicker.bind(this, 'close')}>
+          <SignUpInput value={closing_time} placeholder="6:00 PM" editable={false}>
+            <MaterialIcons name={'keyboard-arrow-down'} size={RFValue(18)} />
+          </SignUpInput>
+        </Pressable>
+      </OpenTimeInputGroup>
 
-      <GetMarketAddressTab marketAddress={marketAddress} onChangeAddress={onChangeAddress} />
-      <GetMainProductTab mainProducts={mainProducts} onChangeMainProducts={onChangeMainProducts} />
-      <GetOpenTime onSaveTimeData={onSaveTimeData} />
-      <GetOpenDay openDays={openDays} onChangeOpenDays={onChangeOpenDays} />
-      <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
+      <InputTitle>영업일</InputTitle>
+      <SignUpInput
+        name="opening_frequency"
+        value={opening_frequency}
+        placeholder="(예시: 매일, 월~금, 화~토....)"
+        onChangeText={onChangeOpenDays}
+      />
+
+      <PreviousBtn marginBottom={hp(2)} marginTop={hp(2)} onPress={onPressPreviousBtn} />
       <CompleteBtn
-        fontColor={marketAddress && mainProducts && startTimeString && endTimeString ? 'white' : COLORS.main}
-        backColor={marketAddress && mainProducts && startTimeString && endTimeString ? COLORS.main : 'white'}
-        width={wp(100)}
-        marginBottom={hp(6.15)}
-        justifyContent="center"
+        fontColor={
+          shop_address && selling_products && opening_time && closing_time && opening_frequency ? 'white' : COLORS.main
+        }
+        backColor={
+          shop_address && selling_products && opening_time && closing_time && opening_frequency ? COLORS.main : 'white'
+        }
+        alignSelf="center"
         onPress={onPressContinueBtn}
       />
+
+      {isVisibleTimePicker && (
+        <DateTimePicker value={new Date()} mode="time" display="spinner" onChange={handleTimeChange} />
+      )}
     </Container>
   );
 }
 
-const UserSignUpHeaderContainer = styled.View`
-  position: absolute;
-  left: 0;
-  right: 0;
-  align-items: center;
-`;
+// const UserSignUpHeaderContainer = styled.View`
+//   position: absolute;
+//   left: 0;
+//   right: 0;
+//   align-items: center;
+// `;
 
-const Container = styled.View`
-  background-color: white;
+const Container = styled(KeyboardAwareScrollView)`
   flex: 1;
-  position: relative;
+  padding-top: ${hp(1)}px;
+  padding-left: ${wp(6)}px;
+  padding-right: ${wp(6)}px;
+
+  background-color: white;
 `;
 
 const MainInfoTxt1 = styled.Text`
+  margin-top: ${hp(2)}px;
   font-size: ${RFValue(20)}px;
   font-weight: bold;
-  margin-left: ${wp(4.8)}px;
-  margin-top: ${hp(18.7)}px;
 `;
 
 const MainInfoTxt2 = styled.Text`
   font-size: ${RFValue(20)}px;
   font-weight: bold;
-  margin-left: ${wp(4.8)}px;
-  margin-top: ${RFValue(5)}px;
 `;
 
 const SubTxt = styled.Text`
-  position: relative;
   color: ${COLORS.gray01};
-  margin-left: ${wp(5)}px;
-  top: ${hp(1.23)}px;
   font-size: ${RFValue(14)}px;
+`;
+
+const InputTitle = styled.Text`
+  margin-top: ${hp(3)}px;
+  margin-bottom: ${hp(3)}px;
+  font-size: ${RFValue(16)}px;
+  font-weight: bold;
+`;
+
+const OpenTimeInputGroup = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const OpenTimeSubTitle = styled.Text`
+  margin-right: ${wp(3)}px;
+  font-size: ${RFValue(14)}px;
+  font-weight: bold;
 `;
 
 export default OwnerSignUpSpecificScreen;

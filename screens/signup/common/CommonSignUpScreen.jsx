@@ -2,12 +2,12 @@ import { ContinueBtn, CustomerSelect, OwnerSelect, PreviousBtn } from '@assets/s
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
 import { Auth } from 'context/AuthContext';
-import React, { useContext, useMemo, useState } from 'react';
+import { UserInfo } from 'context/UserInfoContext';
+import React, { useContext, useMemo } from 'react';
 import { Text } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { styled } from 'styled-components/native';
-import format from 'pretty-format';
 
 function CommonSignUpScreen() {
   const navigation = useNavigation();
@@ -16,7 +16,7 @@ function CommonSignUpScreen() {
     user: [signUpRequest, setSignUpRequest],
   } = useContext(Auth);
 
-  const [userType, setUserType] = useState(1);
+  const { userType, setUserType } = useContext(UserInfo);
 
   const USER_TYPE = useMemo(
     () => ({
@@ -40,9 +40,11 @@ function CommonSignUpScreen() {
         ...prev,
         is_owner: false,
       }));
+      setUserType(USER_TYPE.CUSTOMER);
       navigation.navigate('userSignUpScreen');
     } else if (userType === OWNER) {
       console.log('사장입니다');
+      setUserType(USER_TYPE.OWNER);
       setSignUpRequest((prev) => ({
         ...prev,
         is_owner: true,

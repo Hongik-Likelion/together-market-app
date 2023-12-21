@@ -1,29 +1,19 @@
 import { client } from './client';
 
 // 로그인
-const login = (email) => client.post('/user/login/', { email });
+const login = (email) => client.post('/user/login', { email });
 
 // 회원가입
-const signUp = (data) => client.post('/user/', data);
+const signUp = (data) => client.post('/user', { ...data });
 
 //먹거리 조회
-const fetchEatingCatergory = () => client.get('/products/', {});
+const fetchEatingCatergory = () => client.get('/products', {});
 
 //상점 등록 - 사장 회원가입
-const postOwnerShop = (data, token) =>
-  client.post('/shop/', data, {
-    headers: {
-      Authorization: 'Bearer ' + token,
-    },
-  });
+const postOwnerShop = (data) => client.post('/shop', { ...data });
 
 // 자주 방문 시장 등록- 손님 회원가입
-const postfavMarket = (data, token) =>
-  client.post('/markets/favourite/', data, {
-    headers: {
-      Authorization: 'Bearer ' + token,
-    },
-  });
+const postfavMarket = (market_id) => client.post('/markets/favourite', { market_id: [market_id] });
 
 //[프로필] 개인 정보 조회
 const fetchUserInfo = () =>

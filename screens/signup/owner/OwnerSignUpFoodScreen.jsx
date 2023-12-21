@@ -4,7 +4,7 @@ import ChooseSellingFoodBtn from '@components/signUp/owner/ChooseSellingFoodBtn'
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from 'colors';
 import React, { useContext } from 'react';
-import { Text } from 'react-native';
+import { Alert, Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -21,6 +21,10 @@ function OwnerSignUpFoodScreen() {
   const onPressPreviousBtn = () => navigation.navigate('ownerSignUpScreen');
 
   const onPressContinueBtn = () => {
+    if (product_categories.length === 0) {
+      Alert.alert('오류', '판매 상품을 하나 이상 골라 주세요');
+      return;
+    }
     navigation.navigate('ownerSignUpSpecificScreen');
   };
 
@@ -44,8 +48,8 @@ function OwnerSignUpFoodScreen() {
       <ChooseSellingFoodBtn />
       <PreviousBtn marginBottom={hp(2)} marginLeft={wp(4.8)} onPress={onPressPreviousBtn} />
       <ContinueBtn
-        fontColor={product_categories ? 'white' : COLORS.main}
-        backColor={product_categories ? COLORS.main : 'white'}
+        fontColor={product_categories.length !== 0 ? 'white' : COLORS.main}
+        backColor={product_categories.length !== 0 ? COLORS.main : 'white'}
         width={wp(100)}
         marginBottom={hp(6.15)}
         justifyContent="center"

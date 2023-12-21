@@ -31,8 +31,16 @@ function AuthRoutes() {
     product_categories: [],
   });
 
+  const [favouriteMarketRequest, setFavouriteMarketRequest] = useState(-1);
+
   return (
-    <Auth.Provider value={{ user: [signUpRequest, setSignUpRequest], shop: [shopRequest, setShopRequest] }}>
+    <Auth.Provider
+      value={{
+        user: [signUpRequest, setSignUpRequest],
+        shop: [shopRequest, setShopRequest],
+        market: [favouriteMarketRequest, setFavouriteMarketRequest],
+      }}
+    >
       <Stack.Navigator initialRouteName="loginScreen1">
         <Stack.Screen
           name={'loginScreen1'}
