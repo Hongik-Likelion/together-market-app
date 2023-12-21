@@ -1,10 +1,13 @@
 import { KakaoLoginBtn, MainIcon } from '@assets/login/LoginScreenIcon';
-import { useNavigation } from '@react-navigation/native';
-import React, { useContext } from 'react';
-import { styled } from 'styled-components/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as KakaoLogins from '@react-native-seoul/kakao-login';
+import { useNavigation } from '@react-navigation/native';
 import { login } from 'api/auth';
 import { Auth } from 'context/AuthContext';
+import format from 'pretty-format';
+import React, { useContext } from 'react';
+import { Alert } from 'react-native';
+import { styled } from 'styled-components/native';
 
 function LoginScreen1() {
   const {
@@ -14,76 +17,47 @@ function LoginScreen1() {
   const navigation = useNavigation();
 
   const onPressLogin = () => {
-    // async function kakaoLogin() {
-    //   let email,
-    //     nickname,
-    //     profile_url = null;
-    //   try {
-    //     const profile = await KakaoLogins.getProfile();
-    //     email = profile.email;
-    //     nickname = profile.nickname;
-    //     profile_url = profile.profileImageUrl;
-    //   } catch (err) {}
-
-    //   try {
-    //     const response = await login(email);
-    //     // 로그인 성공 -> 홈 화면으로 이동
-    //     if (response.status === 200) {
-    //       const { access_token, refresh_token } = response.data;
-    //       navigation.navigate('home-tab');
-    //     }
-    //   } catch (err) {
-    //     const status = err.response.status;
-
-    //     // 로그인 실패 -> 회원가입 페이지로 이동
-    //     if (status === 404) {
-    //       setSignUpRequest((prev) => ({
-    //         ...prev,
-    //         email,
-    //         nickname,
-    //         profile: profile_url,
-    //       }));
-    //       navigation.navigate('commonSignUpScreen');
-    //     }
-    //   }
-    // }
-
-    setSignUpRequest((prev) => ({
-      ...prev,
-      email: 'fnjd@jkk.com',
-      nickname: '하위하',
-      profile: 'https://example.com/profile-image.jpg', // 실제 이미지 URL로 대체
-    }));
-
-    navigation.navigate('commonSignUpScreen');
-  };
-
-  /* 카카오 로그인 부분
-  const onPressKakao = () => {
-    async function kakaoLogin() {
+    async function handleKakaoLogin() {
       try {
-        const token = await KakaoLogins.login();
-        console.log('login success!');
-        console.log(format(token));
-      } catch (err) {}
+        await KakaoLogins.login();
+      } catch (err) {
+        Alert.alert('카카오 로그인 실패');
+      }
 
       try {
         const profile = await KakaoLogins.getProfile();
-        const { nickname, email, gender } = profile;
+        const { email, nickname, profileImageUrl } = profile;
 
-        await AsyncStorage.setItem('email', email);
-        await AsyncStorage.setItem('nickname', nickname);
-        await AsyncStorage.setItem('gender', gender);
+        try {
+          const response = await login(email);
+          // 로그인 성공 -> 홈 화면으로 이동
+          if (response.status === 202) {
+            const { accessToken, refreshToken } = response.data;
 
-        // 만약 회원 data가 없으면, loginScreen2로 가고
-        // 있으면 곧바로 home으로 부분 추가해야함.
-        navigation.navigate('loginScreen2');
+            await AsyncStorage.setItem('access_token', accessToken);
+            await AsyncStorage.setItem('refresh_token', refreshToken);
+
+            navigation.reset({ routes: [{ name: 'home-tab' }] });
+          }
+        } catch (err) {
+          const status = err.response.status;
+          // 로그인 실패 -> 회원가입 페이지로 이동
+          if (status === 404) {
+            setSignUpRequest((prev) => ({
+              ...prev,
+              email,
+              nickname,
+              profile: profileImageUrl,
+            }));
+            navigation.navigate('commonSignUpScreen');
+          }
+        }
       } catch (err) {}
     }
 
-    kakaoLogin();
+    handleKakaoLogin();
   };
-  */
+
   return (
     <>
       <MainBackground source={require('@assets/login/Login1Background.png')} />
@@ -92,8 +66,9 @@ function LoginScreen1() {
           <MainIcon />
         </StyledMainIcon>
         <LoginInfoText>카카오 로그인으로 시작해보세요!</LoginInfoText>
-        <KakaoButton>
-          <KakaoLoginBtn onPress={onPressLogin} />
+
+        <KakaoButton onPress={onPressLogin}>
+          <KakaoLoginBtn />
         </KakaoButton>
       </Container>
     </>
@@ -102,13 +77,14 @@ function LoginScreen1() {
 
 const MainBackground = styled.Image`
   position: absolute;
-  z-index: -1;
+  z-index: 1;
   width: 100%;
   height: 100%;
 `;
 
 const Container = styled.View`
   flex: 1;
+  z-index: 2;
   align-items: center;
 `;
 
@@ -121,7 +97,7 @@ const LoginInfoText = styled.Text`
   font-weight: bold;
 `;
 
-const KakaoButton = styled.TouchableOpacity`
+const KakaoButton = styled.Pressable`
   margin-top: 15px;
 `;
 
