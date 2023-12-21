@@ -21,7 +21,7 @@ function LoginScreen1() {
       try {
         await KakaoLogins.login();
       } catch (err) {
-        Alert.alert('카카오 로그인 실패');
+        Alert.alert('카카오 로그인 실패', JSON.stringify(err));
       }
 
       try {
