@@ -3,7 +3,7 @@ import GuideOption from '@components/signUp/guide/GuideOption';
 import GuideTopTab from '@components/signUp/guide/GuideTopTab';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { postfavMarket, signUp } from 'api/auth';
+import { postOwnerShop, postfavMarket, signUp } from 'api/auth';
 import { COLORS } from 'colors';
 import { Auth } from 'context/AuthContext';
 import { UserInfo } from 'context/UserInfoContext';
@@ -17,21 +17,22 @@ import { styled } from 'styled-components/native';
 function GuideSignUpScreen(props) {
   const {
     user: [signUpRequest, setSignUpRequest],
+    shop: [shopRequest, setShopRequest],
     market: [favouriteMarketRequest, setFavouriteMarketRequest],
   } = useContext(Auth);
+  const { userType } = useContext(UserInfo);
 
   const navigation = useNavigation();
-  const { userType } = useContext(UserInfo);
 
   const [guide, selectGuide] = useState(0); //guide가 1이면 보겠다, 2면 안보겠다
 
+  console.log(`userTYpe = ${userType}`);
   const onPressContinueBtn = async () => {
-    // 회원가입과 자주가는 시장 등록
     try {
+      // 공통 회원가입
       await handleSignUp();
-      if (userType === 1) {
-      } else await handleFavoriteMarket();
-      navigation.navigate('guideSignUpScreen'); // 이동은 여기서 호출
+      if (userType === 1) await handleRegisterShop();
+      else await handleFavoriteMarket();
 
       if (guide === 1) {
         navigation.reset({
@@ -77,6 +78,16 @@ function GuideSignUpScreen(props) {
       console.log(format(addFavoriteMarketErr));
       Alert.alert('자주가는 시장 등록 오류', '잠시 후 다시 진행해 주세요');
       throw addFavoriteMarketErr;
+    }
+  };
+
+  const handleRegisterShop = async () => {
+    try {
+      await postOwnerShop(shopRequest);
+    } catch (registerShopErr) {
+      console.log(format(addFavoriteMarketErr));
+      Alert.alert('상점 등록 오류', '잠시 후 다시 진행해 주세요');
+      throw registerShopErr;
     }
   };
 

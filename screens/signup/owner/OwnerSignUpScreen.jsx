@@ -10,7 +10,7 @@ import { COLORS } from 'colors';
 import { Auth } from 'context/AuthContext';
 import format from 'pretty-format';
 import React, { useContext, useState } from 'react';
-import { SafeAreaView, Text } from 'react-native';
+import { Alert, SafeAreaView, Text } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -30,9 +30,14 @@ function OwnerSignUpScreen() {
   const [modal, setModal] = useState(false);
 
   /** 시장 선택 취소 */
-  const onPressDelete = () => {
-    setMarket('');
-    setShopRequest((prev) => ({ ...prev, market_id: -1 }));
+  const onPressDelete = () => setMarket(() => ({ id: -1, name: '' }));
+
+  const handleMarketSelect = (id, name) => {
+    setShopRequest((prev) => ({
+      ...prev,
+      market_id: id,
+    }));
+    setMarket(name);
   };
 
   /** 이전 버튼 */
@@ -41,10 +46,14 @@ function OwnerSignUpScreen() {
   /** 다음으로 가기 버튼 */
   const onPressContinueBtn = () => {
     /** 시장 등록하고, 가게 이름 등록해야 다음으로 이동 가능 */
-    if (market_id !== -1 && shop_name !== '') navigation.navigate('ownerSignUpFoodScreen');
-  };
+    const { market_id, shop_name } = shopRequest;
+    if (market_id === -1 || shop_name === '') {
+      Alert.alert('오류', '시장과 가게 이름을 입력해주세요');
+      return;
+    }
 
-  console.log(format(signUpRequest));
+    navigation.navigate('ownerSignUpFoodScreen');
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -85,12 +94,7 @@ function OwnerSignUpScreen() {
           />
         </ButtonContainer>
 
-        <SelectMarketModal
-          open={modal}
-          onClose={() => setModal(false)}
-          market={market}
-          onSelect={(market) => setMarket(market)}
-        />
+        <SelectMarketModal open={modal} onClose={() => setModal(false)} market={market} onSelect={handleMarketSelect} />
       </Container>
     </SafeAreaView>
   );
