@@ -23,7 +23,9 @@ function PostButton() {
     })
 
     const onPressPosting = () => {
-        navigation.navigate(isOwner ? 'owner-posting' : 'user-posting', {isOwner});
+        navigation.navigate(isOwner ? 'owner-posting' : 'user-posting', {
+            isOwner: isOwner,
+            showDeleteBtn: false});
     };
 
     return(

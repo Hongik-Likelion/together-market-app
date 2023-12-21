@@ -21,8 +21,12 @@ function OwnerInfoTopTab(props) {
     });
   };
 
+  // 글쓰기 네비게이션 수정함
   const onPressWriteBtn = () => {
-    navigation.navigate('home', { screen: 'user-posting' });
+    // navigation.navigate('home', { screen: 'user-posting' });
+    navigation.navigate(is_owner ? 'owner-posting' : 'user-posting', {
+      is_owner,
+      showDeleteBtn: false});
   };
 
   return (

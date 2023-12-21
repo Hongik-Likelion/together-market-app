@@ -88,8 +88,12 @@ function OwnerPostingScreen({ route }) {
   // OwnerPostingScreen 컴포넌트에서 navigation.setOptions 부분을 useEffect로 감싸서 처리
   useEffect(() => {
     if (navigation) {
+
+      const showDeleteBtn = route.params?.showDeleteBtn || false;
+
       navigation.setOptions({
         headerRight: () => (
+          showDeleteBtn && (
           <HeaderWithDelete
             onDelete={() => {
               //게시물 삭제 API
@@ -110,10 +114,11 @@ function OwnerPostingScreen({ route }) {
                 });
             }}
           />
+          )
         ),
       });
     }
-  }, [navigation, board_id]);
+  }, [navigation, board_id, route.params]);
 
   if (isLoading) {
     return (

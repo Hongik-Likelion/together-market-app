@@ -65,10 +65,12 @@ function OwnerPostingListItem({ myPosting }) {
 
   //게시글 수정 페이지로 이동
   const onPressPostingItem = () => {
+    // console.log("ㅇ으엉;")
     navigation.navigate(isOwner ? 'owner-posting' : 'user-posting', {
       isOwner: isOwner,
       oneBoardData: oneBoardData,
       board_id: board_info.board_id,
+      showDeleteBtn: true
     });
   };
 
